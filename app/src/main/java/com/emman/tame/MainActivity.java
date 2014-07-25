@@ -57,17 +57,25 @@ public class MainActivity extends Activity
     }
 
     public void onSectionAttached(int number) {
+	Fragment fragment = null;
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.title_kernelinfo);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.title_kernelsettings);
+		fragment = new KernelSettings();
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.title_freqsettings);
                 break;
         }
+	if (fragment != null) {
+			FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+		        .replace(R.id.container, fragment)
+		        .commit();
+	}
     }
 
     public void restoreActionBar() {
