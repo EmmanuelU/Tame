@@ -3,6 +3,8 @@
 
     <string name="app_name">Tame</string>
 
+    <string name="about_tame">Tame for WildKernel</string>
+
     <string name="title_kernelinfo">Kernel Info</string>
     <string name="title_kernelsettings">Kernel Features</string>
     <string name="title_freqsettings">Frequency Settings</string>

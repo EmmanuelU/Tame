@@ -61,7 +61,7 @@ public class MainActivity extends Activity
         switch (number) {
 	    case 1:
 		mTitle = getString(R.string.app_name);
-		
+		fragment = new AboutTame();
 		 break;
 	    case 2:
 		mTitle = getString(R.string.title_kernelinfo);
