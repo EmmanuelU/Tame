@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+ 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="106dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Tame"
+            android:textStyle="bold"
+            android:id="@+id/header"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal|top"
+            android:textColor="#ffff1b19"
+            android:textSize="65sp"
+            android:textIsSelectable="false"
+            android:enabled="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="For WildKernel by Emmanuel Utomi"
+            android:id="@+id/subheader"
+            android:gravity="center"
+            android:textColor="#ff8a8586" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Current Version:"
+            android:id="@+id/versionheader"
+            android:gravity="center"
+            android:textColor="#ff8a8586" />
+ 
+</LinearLayout>

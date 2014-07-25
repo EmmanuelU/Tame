@@ -22,17 +22,27 @@ import android.widget.TextView;
 
 public class AboutTame extends Fragment {
 
+    private View mView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+	super.onCreate(savedInstanceState);
+	
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		Bundle savedInstanceState) {
-
-        return inflater.inflate(R.xml.about_tame, container, false);
+	mView = inflater.inflate(R.layout.about_tame, container, false);
+	setversion();
+        return mView;
     }
 
+    private void setversion(){
+	TextView version = (TextView) mView.findViewById(R.id.versionheader);
+	String propversion = Utils.CMD("getprop ro.wild.version", false);
+	if(propversion.isEmpty()) propversion = "N/A";
+    propversion =  " " + propversion;
+	version.setText(version.getText().toString() + propversion);
+    }
 }

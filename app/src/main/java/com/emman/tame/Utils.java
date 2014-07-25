@@ -138,6 +138,18 @@ public class Utils {
         return null;
     }
 
+    public static String CMD(String command, boolean useSu) {
+        CMDProcessor.CommandResult cr = null;
+        if (useSu) {
+            cr = new CMDProcessor().su.runWaitFor(command);
+        } else {
+            cr = new CMDProcessor().sh.runWaitFor(command);
+        }
+        if (cr.success())
+            return cr.stdout;
+        return null;
+    }
+
 
 
 }
