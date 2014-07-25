@@ -35,6 +35,12 @@ import android.util.Log;
  */
 public class KernelSettings extends PreferenceFragment {
 
+    private static final String TAG = "Tame";
+
+    public static final String KEY_TOUCHKEY_BLN = "touchkey_bln";
+
+    private static final String FILE_BLN_TOGGLE = "/sys/class/misc/backlightnotification/enabled";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,27 @@ public class KernelSettings extends PreferenceFragment {
         addPreferencesFromResource(R.xml.kernel_settings);
 
         PreferenceScreen prefSet = getPreferenceScreen();
+
+	updateprefs();
+
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+
+        String boxValue;
+        String key = preference.getKey();
+
+        Log.w(TAG, "key: " + key);
+
+        if (key.compareTo(KernelSettings.KEY_TOUCHKEY_BLN) == 0) {
+            Utils.writeValue(FILE_BLN_TOGGLE, ((CheckBoxPreference)preference).isChecked() ? "1" : "0");
+        }
+
+        return true;
+    }
+
+    private void updateprefs(){
 
     }
 
