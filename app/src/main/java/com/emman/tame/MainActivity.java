@@ -59,16 +59,22 @@ public class MainActivity extends Activity
     public void onSectionAttached(int number) {
 	Fragment fragment = null;
         switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_kernelinfo);
-                break;
-            case 2:
+	    case 1:
+		mTitle = getString(R.string.app_name);
+		
+		 break;
+	    case 2:
+		mTitle = getString(R.string.title_kernelinfo);
+		
+		 break;
+	    case 3:
                 mTitle = getString(R.string.title_kernelsettings);
 		fragment = new KernelSettings();
-                break;
-            case 3:
-                mTitle = getString(R.string.title_freqsettings);
-                break;
+		break;
+	    case 4:
+		mTitle = getString(R.string.title_freqsettings);
+		
+		break;
         }
 	if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();

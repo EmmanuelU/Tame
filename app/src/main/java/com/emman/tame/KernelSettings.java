@@ -65,12 +65,18 @@ public class KernelSettings extends PreferenceFragment {
             Utils.writeValue(FILE_BLN_TOGGLE, mTouchKeyBLN.isChecked() ? "1" : "0");
         }
 
+	updateprefs();
+
         return true;
     }
 
     private void updateprefs(){
 	mTouchKeyBLN = (CheckBoxPreference) findPreference(KEY_TOUCHKEY_BLN);
-	mTouchKeyBLN.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_BLN_TOGGLE)));
+
+	if(Utils.fileExists(FILE_BLN_TOGGLE)){
+		mTouchKeyBLN.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_BLN_TOGGLE)));
+	}
+	else mTouchKeyBLN.setEnabled(false);
     }
 
 }

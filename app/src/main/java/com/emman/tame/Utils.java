@@ -94,6 +94,7 @@ public class Utils {
      * @return line
      */
     public static String readOneLine(String fname) {
+	if(!fileExists(fname)) return "";
         BufferedReader br;
         String line = null;
         try {
@@ -112,8 +113,9 @@ public class Utils {
     }
 
     public static boolean stringToBool(String s) {
-	if (s.equals("1")) return true;
-	if (s.equals("0")) return false;
+	if (s.equals("")) return false;
+	else if (s.equals("1")) return true;
+	else if (s.equals("0")) return false;
 	throw new IllegalArgumentException(s+" is not a bool. Only 1 and 0 are.");
     }
 
