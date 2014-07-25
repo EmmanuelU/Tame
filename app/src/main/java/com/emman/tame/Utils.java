@@ -1,7 +1,9 @@
 package com.emman.tame;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import android.app.AlertDialog;
@@ -63,7 +65,7 @@ public class Utils {
         alertDialog.show();
     }
 
-public static boolean checkSu() {
+    public static boolean checkSu() {
         if (!new File("/system/bin/su").exists()
                 && !new File("/system/xbin/su").exists()) {
             Log.e(TAG, "su does not exist!!!");
@@ -84,4 +86,56 @@ public static boolean checkSu() {
             return false;
         }
     }
+
+ /**
+     * Read one line from file
+     *
+     * @param fname
+     * @return line
+     */
+    public static String readOneLine(String fname) {
+        BufferedReader br;
+        String line = null;
+        try {
+            br = new BufferedReader(new FileReader(fname), 512);
+            try {
+                line = br.readLine();
+            } finally {
+                br.close();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "IO Exception when reading sys file", e);
+            // attempt to do magic!
+            return readFileViaShell(fname, true);
+        }
+        return line;
+    }
+
+    public static boolean stringToBool(String s) {
+	if (s.equals("1")) return true;
+	if (s.equals("0")) return false;
+	throw new IllegalArgumentException(s+" is not a bool. Only 1 and 0 are.");
+    }
+
+    /**
+     * Read file via shell
+     *
+     * @param filePath
+     * @param useSu
+     * @return file output
+     */
+    public static String readFileViaShell(String filePath, boolean useSu) {
+        CMDProcessor.CommandResult cr = null;
+        if (useSu) {
+            cr = new CMDProcessor().su.runWaitFor("cat " + filePath);
+        } else {
+            cr = new CMDProcessor().sh.runWaitFor("cat " + filePath);
+        }
+        if (cr.success())
+            return cr.stdout;
+        return null;
+    }
+
+
+
 }

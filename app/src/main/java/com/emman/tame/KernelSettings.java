@@ -38,8 +38,8 @@ public class KernelSettings extends PreferenceFragment {
     private static final String TAG = "Tame";
 
     public static final String KEY_TOUCHKEY_BLN = "touchkey_bln";
-
     private static final String FILE_BLN_TOGGLE = "/sys/class/misc/backlightnotification/enabled";
+    private CheckBoxPreference mTouchKeyBLN;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,15 +61,16 @@ public class KernelSettings extends PreferenceFragment {
 
         Log.w(TAG, "key: " + key);
 
-        if (key.compareTo(KernelSettings.KEY_TOUCHKEY_BLN) == 0) {
-            Utils.writeValue(FILE_BLN_TOGGLE, ((CheckBoxPreference)preference).isChecked() ? "1" : "0");
+        if (preference == mTouchKeyBLN) {
+            Utils.writeValue(FILE_BLN_TOGGLE, mTouchKeyBLN.isChecked() ? "1" : "0");
         }
 
         return true;
     }
 
     private void updateprefs(){
-
+	mTouchKeyBLN = (CheckBoxPreference) findPreference(KEY_TOUCHKEY_BLN);
+	mTouchKeyBLN.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_BLN_TOGGLE)));
     }
 
 }
