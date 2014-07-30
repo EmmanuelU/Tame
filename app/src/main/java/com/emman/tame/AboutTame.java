@@ -23,6 +23,8 @@ import android.widget.TextView;
 public class AboutTame extends Fragment {
 
     private View mView;
+    String propversion;
+    String propversiondate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,11 +40,20 @@ public class AboutTame extends Fragment {
         return mView;
     }
 
+    private boolean isWild(){
+	
+	propversion = Utils.CMD("getprop ro.wild.version", false);
+	propversiondate = Utils.CMD("getprop ro.wild.date", false);
+	return (!propversion.isEmpty() || !propversiondate.isEmpty());
+	
+    }
+
     private void setversion(){
 	TextView version = (TextView) mView.findViewById(R.id.versionheader);
-	String propversion = Utils.CMD("getprop ro.wild.version", false);
-	if(propversion.isEmpty()) propversion = "N/A";
-    propversion =  " " + propversion;
-	version.setText(version.getText().toString() + propversion);
+	if(isWild()){
+		version.setText(version.getText().toString() + " " + propversion);
+		Utils.toast(getActivity(), "WildKernel Detected");
+	}
+	else version.setText("");
     }
 }

@@ -9,6 +9,7 @@ import java.io.IOException;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Context;
+import android.widget.Toast;
 import android.util.Log;
 
 public class Utils {
@@ -150,6 +151,9 @@ public class Utils {
         return null;
     }
 
+    public static void toast(Context context, String message) {
+	Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
 
 
 }
