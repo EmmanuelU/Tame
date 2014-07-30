@@ -27,8 +27,8 @@ import android.widget.Button;
 public class AboutTame extends Fragment {
 
     private View mView;
-    String propversion;
-    String propversiondate;
+    static String propversion;
+    static String propversiondate;
     private Button mUpdate;
     private TextView mTameLogo;
     Animation fadein = new AlphaAnimation(0.0f, 1.0f);
@@ -58,7 +58,7 @@ public class AboutTame extends Fragment {
         return mView;
     }
 
-    private boolean isWild(){
+    public static boolean isWild(){
 	
 	propversion = Utils.CMD("getprop ro.wild.version", false);
 	propversiondate = Utils.CMD("getprop ro.wild.date", false);
@@ -70,7 +70,6 @@ public class AboutTame extends Fragment {
 	TextView version = (TextView) mView.findViewById(R.id.versionheader);
 	if(isWild()){
 		version.setText(version.getText().toString() + " " + propversion);
-		Utils.toast(getActivity(), "WildKernel Detected");
 	}
 	else{
 		version.setVisibility(View.GONE);

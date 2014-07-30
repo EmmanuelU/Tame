@@ -46,6 +46,8 @@ public class MainActivity extends Activity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+	if(AboutTame.isWild()) Utils.toast(this, "WildKernel Detected");
+
     }
 
     @Override
