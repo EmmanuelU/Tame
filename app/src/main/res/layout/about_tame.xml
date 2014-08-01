@@ -36,6 +36,15 @@
             android:gravity="center"
             android:textColor="#ff8a8586" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Latest Version:"
+            android:id="@+id/latversionheader"
+            android:gravity="center"
+            android:textColor="#ff8a8586" />
+
 	<Button
 	    android:id="@+id/update_button"
             android:layout_height="wrap_content"
