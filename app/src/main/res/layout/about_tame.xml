@@ -43,7 +43,8 @@
             android:text="Latest Version:"
             android:id="@+id/latversionheader"
             android:gravity="center"
-            android:textColor="#ff8a8586" />
+            android:textColor="#ff8a8586"
+            android:textSize="14dp" />
 
 	<Button
 	    android:id="@+id/update_button"

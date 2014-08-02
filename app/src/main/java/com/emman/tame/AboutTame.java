@@ -10,6 +10,8 @@ import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -54,6 +56,12 @@ public class AboutTame extends Fragment {
 
     class Wild {
 	String latestversion;
+	String latestversiondl;
+	String latestversionreldate;
+	int versionstamp;
+	int latestversionstamp;
+	boolean islatestversion = false;
+	boolean fetchedlatestversion = false;
     }
 
     private View mView;
@@ -69,6 +77,7 @@ public class AboutTame extends Fragment {
     private Wild WildData;
 
     private static final String FILE_UPDATE_DATA = "/sdcard/updatewild.sh";
+    private static final String FILE_UPDATE_LINK = "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-hercules-3.0/flashable/tools/updatewild.sh";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,6 +116,7 @@ public class AboutTame extends Fragment {
 	mLatVersion.setVisibility(View.GONE);
 	if(isWild()){
 		mVersion.setText(mVersion.getText().toString() + " " + propversion);
+		WildData.versionstamp = Integer.parseInt(propversiondate);
 	}
 	else{
 		mVersion.setVisibility(View.GONE);
@@ -115,35 +125,61 @@ public class AboutTame extends Fragment {
     }
 
     private boolean CheckUpdate(){
-	mCheckUpdateDialog = new ProgressDialog(getActivity());
-	mCheckUpdateDialog.setMessage("Checking for updates");
-	mCheckUpdateDialog.setIndeterminate(true);
-	mCheckUpdateDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-	mCheckUpdateDialog.setCancelable(true);
-	final DownloadTask downloadTask = new DownloadTask(getActivity(), FILE_UPDATE_DATA, mCheckUpdateDialog, true);
-	downloadTask.execute("https://dl.dropboxusercontent.com/u/40873980/updatewild.sh");
-	mCheckUpdateDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-	    @Override
-	    public void onCancel(DialogInterface dialog) {
-		downloadTask.cancel(true);
-	    }
-	});
+	if(WildData.fetchedlatestversion && !WildData.islatestversion){
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WildData.latestversiondl));
+		startActivity(browserIntent);
+	}
+	else if(WildData.fetchedlatestversion) return false;
+	else {
+		mCheckUpdateDialog = new ProgressDialog(getActivity());
+		mCheckUpdateDialog.setMessage("Checking for updates");
+		mCheckUpdateDialog.setIndeterminate(true);
+		mCheckUpdateDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		mCheckUpdateDialog.setCancelable(true);
+		final DownloadTask downloadTask = new DownloadTask(getActivity(), FILE_UPDATE_DATA, mCheckUpdateDialog, true);
+		downloadTask.execute(FILE_UPDATE_LINK);
+		mCheckUpdateDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+		    @Override
+		    public void onCancel(DialogInterface dialog) {
+			downloadTask.cancel(true);
+		    }
+		});
 
-	mCheckUpdateDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-	    @Override
-	    public void onDismiss(DialogInterface dialog) {
-		if(Utils.fileExists(FILE_UPDATE_DATA)){
-			Utils.CMD("chmod +x " + FILE_UPDATE_DATA, false);
-			WildData.latestversion = Utils.CMD("bash " + FILE_UPDATE_DATA + " latestversion", false);
-			//Utils.toast(getActivity(), );
-			Utils.CMD("rm -rf " + FILE_UPDATE_DATA, false);
-			mLatVersion.setText(mLatVersion.getText().toString() + " " + WildData.latestversion);
-			mLatVersion.setVisibility(View.VISIBLE);
-		}
-	    }
-	});
-	
+		mCheckUpdateDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+		    @Override
+		    public void onDismiss(DialogInterface dialog) {
+			if(WildInit()){
+				mLatVersion.setText(mLatVersion.getText().toString() + " " + WildData.latestversion + " - " + WildData.latestversionreldate);
+				mLatVersion.setVisibility(View.VISIBLE);
+				if(WildData.latestversionstamp > WildData.versionstamp) WildData.islatestversion = false;
+				else if(WildData.latestversionstamp == WildData.versionstamp) WildData.islatestversion = true;
+				if(WildData.islatestversion){
+					//Utils.toast(getActivity(), "Latest Version Installed");
+					mUpdate.setText("Latest Version");
+					mUpdate.setEnabled(false);
+				} else {
+					Utils.toast(getActivity(), "Update Available");
+					mUpdate.setText("Click to Update");
+				}
+				WildData.fetchedlatestversion = true;
+			}
+		    }
+		});
+	}
 	return true;
+    }
+
+    private boolean WildInit(){
+	if(Utils.fileExists(FILE_UPDATE_DATA)){
+		Utils.CMD("chmod +x " + FILE_UPDATE_DATA, false);
+		WildData.latestversion = Utils.CMD("bash " + FILE_UPDATE_DATA + " latestversion", false);
+		WildData.latestversionstamp = Integer.parseInt(Utils.CMD("bash " + FILE_UPDATE_DATA + " latestdate", false));
+		WildData.latestversiondl = Utils.CMD("bash " + FILE_UPDATE_DATA + " latestDL", false);
+		WildData.latestversionreldate = Utils.CMD("bash " + FILE_UPDATE_DATA + " latestdateliteral", false);
+		Utils.CMD("rm -rf " + FILE_UPDATE_DATA, false);
+		return true;
+	}
+	return false;
     }
 
     private void TameLogoAnim(){
