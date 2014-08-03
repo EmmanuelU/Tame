@@ -29,6 +29,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -40,7 +42,11 @@ public class BLNPreference extends DialogPreference {
 
     public static final String KEY_TOUCHKEY_BLN = "touchkey_bln";
     public static final String FILE_BLN_TOGGLE = "/sys/class/misc/backlightnotification/enabled";
+    public static final String FILE_BLN_MAX_BLINK = "/sys/class/misc/backlightnotification/max_blink_count";
     private CheckBox mTouchKeyBLN;
+    private SeekBar mTouchKeyBLNMaxBlink;
+    private TextView mCurTouchKeyBLNBlink;
+    private View mView;
 
     public BLNPreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
@@ -51,14 +57,33 @@ public class BLNPreference extends DialogPreference {
     @Override
     protected void onBindDialogView(final View view) {
 	super.onBindDialogView(view);
-	updateprefs(view);
+	mView = view;
+	updateprefs();
 
 	mTouchKeyBLN.setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			Utils.writeValue(FILE_BLN_TOGGLE, mTouchKeyBLN.isChecked() ? "1" : "0");
-			updateprefs(view);
+			
 		}
+	});
+
+	mTouchKeyBLNMaxBlink.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+	    @Override
+	    public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+		mCurTouchKeyBLNBlink.setText(String.valueOf(mTouchKeyBLNMaxBlink.getProgress()));
+	    }
+
+	    @Override
+	    public void onStartTrackingTouch(SeekBar seekBar) {
+
+	    }
+
+	    @Override
+	    public void onStopTrackingTouch(SeekBar seekBar) {
+		
+	    }
+
 	});
     }
 
@@ -66,14 +91,39 @@ public class BLNPreference extends DialogPreference {
     protected void onDialogClosed(boolean positiveResult) {
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
+	if(positiveResult) setprefs();
+	else updateprefs();
     }
 
-    private void updateprefs(final View view){
+    private void setprefs(){
 	if(!Utils.fileExists(FILE_BLN_TOGGLE)) return;
-	mTouchKeyBLN = (CheckBox) view.findViewById(R.id.touchkey_bln);
+	mTouchKeyBLN = (CheckBox) mView.findViewById(R.id.touchkey_bln);
+	mTouchKeyBLNMaxBlink = (SeekBar) mView.findViewById(R.id.touchkey_bln_max_blink);
+	mCurTouchKeyBLNBlink = (TextView) mView.findViewById(R.id.cur_touchkey_bln_blink);
 
+	Utils.writeValue(FILE_BLN_TOGGLE, mTouchKeyBLN.isChecked() ? "1" : "0");
+	Utils.writeValue(FILE_BLN_MAX_BLINK, String.valueOf(mTouchKeyBLNMaxBlink.getProgress()));
+
+	updateprefs();
+    }
+
+    private void updateprefs(){
+	if(!Utils.fileExists(FILE_BLN_TOGGLE)) return;
+	mTouchKeyBLN = (CheckBox) mView.findViewById(R.id.touchkey_bln);
+	mTouchKeyBLNMaxBlink = (SeekBar) mView.findViewById(R.id.touchkey_bln_max_blink);
+	mCurTouchKeyBLNBlink = (TextView) mView.findViewById(R.id.cur_touchkey_bln_blink);
+
+	mTouchKeyBLNMaxBlink.setMax(300);
+	mTouchKeyBLNMaxBlink.setProgress(Integer.parseInt(Utils.readOneLine(FILE_BLN_MAX_BLINK)));
 	mTouchKeyBLN.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_BLN_TOGGLE)));
-	
+
+	mCurTouchKeyBLNBlink.setText(String.valueOf(mTouchKeyBLNMaxBlink.getProgress()));
+
+	if(mTouchKeyBLN.isChecked()){
+		mTouchKeyBLNMaxBlink.setEnabled(true);
+	} else {
+		mTouchKeyBLNMaxBlink.setEnabled(false);
+	}
     }
 
 } 
