@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <CheckBox
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:text="Enable"
+	android:button="@null"
+	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        android:id="@+id/touchkey_bln"
+	android:key="touchkey_bln"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.07"
+        android:textSize="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+</LinearLayout>

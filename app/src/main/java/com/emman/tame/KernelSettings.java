@@ -28,6 +28,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.util.Log;
 
+import com.emman.tame.dialogs.BLNPreference;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -37,9 +39,7 @@ public class KernelSettings extends PreferenceFragment {
 
     private static final String TAG = "Tame";
 
-    public static final String KEY_TOUCHKEY_BLN = "touchkey_bln";
-    private static final String FILE_BLN_TOGGLE = "/sys/class/misc/backlightnotification/enabled";
-    private CheckBoxPreference mTouchKeyBLN;
+    private Preference mBlnDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,35 +48,22 @@ public class KernelSettings extends PreferenceFragment {
         addPreferencesFromResource(R.xml.kernel_settings);
 
         PreferenceScreen prefSet = getPreferenceScreen();
-
 	updateprefs();
-
     }
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
 
-        String boxValue;
         String key = preference.getKey();
-
-        Log.w(TAG, "key: " + key);
-
-        if (preference == mTouchKeyBLN) {
-            Utils.writeValue(FILE_BLN_TOGGLE, mTouchKeyBLN.isChecked() ? "1" : "0");
-        }
-
 	updateprefs();
-
+        Log.w(TAG, "key: " + key);
         return true;
     }
 
     private void updateprefs(){
-	mTouchKeyBLN = (CheckBoxPreference) findPreference(KEY_TOUCHKEY_BLN);
+	mBlnDialog = findPreference("blndialog");
 
-	if(Utils.fileExists(FILE_BLN_TOGGLE)){
-		mTouchKeyBLN.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_BLN_TOGGLE)));
-	}
-	else mTouchKeyBLN.setEnabled(false);
+	if(!Utils.fileExists(BLNPreference.FILE_BLN_TOGGLE)) mBlnDialog.setEnabled(false);
     }
 
 }

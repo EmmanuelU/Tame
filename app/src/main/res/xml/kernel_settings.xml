@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-                android:key="touchkey_bln"
-                android:title="@string/touchkey_bln_title_head"
-                android:summary="@string/touchkey_bln_summary_head"
+
+    <com.emman.tame.dialogs.BLNPreference
+	android:key="blndialog"
+	android:title="Button Light Notifications"
+	android:summary="@string/touchkey_bln_summary_head"
+	android:positiveButtonText="Save"
+	android:negativeButtonText="Cancel"
     />
+
 </PreferenceScreen>
