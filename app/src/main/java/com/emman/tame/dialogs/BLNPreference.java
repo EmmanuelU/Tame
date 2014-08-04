@@ -63,7 +63,7 @@ public class BLNPreference extends DialogPreference {
 	mTouchKeyBLN.setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			
+			updatedependencies();
 		}
 	});
 
@@ -71,7 +71,7 @@ public class BLNPreference extends DialogPreference {
 
 	    @Override
 	    public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-		mCurTouchKeyBLNBlink.setText(String.valueOf(mTouchKeyBLNMaxBlink.getProgress()));
+		mCurTouchKeyBLNBlink.setText(("Timeout After: " + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks").replace("After: ", "After:     "));
 	    }
 
 	    @Override
@@ -95,11 +95,18 @@ public class BLNPreference extends DialogPreference {
 	else updateprefs();
     }
 
-    private void setprefs(){
-	if(!Utils.fileExists(FILE_BLN_TOGGLE)) return;
+    private boolean initiateprefs(){
+	if(!Utils.fileExists(FILE_BLN_TOGGLE)) return false;
+
 	mTouchKeyBLN = (CheckBox) mView.findViewById(R.id.touchkey_bln);
 	mTouchKeyBLNMaxBlink = (SeekBar) mView.findViewById(R.id.touchkey_bln_max_blink);
 	mCurTouchKeyBLNBlink = (TextView) mView.findViewById(R.id.cur_touchkey_bln_blink);
+	
+	return true;
+    }
+
+    private void setprefs(){
+	if(!initiateprefs()) return;
 
 	Utils.writeValue(FILE_BLN_TOGGLE, mTouchKeyBLN.isChecked() ? "1" : "0");
 	Utils.writeValue(FILE_BLN_MAX_BLINK, String.valueOf(mTouchKeyBLNMaxBlink.getProgress()));
@@ -108,16 +115,18 @@ public class BLNPreference extends DialogPreference {
     }
 
     private void updateprefs(){
-	if(!Utils.fileExists(FILE_BLN_TOGGLE)) return;
-	mTouchKeyBLN = (CheckBox) mView.findViewById(R.id.touchkey_bln);
-	mTouchKeyBLNMaxBlink = (SeekBar) mView.findViewById(R.id.touchkey_bln_max_blink);
-	mCurTouchKeyBLNBlink = (TextView) mView.findViewById(R.id.cur_touchkey_bln_blink);
+	if(!initiateprefs()) return;
 
-	mTouchKeyBLNMaxBlink.setMax(300);
+	mTouchKeyBLNMaxBlink.setMax(500);
 	mTouchKeyBLNMaxBlink.setProgress(Integer.parseInt(Utils.readOneLine(FILE_BLN_MAX_BLINK)));
 	mTouchKeyBLN.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_BLN_TOGGLE)));
 
-	mCurTouchKeyBLNBlink.setText(String.valueOf(mTouchKeyBLNMaxBlink.getProgress()));
+	mCurTouchKeyBLNBlink.setText(("Timeout After: " + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks").replace("After: ", "After:     "));
+
+    }
+
+    private void updatedependencies(){
+	if(!initiateprefs()) return;
 
 	if(mTouchKeyBLN.isChecked()){
 		mTouchKeyBLNMaxBlink.setEnabled(true);
