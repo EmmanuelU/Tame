@@ -172,10 +172,10 @@ public class AboutTame extends Fragment {
     private boolean WildInit(){
 	if(Utils.fileExists(FILE_UPDATE_DATA)){
 		Utils.CMD("chmod +x " + FILE_UPDATE_DATA, false);
-		WildData.latestversion = Utils.CMD("bash " + FILE_UPDATE_DATA + " latestversion", false);
-		WildData.latestversionstamp = Integer.parseInt(Utils.CMD("bash " + FILE_UPDATE_DATA + " latestdate", false));
-		WildData.latestversiondl = Utils.CMD("bash " + FILE_UPDATE_DATA + " latestDL", false);
-		WildData.latestversionreldate = Utils.CMD("bash " + FILE_UPDATE_DATA + " latestdateliteral", false);
+		WildData.latestversion = Utils.CMD("sh " + FILE_UPDATE_DATA + " latestversion", false);
+		WildData.latestversionstamp = Integer.parseInt(Utils.CMD("sh " + FILE_UPDATE_DATA + " latestdate", false));
+		WildData.latestversiondl = Utils.CMD("sh " + FILE_UPDATE_DATA + " latestDL", false);
+		WildData.latestversionreldate = Utils.CMD("sh " + FILE_UPDATE_DATA + " latestdateliteral", false);
 		Utils.CMD("rm -rf " + FILE_UPDATE_DATA, false);
 		return true;
 	}
