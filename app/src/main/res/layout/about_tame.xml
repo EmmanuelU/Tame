@@ -13,7 +13,7 @@
             android:id="@+id/tame_logo"
             android:gravity="center"
             android:layout_gravity="center_horizontal|top"
-            android:textColor="#ffff1b19"
+            android:textColor="#ff8c1414"
             android:textSize="65sp"
             android:textIsSelectable="false"
             android:enabled="true" />
@@ -25,7 +25,7 @@
             android:text="by Emmanuel Utomi"
             android:id="@+id/subheader"
             android:gravity="center"
-            android:textColor="#ff8a8586" />
+            android:textColor="#ff8c1414" />
 
         <TextView
             android:layout_width="match_parent"
