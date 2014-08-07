@@ -7,13 +7,12 @@
 
     <string name="title_kernelinfo">Kernel Info</string>
     <string name="title_kernelsettings">Kernel Features</string>
-    <string name="title_freqsettings">Frequency Settings</string>
+    <string name="title_freqsettings">CPU Control</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_settings">Settings</string>
 
     <string name="touchkey_bln_title_head">Button Light Notifications</string>
-    <string name="touchkey_bln_summary_head">Blink button lights when screen is off, and a notification is received</string>
+    <string name="touchkey_bln_summary_head">Pulse button lights when screen is off, and a notification is received</string>
 
 </resources>

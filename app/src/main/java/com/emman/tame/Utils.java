@@ -9,6 +9,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.NetworkOnMainThreadException;
 import android.os.PowerManager;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 import android.util.Log;
 
@@ -45,7 +47,7 @@ public class Utils {
      * @param filename      The filename
      * @param value         The value
      */
-    public static void writeValue(String filename, String value) {
+    public static String writeValue(String filename, String value) {
         try {
             FileOutputStream fos = new FileOutputStream(new File(filename));
             fos.write(value.getBytes());
@@ -56,6 +58,7 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+	return value;
     }
 
     /**
@@ -144,6 +147,12 @@ public class Utils {
 	throw new IllegalArgumentException(s+" is not a bool. Only 1 and 0 are.");
     }
 
+    public static String boolToString(boolean b) {
+	if (b) return "1";
+	else return "0"; 
+    }
+
+
     /**
      * Read file via shell
      *
@@ -179,9 +188,28 @@ public class Utils {
 	Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    public static String FetchContentFromUrl(String link){
-	return null;
+    public static void layoutDisable(ViewGroup layout) {
+	layout.setEnabled(false);
+	for (int i = 0; i < layout.getChildCount(); i++) {
+		View child = layout.getChildAt(i);
+		if (child instanceof ViewGroup) {
+			layoutDisable((ViewGroup) child);
+		} else {
+			child.setEnabled(false);
+		}
+	}
     }
 
+    public static void layoutEnable(ViewGroup layout) {
+	layout.setEnabled(true);
+	for (int i = 0; i < layout.getChildCount(); i++) {
+		View child = layout.getChildAt(i);
+		if (child instanceof ViewGroup) {
+			layoutEnable((ViewGroup) child);
+		} else {
+			child.setEnabled(true);
+		}
+	}
+    }
 
 }

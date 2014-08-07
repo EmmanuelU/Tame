@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -39,24 +40,26 @@ import android.util.Log;
 
 import com.emman.tame.R;
 import com.emman.tame.Utils;
+import com.emman.tame.Resources;
 
-public class BLNPreference extends DialogPreference {
+public class BLNPreference extends DialogPreference
+		implements Resources {
 
     private CheckBox mTouchKeyBLN;
-    public static final String KEY_TOUCHKEY_BLN = "touchkey_bln";
-    public static final String FILE_BLN_TOGGLE = "/sys/class/misc/backlightnotification/enabled";
 
     private SeekBar mTouchKeyBLNMaxBlink;
     private TextView mCurTouchKeyBLNBlink;
-    public static final String FILE_BLN_MAX_BLINK = "/sys/class/misc/backlightnotification/max_blink_count";
 
-    public static final String FILE_BLN_BLINK_OVERRIDE = "/sys/class/misc/backlightnotification/override_blink_interval";
+    private LinearLayout mTouchKeyBLNBlinkGroup;
+    private LinearLayout mTouchKeyOverrideIntervalsGroup;
 
     private CheckBox mTouchKeyOverrideIntervals;
     private EditText mTouchKeyONInterval;
     private EditText mTouchKeyOFFInterval;
 
     private View mView;
+
+    private SharedPreferences mPreferences;
 
     public BLNPreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
@@ -68,19 +71,19 @@ public class BLNPreference extends DialogPreference {
     protected void onBindDialogView(final View view) {
 	super.onBindDialogView(view);
 	mView = view;
-	updateprefs();
+	updateData();
 
 	mTouchKeyBLN.setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			updatedependencies();
+			updateDependencies();
 		}
 	});
 
 	mTouchKeyOverrideIntervals.setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			updatedependencies();
+			updateDependencies();
 		}
 	});
 
@@ -108,14 +111,17 @@ public class BLNPreference extends DialogPreference {
     protected void onDialogClosed(boolean positiveResult) {
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
-	if(positiveResult) setprefs();
-	else updateprefs();
+	if(positiveResult) setData();
+	else updateData();
 
 	
     }
 
-    private boolean initiateprefs(){
+    private boolean initiateData(){
 	if(!Utils.fileExists(FILE_BLN_TOGGLE)) return false;
+
+	mPreferences = PreferenceManager
+                    .getDefaultSharedPreferences(getContext());
 
 	mTouchKeyBLN = (CheckBox) mView.findViewById(R.id.touchkey_bln);
 	mTouchKeyOverrideIntervals = (CheckBox) mView.findViewById(R.id.touchkey_bln_override_interval);
@@ -125,25 +131,27 @@ public class BLNPreference extends DialogPreference {
 
 	mCurTouchKeyBLNBlink = (TextView) mView.findViewById(R.id.cur_touchkey_bln_blink);
 
+	mTouchKeyBLNBlinkGroup = (LinearLayout) mView.findViewById(R.id.touchkey_bln_blink_group);
+	mTouchKeyOverrideIntervalsGroup = (LinearLayout) mView.findViewById(R.id.touchkey_bln_override_group);
+
 	mTouchKeyBLNMaxBlink = (SeekBar) mView.findViewById(R.id.touchkey_bln_max_blink);
 
 	return true;
     }
 
-    private void setprefs(){
-	if(!initiateprefs()) return;
+    private void setData(){
+	if(!initiateData()) return;
 
-	Utils.writeValue(FILE_BLN_TOGGLE, mTouchKeyBLN.isChecked() ? "1" : "0");
-	Utils.writeValue(FILE_BLN_MAX_BLINK, String.valueOf(mTouchKeyBLNMaxBlink.getProgress()));
+	updateSharedPrefs(mPreferences, TOUCHKEY_BLN, Utils.writeValue(FILE_BLN_TOGGLE, mTouchKeyBLN.isChecked() ? "1" : "0"));
 
-	if(!mTouchKeyOverrideIntervals.isChecked()) Utils.writeValue(FILE_BLN_BLINK_OVERRIDE, "0 0");
-	else Utils.writeValue(FILE_BLN_BLINK_OVERRIDE, mTouchKeyONInterval.getText() + " " + mTouchKeyOFFInterval.getText());
+	updateSharedPrefs(mPreferences, TOUCHKEY_BLN_MAX_BLINK, Utils.writeValue(FILE_BLN_MAX_BLINK, String.valueOf(mTouchKeyBLNMaxBlink.getProgress())));
 
-	updateprefs();
+	if(!mTouchKeyOverrideIntervals.isChecked()) updateSharedPrefs(mPreferences, TOUCHKEY_BLN_BLINK_OVERRIDE, Utils.writeValue(FILE_BLN_BLINK_OVERRIDE, " "));
+	else updateSharedPrefs(mPreferences, TOUCHKEY_BLN_BLINK_OVERRIDE, Utils.writeValue(FILE_BLN_BLINK_OVERRIDE, mTouchKeyONInterval.getText() + " " + mTouchKeyOFFInterval.getText()));
     }
 
-    private void updateprefs(){
-	if(!initiateprefs()) return;
+    private void updateData(){
+	if(!initiateData()) return;
 
 	mTouchKeyBLNMaxBlink.setMax(500);
 	mTouchKeyBLNMaxBlink.setProgress(Integer.parseInt(Utils.readOneLine(FILE_BLN_MAX_BLINK)));
@@ -151,32 +159,36 @@ public class BLNPreference extends DialogPreference {
 	mTouchKeyBLN.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_BLN_TOGGLE)));
 
 	String[] intervals = Utils.readOneLine(FILE_BLN_BLINK_OVERRIDE).split("\\s+");
-	if((Integer.parseInt(intervals[0]) <= 0) || (Integer.parseInt(intervals[1]) <= 0)) mTouchKeyOverrideIntervals.setChecked(false);
+	if(((Integer.parseInt(intervals[0]) <= 0) || (Integer.parseInt(intervals[1]) <= 0)) || ((intervals[0].equals("")) || (intervals[1].equals("")))) mTouchKeyOverrideIntervals.setChecked(false);
 	else mTouchKeyOverrideIntervals.setChecked(true);
 
 	mCurTouchKeyBLNBlink.setText(("Timeout After: " + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks").replace("After: ", "After:     "));
 
-	 updatedependencies();
+	 updateDependencies();
 
     }
 
-    private void updatedependencies(){
-	if(!initiateprefs()) return;
+    private void updateDependencies(){
+	if(!initiateData()) return;
 
 	if(mTouchKeyBLN.isChecked()){
-		mTouchKeyBLNMaxBlink.setEnabled(true);
+		Utils.layoutEnable(mTouchKeyBLNBlinkGroup);
+		Utils.layoutEnable(mTouchKeyOverrideIntervalsGroup);
+
 	} else {
-		mTouchKeyBLNMaxBlink.setEnabled(false);
+		Utils.layoutDisable(mTouchKeyBLNBlinkGroup);
+		Utils.layoutDisable(mTouchKeyOverrideIntervalsGroup);
+
 	}
 
-	if(!Utils.fileExists(FILE_BLN_BLINK_OVERRIDE)) mTouchKeyOverrideIntervals.setEnabled(false);
+	if(!Utils.fileExists(FILE_BLN_BLINK_OVERRIDE)) Utils.layoutDisable(mTouchKeyOverrideIntervalsGroup);
 
 	String[] intervals = Utils.readOneLine(FILE_BLN_BLINK_OVERRIDE).split("\\s+");
 
 	mTouchKeyONInterval.setText(intervals[0]);
 	mTouchKeyOFFInterval.setText(intervals[1]);
 
-	if(!mTouchKeyOverrideIntervals.isChecked()) Utils.writeValue(FILE_BLN_BLINK_OVERRIDE, "0 0");
+	if(!mTouchKeyOverrideIntervals.isChecked()) Utils.writeValue(FILE_BLN_BLINK_OVERRIDE, " ");
 
 	if(mTouchKeyOverrideIntervals.isChecked()){
 		mTouchKeyONInterval.setEnabled(true);
@@ -185,6 +197,20 @@ public class BLNPreference extends DialogPreference {
 		mTouchKeyONInterval.setEnabled(false);
 		mTouchKeyOFFInterval.setEnabled(false);
 	}
+
+	setData();
+    }
+
+    public static void SetOnBootData(SharedPreferences preferences){
+		Utils.writeValue(FILE_BLN_TOGGLE, preferences.getString(TOUCHKEY_BLN, "0"));
+		Utils.writeValue(FILE_BLN_MAX_BLINK, preferences.getString(TOUCHKEY_BLN_MAX_BLINK, "0"));
+		Utils.writeValue(FILE_BLN_BLINK_OVERRIDE, preferences.getString(TOUCHKEY_BLN_BLINK_OVERRIDE, ""));
+    }
+
+    private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
+	final SharedPreferences.Editor editor = preferences.edit();
+	editor.putString(var, value);
+	editor.commit();
     }
 
 } 

@@ -6,8 +6,10 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,11 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.emman.tame.Resources;
+import com.emman.tame.dialogs.BLNPreference;
 
 public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, Resources {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -31,6 +37,14 @@ public class MainActivity extends Activity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    private Menu mMenu;
+
+    private CheckBox mSetOnBoot;
+
+    private TextView mSetOnBootNote;
+
+    private SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +59,11 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-
+	
 	if(AboutTame.isWild()) Utils.toast(this, "WildKernel Detected");
+
+	mPreferences = PreferenceManager
+                    .getDefaultSharedPreferences(this);
 
     }
 
@@ -66,14 +83,16 @@ public class MainActivity extends Activity
 		mTitle = getString(R.string.app_name);
 		fragment = new AboutTame();
 		 break;
+
 	    case 2:
-		mTitle = getString(R.string.title_kernelinfo);
-		
-		 break;
-	    case 3:
-                mTitle = getString(R.string.title_kernelsettings);
+		mTitle = getString(R.string.title_kernelsettings);
 		fragment = new KernelSettings();
 		break;
+
+	    case 3:
+		mTitle = getString(R.string.title_kernelinfo);
+		break;
+
 	    case 4:
 		mTitle = getString(R.string.title_freqsettings);
 		
@@ -89,6 +108,33 @@ public class MainActivity extends Activity
 
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
+
+	mSetOnBootNote = (TextView) findViewById(R.id.sobnote);
+
+	actionBar.setDisplayShowCustomEnabled(true);
+	actionBar.setCustomView(R.layout.action_bar);
+	
+	mSetOnBoot = (CheckBox) getActionBar().getCustomView().findViewById(R.id.set_on_boot);
+
+	mSetOnBoot.setChecked(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0")));
+
+	if(mSetOnBootNote != null){
+		if(mSetOnBoot.isChecked()) mSetOnBootNote.setVisibility(View.VISIBLE);
+		else mSetOnBootNote.setVisibility(View.GONE);
+	}
+
+	mSetOnBoot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+	    @Override
+	    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+		updateSharedPrefs(mPreferences, SET_ON_BOOT, Utils.boolToString(isChecked));
+		if(mSetOnBootNote != null){
+			if(isChecked) mSetOnBootNote.setVisibility(View.VISIBLE);
+			else mSetOnBootNote.setVisibility(View.GONE);
+		}
+	    }
+	});
+
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
@@ -101,8 +147,9 @@ public class MainActivity extends Activity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
+            getMenuInflater().inflate(R.menu.global, menu);
             restoreActionBar();
+	    mMenu = menu;
             return true;
         }
         return super.onCreateOptionsMenu(menu);
@@ -114,9 +161,9 @@ public class MainActivity extends Activity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        //if (id == R.id.set_on_boot) {
+        //    return true;
+       // }
         return super.onOptionsItemSelected(item);
     }
 
@@ -158,6 +205,16 @@ public class MainActivity extends Activity
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+    }
+
+    private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
+	final SharedPreferences.Editor editor = preferences.edit();
+	editor.putString(var, value);
+	editor.commit();
+    }
+
+    public static void SetOnBootData(SharedPreferences preferences){
+	BLNPreference.SetOnBootData(preferences);
     }
 
 }

@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,21 +53,13 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-public class AboutTame extends Fragment {
+import com.emman.tame.Resources;
 
-    class Wild {
-	String latestversion;
-	String latestversiondl;
-	String latestversionreldate;
-	int versionstamp;
-	int latestversionstamp;
-	boolean islatestversion = false;
-	boolean fetchedlatestversion = false;
-    }
+public class AboutTame extends Fragment 
+		implements Resources {
 
     private View mView;
-    static String propversion;
-    static String propversiondate;
+    public static String propversion, propversiondate, propotalink, propdevice;
     private Button mUpdate;
     private TextView mTameLogo;
     private TextView mVersion;
@@ -75,9 +68,6 @@ public class AboutTame extends Fragment {
     Animation fadeout = new AlphaAnimation(1.0f, 0.0f);
     ProgressDialog mCheckUpdateDialog;
     private Wild WildData;
-
-    private static final String FILE_UPDATE_DATA = "/sdcard/updatewild.sh";
-    private static final String FILE_UPDATE_LINK = "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-hercules-3.0/flashable/tools/updatewild.sh";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,8 +98,10 @@ public class AboutTame extends Fragment {
 	
 	propversion = Utils.CMD("getprop ro.wild.version", false);
 	propversiondate = Utils.CMD("getprop ro.wild.date", false);
-	return (!propversion.isEmpty() || !propversiondate.isEmpty());
-	
+	propdevice = Utils.CMD("getprop ro.wild.device", false);
+	if(propdevice.equals("hercules")) propotalink = "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-hercules-3.0/flashable/tools/updatewild.sh";
+	else if(propdevice.equals("skyrocket")) propotalink = "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-skyrocket-3.0/flashable/tools/updatewild.sh";
+	return (!propversion.isEmpty() || !propversiondate.isEmpty() || !propdevice.isEmpty() || !propotalink.isEmpty());
     }
 
     private void setversiondata(){
@@ -132,12 +124,12 @@ public class AboutTame extends Fragment {
 	else if(WildData.fetchedlatestversion) return false;
 	else {
 		mCheckUpdateDialog = new ProgressDialog(getActivity());
-		mCheckUpdateDialog.setMessage("Checking for updates");
+		mCheckUpdateDialog.setMessage("Checking for updates ...");
 		mCheckUpdateDialog.setIndeterminate(true);
 		mCheckUpdateDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		mCheckUpdateDialog.setCancelable(true);
 		final DownloadTask downloadTask = new DownloadTask(getActivity(), FILE_UPDATE_DATA, mCheckUpdateDialog, true);
-		downloadTask.execute(FILE_UPDATE_LINK);
+		downloadTask.execute(propotalink);
 		mCheckUpdateDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 		    @Override
 		    public void onCancel(DialogInterface dialog) {
@@ -172,6 +164,7 @@ public class AboutTame extends Fragment {
     private boolean WildInit(){
 	if(Utils.fileExists(FILE_UPDATE_DATA)){
 		Utils.CMD("chmod +x " + FILE_UPDATE_DATA, false);
+		WildData.device = propdevice;
 		WildData.latestversion = Utils.CMD("sh " + FILE_UPDATE_DATA + " latestversion", false);
 		WildData.latestversionstamp = Integer.parseInt(Utils.CMD("sh " + FILE_UPDATE_DATA + " latestdate", false));
 		WildData.latestversiondl = Utils.CMD("sh " + FILE_UPDATE_DATA + " latestDL", false);

@@ -2,7 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.emman.tame.dialogs.BLNPreference
-	android:key="blndialog"
 	android:title="Button Light Notifications"
 	android:summary="@string/touchkey_bln_summary_head"
 	android:positiveButtonText="Save"

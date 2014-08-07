@@ -17,7 +17,6 @@
 	android:button="@null"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/touchkey_bln"
-	android:key="touchkey_bln"
 
         android:textSize="20dp"
         android:layout_alignParentTop="true"/>
@@ -36,12 +35,14 @@
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
 	    android:layout_centerHorizontal="true"
-	    android:gravity="center_horizontal">
+	    android:gravity="center_horizontal"
+	    android:id="@+id/touchkey_bln_blink_group">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Timeout After:     ### Blinks"
+            android:textColor="#FFFFFF"
             android:layout_weight="0.08"
             android:textSize="20dp"
             android:id="@+id/cur_touchkey_bln_blink"
@@ -52,7 +53,6 @@
             android:layout_width="263dp"
             android:layout_height="wrap_content"
             android:id="@+id/touchkey_bln_max_blink"
-            android:key="touchkey_bln_max_blink"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
@@ -73,7 +73,8 @@
 	    android:orientation="vertical"
 	    android:focusableInTouchMode="true"
 	    android:focusable="true"
-	    android:gravity="center_horizontal">
+	    android:gravity="center_horizontal"
+	    android:id="@+id/touchkey_bln_override_group">>
 
 	    <CheckBox
 		android:layout_width="wrap_content"
@@ -94,23 +95,20 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="On"
-            android:layout_marginRight="40dp"
-            android:id="@+id/touchkey_bln_on_interval_text"/>
+            android:layout_marginRight="40dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="(msecs)"
-            android:layout_marginRight="40dp"
-            android:id="@+id/touchkey_bln_msec_text"/>
+            android:layout_marginRight="40dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Off"
-            android:id="@+id/touchkey_bln_off_interval_text"/>
+            android:text="Off"/>
 
 	</TableRow>
 

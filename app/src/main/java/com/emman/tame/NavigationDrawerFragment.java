@@ -93,8 +93,6 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
 
-	Drawable background = mDrawerListView.getBackground();
-	background.setAlpha(200);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -107,8 +105,8 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.id.text1,
                 new String[]{
 			getString(R.string.app_name),
-                        getString(R.string.title_kernelinfo),
                         getString(R.string.title_kernelsettings),
+                        getString(R.string.title_kernelinfo),
                         getString(R.string.title_freqsettings),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);

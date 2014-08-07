@@ -52,5 +52,16 @@
             android:layout_width="wrap_content"
             android:text="Check for Updates"
             android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Note: After a reboot, Tame may take a couple minutes to re-apply saved settings. Opening this app before those settings are applied may cause all your settings to be reset to default."
+            android:id="@+id/sobnote"
+            android:visibility = "gone"
+            android:gravity="center"
+            android:textSize="14dp" />
  
 </LinearLayout>
