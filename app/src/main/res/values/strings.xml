@@ -5,7 +5,6 @@
 
     <string name="about_tame">Tame for WildKernel</string>
 
-    <string name="title_kernelinfo">Kernel Info</string>
     <string name="title_kernelsettings">Kernel Features</string>
     <string name="title_cpusettings">CPU Control</string>
 

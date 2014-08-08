@@ -14,15 +14,21 @@
     />
 
     <ListPreference
+	android:title="Min Frequency"
+	android:summary=""
+	android:key="min_freq"
+    />
+
+    <ListPreference
 	android:title="Max Frequency"
 	android:summary=""
 	android:key="max_freq"
     />
 
     <ListPreference
-	android:title="Min Frequency"
+	android:title="IO Scheduler"
 	android:summary=""
-	android:key="min_freq"
+	android:key="iosched"
     />
 
 </PreferenceScreen>

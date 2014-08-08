@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.io.InputStream;
@@ -59,6 +60,27 @@ public class Utils {
             e.printStackTrace();
         }
 	return value;
+    }
+
+    public static String writeValueSU(String filename, String value) {
+        new CMDProcessor().su.runWaitFor("busybox echo " + value + " > " + filename);
+	return value;
+    }
+
+    public static boolean fileWriteOneLine(String fname, String value) {
+        try {
+            FileWriter fw = new FileWriter(fname);
+            try {
+                fw.write(value);
+            } finally {
+                fw.close();
+            }
+        } catch (IOException e) {
+            String Error = "Error writing to " + fname + ". Exception: ";
+            Log.e(TAG, Error, e);
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -140,6 +162,14 @@ public class Utils {
         return line;
     }
 
+    public static boolean fileIsReadable(String fname) {
+        return new File(fname).canRead();
+    }
+
+    public static boolean fileIsWritable(String fname) {
+        return new File(fname).canWrite();
+    }
+
     public static boolean stringToBool(String s) {
 	if (s.equals("")) return false;
 	else if (s.equals("1")) return true;
@@ -213,7 +243,7 @@ public class Utils {
     }
 
     public static String toMHz(String mhzString) {
-        return new StringBuilder().append(Integer.valueOf(mhzString) / 1000).append(" MHz")
+        return new StringBuilder().append(Integer.valueOf(mhzString) / 1000).append("MHz")
                 .toString();
     }
 
