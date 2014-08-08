@@ -212,4 +212,9 @@ public class Utils {
 	}
     }
 
+    public static String toMHz(String mhzString) {
+        return new StringBuilder().append(Integer.valueOf(mhzString) / 1000).append(" MHz")
+                .toString();
+    }
+
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="cur_freq"
+        style="?android:preferenceInformationStyle"
+        android:title="Current Frequency"
+        android:selectable="false" />
+
+    <ListPreference
+	android:title="Governor"
+	android:summary=""
+	android:key="governor"
+    />
+
+    <ListPreference
+	android:title="Max Frequency"
+	android:summary=""
+	android:key="max_freq"
+    />
+
+    <ListPreference
+	android:title="Min Frequency"
+	android:summary=""
+	android:key="min_freq"
+    />
+
+</PreferenceScreen>

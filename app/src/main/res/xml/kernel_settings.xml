@@ -4,8 +4,7 @@
     <com.emman.tame.dialogs.BLNPreference
 	android:title="Button Light Notifications"
 	android:summary="@string/touchkey_bln_summary_head"
-	android:positiveButtonText="Save"
-	android:negativeButtonText="Cancel"
+	android:positiveButtonText="OK"
     />
 
 </PreferenceScreen>

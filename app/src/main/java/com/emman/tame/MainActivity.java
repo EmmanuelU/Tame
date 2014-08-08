@@ -94,8 +94,8 @@ public class MainActivity extends Activity
 		break;
 
 	    case 4:
-		mTitle = getString(R.string.title_freqsettings);
-		
+		mTitle = getString(R.string.title_cpusettings);
+		fragment = new CPUSettings();
 		break;
         }
 	if (fragment != null) {

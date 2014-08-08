@@ -198,7 +198,6 @@ public class BLNPreference extends DialogPreference
 		mTouchKeyOFFInterval.setEnabled(false);
 	}
 
-	setData();
     }
 
     public static void SetOnBootData(SharedPreferences preferences){

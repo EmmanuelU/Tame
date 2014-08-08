@@ -7,7 +7,7 @@
 
     <string name="title_kernelinfo">Kernel Info</string>
     <string name="title_kernelsettings">Kernel Features</string>
-    <string name="title_freqsettings">CPU Control</string>
+    <string name="title_cpusettings">CPU Control</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
