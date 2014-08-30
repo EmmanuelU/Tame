@@ -35,6 +35,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TableRow;
 import android.widget.Toast;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -49,6 +51,7 @@ public class BLNPreference extends DialogPreference
 
     private SeekBar mTouchKeyBLNMaxBlink;
     private TextView mCurTouchKeyBLNBlink;
+    private TextView mCurTouchKeyBLNBlinkDur;
 
     private LinearLayout mTouchKeyBLNBlinkGroup;
     private LinearLayout mTouchKeyOverrideIntervalsGroup;
@@ -92,6 +95,9 @@ public class BLNPreference extends DialogPreference
 	    @Override
 	    public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
 		mCurTouchKeyBLNBlink.setText(("Timeout After: " + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks").replace("After: ", "After:     "));
+		String[] intervals = Utils.readOneLine(FILE_BLN_BLINK_OVERRIDE).split("\\s+");
+		mCurTouchKeyBLNBlinkDur.setText("Duration:   " + String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s)");
+
 	    }
 
 	    @Override
@@ -130,6 +136,7 @@ public class BLNPreference extends DialogPreference
 	mTouchKeyOFFInterval = (EditText) mView.findViewById(R.id.touchkey_bln_off_interval);
 
 	mCurTouchKeyBLNBlink = (TextView) mView.findViewById(R.id.cur_touchkey_bln_blink);
+	mCurTouchKeyBLNBlinkDur = (TextView) mView.findViewById(R.id.cur_touchkey_bln_blink_dur);
 
 	mTouchKeyBLNBlinkGroup = (LinearLayout) mView.findViewById(R.id.touchkey_bln_blink_group);
 	mTouchKeyOverrideIntervalsGroup = (LinearLayout) mView.findViewById(R.id.touchkey_bln_override_group);
@@ -162,8 +169,6 @@ public class BLNPreference extends DialogPreference
 	if(((Integer.parseInt(intervals[0]) <= 0) || (Integer.parseInt(intervals[1]) <= 0)) || ((intervals[0].equals("")) || (intervals[1].equals("")))) mTouchKeyOverrideIntervals.setChecked(false);
 	else mTouchKeyOverrideIntervals.setChecked(true);
 
-	mCurTouchKeyBLNBlink.setText(("Timeout After: " + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks").replace("After: ", "After:     "));
-
 	 updateDependencies();
 
     }
@@ -187,6 +192,9 @@ public class BLNPreference extends DialogPreference
 
 	mTouchKeyONInterval.setText(intervals[0]);
 	mTouchKeyOFFInterval.setText(intervals[1]);
+
+	mCurTouchKeyBLNBlink.setText(("Timeout After: " + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks").replace("After: ", "After:     "));
+	mCurTouchKeyBLNBlinkDur.setText("Duration:   " + String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s)");
 
 	if(!mTouchKeyOverrideIntervals.isChecked()) Utils.writeValue(FILE_BLN_BLINK_OVERRIDE, " ");
 

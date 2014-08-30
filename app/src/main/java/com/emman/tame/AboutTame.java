@@ -143,8 +143,8 @@ public class AboutTame extends Fragment
 			if(WildInit()){
 				mLatVersion.setText(mLatVersion.getText().toString() + " " + WildData.latestversion + " - " + WildData.latestversionreldate);
 				mLatVersion.setVisibility(View.VISIBLE);
-				if(WildData.latestversionstamp > WildData.versionstamp) WildData.islatestversion = false;
-				else if(WildData.latestversionstamp == WildData.versionstamp) WildData.islatestversion = true;
+				if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(propversion)) WildData.islatestversion = false;
+				else WildData.islatestversion = true;
 				if(WildData.islatestversion){
 					//Utils.toast(getActivity(), "Latest Version Installed");
 					mUpdate.setText("Latest Version");

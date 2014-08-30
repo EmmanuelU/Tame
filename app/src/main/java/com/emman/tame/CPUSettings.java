@@ -103,7 +103,7 @@ public class CPUSettings extends PreferenceFragment
 	FragmentManager fragmentManager = getFragmentManager();
 
 		if(!Utils.checkSu()){
-			Utils.toast(getActivity(), "Superuser permissions were denied, retarting.");
+			Utils.toast(getActivity(), "Superuser permissions were denied, restarting.");
 			Intent intent = getActivity().getIntent();
 			getActivity().finish();
 			startActivity(intent);

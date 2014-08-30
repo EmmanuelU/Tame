@@ -41,6 +41,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Duration:   ## Minutes"
+            android:textColor="#FFFFFF"
+            android:layout_weight="0.08"
+            android:textSize="20dp"
+            android:id="@+id/cur_touchkey_bln_blink_dur"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Timeout After:     ### Blinks"
             android:textColor="#FFFFFF"
             android:layout_weight="0.08"

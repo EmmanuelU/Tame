@@ -54,9 +54,7 @@ public class KernelSettings extends PreferenceFragment {
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
 
-        String key = preference.getKey();
 	updateprefs();
-        Log.w(TAG, "key: " + key);
         return true;
     }
 
