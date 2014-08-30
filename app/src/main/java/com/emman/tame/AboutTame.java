@@ -101,6 +101,7 @@ public class AboutTame extends Fragment
 	propdevice = Utils.CMD("getprop ro.wild.device", false);
 	if(propdevice.equals("hercules")) propotalink = "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-hercules-3.0/flashable/tools/updatewild.sh";
 	else if(propdevice.equals("skyrocket")) propotalink = "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-skyrocket-3.0/flashable/tools/updatewild.sh";
+	else propotalink = "";
 	return (!propversion.isEmpty() || !propversiondate.isEmpty() || !propdevice.isEmpty() || !propotalink.isEmpty());
     }
 
