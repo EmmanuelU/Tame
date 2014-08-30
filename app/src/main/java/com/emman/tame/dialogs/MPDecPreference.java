@@ -130,8 +130,8 @@ public class MPDecPreference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.writeValue(FILE_MPDEC_TOGGLE, preferences.getString(MPDEC, "1"));
-	Utils.writeValue(FILE_MPDEC_SCROFF, preferences.getString(MPDEC_SCROFF, "1"));
+	Utils.writeValueSU(FILE_MPDEC_TOGGLE, preferences.getString(MPDEC, "1"));
+	Utils.writeValueSU(FILE_MPDEC_SCROFF, preferences.getString(MPDEC_SCROFF, "1"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
