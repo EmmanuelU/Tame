@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <com.emman.tame.dialogs.MPDecPreference
+	android:key="mpdec"
+	android:title="MPDecision"
+	android:summary="Turn off secondary cores when not in use to save battery."
+	android:positiveButtonText="OK"
+    />
+
     <com.emman.tame.dialogs.BLNPreference
 	android:key="blndialog"
 	android:title="Button Light Notifications"
-	android:summary="@string/touchkey_bln_summary_head"
+	android:summary="Pulse button lights when screen is off, and a notification is received"
 	android:positiveButtonText="OK"
     />
 

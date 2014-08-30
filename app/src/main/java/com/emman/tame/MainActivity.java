@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.emman.tame.Resources;
 import com.emman.tame.dialogs.BLNPreference;
+import com.emman.tame.dialogs.MPDecPreference;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, Resources {
@@ -210,8 +211,9 @@ public class MainActivity extends Activity
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	BLNPreference.SetOnBootData(preferences);
 	CPUSettings.SetOnBootData(preferences);
+	BLNPreference.SetOnBootData(preferences);
+	MPDecPreference.SetOnBootData(preferences);
     }
 
 }

@@ -30,16 +30,16 @@ import android.util.Log;
 
 import com.emman.tame.dialogs.BLNPreference;
 
-/**
- * Fragment used for managing interactions for and presentation of a navigation drawer.
- * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
- * design guidelines</a> for a complete explanation of the behaviors implemented here.
- */
-public class KernelSettings extends PreferenceFragment {
+public class KernelSettings extends PreferenceFragment
+		implements Resources {
 
     private static final String TAG = "Tame";
 
     private Preference mBlnDialog;
+
+    private Preference mMPDec;
+
+    private SharedPreferences mPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,20 +48,44 @@ public class KernelSettings extends PreferenceFragment {
         addPreferencesFromResource(R.xml.kernel_settings);
 
         PreferenceScreen prefSet = getPreferenceScreen();
-	updateprefs();
+
+	updateDependencies();
     }
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
 
-	updateprefs();
         return true;
     }
 
-    private void updateprefs(){
-	mBlnDialog = findPreference("blndialog");
+    private boolean initiateData(){
+	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-	if(!Utils.fileExists(BLNPreference.FILE_BLN_TOGGLE)) mBlnDialog.setEnabled(false);
+	mBlnDialog = findPreference("blndialog");
+	mMPDec = findPreference("mpdec");
+	return true;
+    }
+
+    private void updateDependencies(){
+	if(!initiateData()) return;
+
+	if(!Utils.fileExists(FILE_BLN_TOGGLE)) mBlnDialog.setEnabled(false);
+	if(!Utils.fileExists(FILE_MPDEC_TOGGLE)) mMPDec.setEnabled(false);
+    }
+
+    private void setData(){
+	if(!initiateData()) return;
+
+    }
+
+    public static void SetOnBootData(SharedPreferences preferences){
+	
+    }
+
+    private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
+	final SharedPreferences.Editor editor = preferences.edit();
+	editor.putString(var, value);
+	editor.commit();
     }
 
 }
