@@ -123,7 +123,9 @@ public class AboutTame extends Fragment
     }
 
     private boolean CheckUpdate(){
-	if(WildData.fetchedlatestversion && !WildData.islatestversion){
+	if(!DownloadTask.isNetworkOnline(getActivity())){
+		Utils.toast(getActivity(), "No Internet Access Detected");
+	} else if(WildData.fetchedlatestversion && !WildData.islatestversion){
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WildData.latestversiondl));
 		startActivity(browserIntent);
 	}

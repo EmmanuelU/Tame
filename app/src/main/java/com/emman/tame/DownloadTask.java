@@ -7,6 +7,8 @@ import android.app.ProgressDialog;
 import android.content.res.AssetManager;
 import android.content.DialogInterface;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.NetworkOnMainThreadException;
 import android.os.PowerManager;
@@ -91,6 +93,13 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 		mProgressDialog.setMax(100);
        		mProgressDialog.setProgress(progress[0]);
 	}
+    }
+
+    public static boolean isNetworkOnline(Context context) {
+	ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	if (netInfo != null && netInfo.isConnectedOrConnecting()) return true;
+	else return false;
     }
 
     @Override
