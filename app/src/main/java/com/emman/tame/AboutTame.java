@@ -91,6 +91,11 @@ public class AboutTame extends Fragment
 	TameLogoAnim();
 	mTameLogo.startAnimation(fadeout);
 	setversiondata();
+
+	if(!Utils.fileExists(PATH_DISABLE_SET_ON_BOOT_ZIP)){
+		Utils.copyAsset(getActivity(), FILE_DISABLE_SET_ON_BOOT_ZIP);
+	}
+
         return mView;
     }
 

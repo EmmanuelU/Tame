@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Note: After a reboot, Tame may take a couple minutes to re-apply saved settings. Opening this app before those settings are applied may cause all your settings to be reset to default."
+            android:text="Note: After a reboot, Tame may take a couple minutes to re-apply saved settings. Opening this app before those settings are applied may cause all your settings to be reset to default.\n\n In the event that you screwed up and you want to disable Tame Settings from recovery, there is a flash-able zip on your sdcard.\n\n /sdcard/DisableTame_S-O-B.zip"
             android:id="@+id/sobnote"
             android:visibility = "gone"
             android:gravity="center"

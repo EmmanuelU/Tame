@@ -65,12 +65,10 @@ public class SetOnBoot extends Service implements Resources {
         protected Void doInBackground(Void... args) {
             SharedPreferences mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(context);
-            if (Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0"))) {
-
-		MainActivity.SetOnBootData(mPreferences);
-
-            }
-
+	    if(Utils.fileExists(FILE_DISABLE_SET_ON_BOOT)){
+		Utils.CMD("rm -rf " + FILE_DISABLE_SET_ON_BOOT, false);
+		updateSharedPrefs(mPreferences, SET_ON_BOOT, "0");
+	    } else if(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0"))) MainActivity.SetOnBootData(mPreferences);
 
             return null;
         }
@@ -80,6 +78,12 @@ public class SetOnBoot extends Service implements Resources {
             super.onPostExecute(result);
             stopSelf();
         }
+
+	void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
+		final SharedPreferences.Editor editor = preferences.edit();
+		editor.putString(var, value);
+		editor.commit();
+	}
     }
 
     @Override

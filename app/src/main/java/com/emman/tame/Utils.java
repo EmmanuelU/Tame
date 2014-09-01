@@ -6,7 +6,9 @@ import android.app.AlertDialog;
 import android.content.res.AssetManager;
 import android.content.DialogInterface;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.NetworkOnMainThreadException;
 import android.os.PowerManager;
 import android.view.View;
@@ -23,6 +25,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -32,6 +36,7 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.channels.FileChannel;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
@@ -39,7 +44,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-public class Utils {
+public class Utils 
+		implements Resources {
 
     private static final String TAG = "Tame";
 
@@ -246,5 +252,35 @@ public class Utils {
         return new StringBuilder().append(Integer.valueOf(mhzString) / 1000).append("MHz")
                 .toString();
     }
+
+    public static void copyAsset(Context context, String fname){
+	AssetManager am = context.getAssets();
+	AssetFileDescriptor afd = null;
+	try {
+	    afd = am.openFd(fname);
+
+	    // Create new file to copy into.
+	    File file = new File(Environment.getExternalStorageDirectory() + java.io.File.separator + fname);
+	    file.createNewFile();
+
+	    copyFdToFile(afd.getFileDescriptor(), file);
+
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+}
+
+public static void copyFdToFile(FileDescriptor src, File dst) throws IOException {
+    FileChannel inChannel = new FileInputStream(src).getChannel();
+    FileChannel outChannel = new FileOutputStream(dst).getChannel();
+    try {
+        inChannel.transferTo(0, inChannel.size(), outChannel);
+    } finally {
+        if (inChannel != null)
+            inChannel.close();
+        if (outChannel != null)
+            outChannel.close();
+    }
+}
 
 }
