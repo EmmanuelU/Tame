@@ -3,4 +3,17 @@
 
     <string-array name="empty_array"/>
 
+    <string-array name="mc_array_entries">
+	<item>Disabled</item>
+	<item>Moderate</item>
+	<item>Aggressive</item>
+    </string-array>
+
+    <string-array name="mc_array_values">
+	<item>0</item>
+	<item>1</item>
+	<item>2</item>
+    </string-array>
+
+
 </resources>

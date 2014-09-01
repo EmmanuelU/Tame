@@ -31,4 +31,12 @@
 	android:key="iosched"
     />
 
+    <ListPreference
+	android:title="Multi-Core Power Saving"
+	android:summary="Group more processes onto primary core."
+	android:key="sched_mc"
+	android:entries="@array/mc_array_entries"
+	android:entryValues="@array/mc_array_values"
+    />
+
 </PreferenceScreen>
