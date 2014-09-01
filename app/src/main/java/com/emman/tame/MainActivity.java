@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.emman.tame.Resources;
 import com.emman.tame.dialogs.BLNPreference;
 import com.emman.tame.dialogs.MPDecPreference;
+import com.emman.tame.dialogs.S2WPreference;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, Resources {
@@ -214,6 +215,7 @@ public class MainActivity extends Activity
 	CPUSettings.SetOnBootData(preferences);
 	BLNPreference.SetOnBootData(preferences);
 	MPDecPreference.SetOnBootData(preferences);
+	S2WPreference.SetOnBootData(preferences);
     }
 
 }

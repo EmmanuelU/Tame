@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.emman.tame.dialogs.MPDecPreference
-	android:key="mpdec"
+	android:key="mpdecdialog"
 	android:title="MPDecision"
 	android:summary="Turn off secondary cores when not in use to save battery."
 	android:positiveButtonText="OK"
@@ -12,6 +12,13 @@
 	android:key="blndialog"
 	android:title="Button Light Notifications"
 	android:summary="Pulse button lights when screen is off, and a notification is received"
+	android:positiveButtonText="OK"
+    />
+
+    <com.emman.tame.dialogs.S2WPreference
+	android:key="s2wdialog"
+	android:title="Sweep2Wake"
+	android:summary="Sweep finger across button pad to wake device."
 	android:positiveButtonText="OK"
     />
 
