@@ -142,17 +142,15 @@ public class AboutTame extends Fragment
 		    @Override
 		    public void onDismiss(DialogInterface dialog) {
 			if(WildInit()){
-				mLatVersion.setText(mLatVersion.getText().toString() + " " + WildData.latestversion + " - " + WildData.latestversionreldate);
-				mLatVersion.setVisibility(View.VISIBLE);
 				if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(propversion)) WildData.islatestversion = false;
 				else WildData.islatestversion = true;
 				if(WildData.islatestversion){
-					//Utils.toast(getActivity(), "Latest Version Installed");
 					mUpdate.setText("Latest Version");
 					mUpdate.setEnabled(false);
 				} else {
-					Utils.toast(getActivity(), "Update Available");
 					mUpdate.setText("Click to Update");
+					mLatVersion.setText(WildData.latestversion + " - " + WildData.latestversionreldate);
+					mLatVersion.setVisibility(View.VISIBLE);
 				}
 				WildData.fetchedlatestversion = true;
 			}

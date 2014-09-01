@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Latest Version:"
+            android:text=""
             android:id="@+id/latversionheader"
             android:gravity="center"
             android:textColor="#ff8a8586"
