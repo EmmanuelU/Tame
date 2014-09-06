@@ -103,8 +103,8 @@ public class MPDecPreference extends DialogPreference
     private void setData(){
 	if(!initiateData()) return;
 
-	updateSharedPrefs(mPreferences, MPDEC, Utils.writeValueSU(FILE_MPDEC_TOGGLE, mMPDec.isChecked() ? "1" : "0"));
-	updateSharedPrefs(mPreferences, MPDEC_SCROFF, Utils.writeValueSU(FILE_MPDEC_SCROFF, mMPDecScroff.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, MPDEC, Utils.writeSYSValue(FILE_MPDEC_TOGGLE, mMPDec.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, MPDEC_SCROFF, Utils.writeSYSValue(FILE_MPDEC_SCROFF, mMPDecScroff.isChecked() ? "1" : "0"));
 
     }
 
@@ -130,8 +130,8 @@ public class MPDecPreference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.writeValueSU(FILE_MPDEC_TOGGLE, preferences.getString(MPDEC, "1"));
-	Utils.writeValueSU(FILE_MPDEC_SCROFF, preferences.getString(MPDEC_SCROFF, "1"));
+	Utils.writeSYSValue(FILE_MPDEC_TOGGLE, preferences.getString(MPDEC, "1"));
+	Utils.writeSYSValue(FILE_MPDEC_SCROFF, preferences.getString(MPDEC_SCROFF, "1"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

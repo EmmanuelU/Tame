@@ -142,7 +142,7 @@ public class CPUSettings extends PreferenceFragment
 			Utils.toast(getActivity(), "Reboot is recommended.");
 		}
 
-		if (Utils.fileExists(fname)) Utils.writeValueSU(fname, newValue);
+		if (Utils.fileExists(fname)) Utils.writeSYSValue(fname, newValue);
 		setData();
 		return true;
 
@@ -177,6 +177,8 @@ public class CPUSettings extends PreferenceFragment
 	mMaxFreq = (ListPreference) prefSet.findPreference("max_freq");
 	mIOSched = (ListPreference) prefSet.findPreference("iosched");
 	mSchedMC = (ListPreference) prefSet.findPreference("sched_mc");
+
+	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
 
 	availableFrequenciesLine = Utils.readOneLine(FREQ_LIST_FILE);
 	availableFrequencies = availableFrequenciesLine.split(" ");
@@ -246,11 +248,11 @@ public class CPUSettings extends PreferenceFragment
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.writeValueSU(FREQ_MIN_FILE, preferences.getString(SAVED_MIN_FREQ, "96000"));
-	Utils.writeValueSU(FREQ_MAX_FILE, preferences.getString(SAVED_MAX_FREQ, "1512000"));
-	Utils.writeValueSU(GOV_FILE, preferences.getString(SAVED_GOV, "ondemand"));
-	Utils.writeValueSU(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, "noop deadline row cfq bfq [sio] vr zen fifo"));
-	Utils.writeValueSU(SCHED_MC_FILE, preferences.getString(SAVED_SCHED_MC, "0"));
+	Utils.writeSYSValue(FREQ_MIN_FILE, preferences.getString(SAVED_MIN_FREQ, "96000"));
+	Utils.writeSYSValue(FREQ_MAX_FILE, preferences.getString(SAVED_MAX_FREQ, "1512000"));
+	Utils.writeSYSValue(GOV_FILE, preferences.getString(SAVED_GOV, "ondemand"));
+	Utils.writeSYSValue(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, "noop deadline row cfq bfq [sio] vr zen fifo"));
+	Utils.writeSYSValue(SCHED_MC_FILE, preferences.getString(SAVED_SCHED_MC, "0"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

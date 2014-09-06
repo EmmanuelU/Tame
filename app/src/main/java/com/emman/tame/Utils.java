@@ -68,8 +68,8 @@ public class Utils
 	return value;
     }
 
-    public static String writeValueSU(String filename, String value) {
-        new CMDProcessor().su.runWaitFor("busybox echo " + value + " > " + filename);
+    public static String writeSYSValue(String fname, String value) {
+        if(fileExists(fname)) new CMDProcessor().su.runWaitFor("busybox echo " + value + " > " + fname);
 	return value;
     }
 

@@ -97,7 +97,7 @@ public class S2WPreference extends DialogPreference
     private void setData(){
 	if(!initiateData()) return;
 
-	updateSharedPrefs(mPreferences, S2W, Utils.writeValueSU(FILE_S2W_TOGGLE, mS2W.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, S2W, Utils.writeSYSValue(FILE_S2W_TOGGLE, mS2W.isChecked() ? "1" : "0"));
 
     }
 
@@ -116,7 +116,7 @@ public class S2WPreference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.writeValueSU(FILE_S2W_TOGGLE, preferences.getString(S2W, "1"));
+	Utils.writeSYSValue(FILE_S2W_TOGGLE, preferences.getString(S2W, "1"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
