@@ -17,8 +17,8 @@ public interface Resources {
 
 	public static final String FILE_UPDATE_DATA = "/sdcard/updatewild.sh";
 
-	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP = "DisableTame_S-O-B.zip";
-	public static final String PATH_DISABLE_SET_ON_BOOT_ZIP = "/sdcard/" + FILE_DISABLE_SET_ON_BOOT_ZIP;
+	public static final String PATH_TAME_LOCAL = "/sdcard/Tame/";
+	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP = PATH_TAME_LOCAL + "DisableTame_S-O-B.zip";
 	public static final String FILE_DISABLE_SET_ON_BOOT = "/sdcard/WildNFree.tame";
 	public static final String SET_ON_BOOT = "set_on_boot";
 

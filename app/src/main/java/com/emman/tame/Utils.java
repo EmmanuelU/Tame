@@ -253,34 +253,69 @@ public class Utils
                 .toString();
     }
 
-    public static void copyAsset(Context context, String fname){
-	AssetManager am = context.getAssets();
-	AssetFileDescriptor afd = null;
+    public static void ExtractAssets(Context context){
 	try {
-	    afd = am.openFd(fname);
+            AssetManager assetFiles = context.getAssets();
+ 
+            // MyHtmlFiles is the name of folder from inside our assets folder
+            String[] files = assetFiles.list("Tame");
+ 
+            // Initialize streams
+            InputStream in = null;
+            OutputStream out = null;
+ 
+            for (int i = 0; i < files.length; i++) {
+ 
+                     
+                     // @Folder name is also case sensitive
+                     // @MyHtmlFiles is the folder from our assets
+                      
+                    in = assetFiles.open("Tame/" + files[i]);
+ 
+                     
+                     // Currently we will copy the files to the root directory
+                     // but you should create specific directory for your app
+                    Utils.CMD("mkdir /sdcard/Tame", false);
 
-	    // Create new file to copy into.
-	    File file = new File(Environment.getExternalStorageDirectory() + java.io.File.separator + fname);
-	    file.createNewFile();
-
-	    copyFdToFile(afd.getFileDescriptor(), file);
-
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-}
-
-public static void copyFdToFile(FileDescriptor src, File dst) throws IOException {
-    FileChannel inChannel = new FileInputStream(src).getChannel();
-    FileChannel outChannel = new FileOutputStream(dst).getChannel();
-    try {
-        inChannel.transferTo(0, inChannel.size(), outChannel);
-    } finally {
-        if (inChannel != null)
-            inChannel.close();
-        if (outChannel != null)
-            outChannel.close();
+                    out = new FileOutputStream(
+                            Environment.getExternalStorageDirectory() + "/Tame/"
+                                    + files[i]);
+                    copyAssets(in, out);
+            }
+ 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+ 
     }
-}
+ 
+    private static void copyAssets(InputStream in, OutputStream out) {
+        try {
+ 
+            byte[] buffer = new byte[1024];
+            int read;
+ 
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+ 
+            in.close();
+            in = null;
+            out.flush();
+            out.close();
+            out = null;
+ 
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

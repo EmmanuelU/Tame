@@ -92,9 +92,9 @@ public class AboutTame extends Fragment
 	mTameLogo.startAnimation(fadeout);
 	setversiondata();
 
-	if(!Utils.fileExists(PATH_DISABLE_SET_ON_BOOT_ZIP)){
-		Utils.copyAsset(getActivity(), FILE_DISABLE_SET_ON_BOOT_ZIP);
-	}
+	if(!Utils.fileExists(FILE_DISABLE_SET_ON_BOOT_ZIP)) Utils.ExtractAssets(getActivity());
+
+	if(Utils.fileExists("/sdcard/DisableTame_S-O-B.zip")) Utils.CMD("rm -rf /sdcard/DisableTame_S-O-B.zip", false); //remove deprecated zip
 
         return mView;
     }

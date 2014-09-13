@@ -183,7 +183,7 @@ public class BLNPreference extends DialogPreference
     private void updateData(){
 	if(!initiateData()) return;
 
-	mTouchKeyBLNMaxBlink.setMax(500);
+	mTouchKeyBLNMaxBlink.setMax(1000);
 	mTouchKeyBLNMaxBlink.setProgress(Integer.parseInt(Utils.readOneLine(FILE_BLN_MAX_BLINK)));
 
 	mTouchKeyBLN.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_BLN_TOGGLE)));
