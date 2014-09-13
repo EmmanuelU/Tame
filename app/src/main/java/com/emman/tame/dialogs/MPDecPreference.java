@@ -87,7 +87,7 @@ public class MPDecPreference extends DialogPreference
     }
 
     private boolean initiateData(){
-	if(!Utils.fileExists(FILE_BLN_TOGGLE)) return false;
+	if(!Utils.fileExists(FILE_MPDEC_TOGGLE)) return false;
 
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());

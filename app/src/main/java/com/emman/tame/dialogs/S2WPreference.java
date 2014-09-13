@@ -84,7 +84,7 @@ public class S2WPreference extends DialogPreference
     }
 
     private boolean initiateData(){
-	if(!Utils.fileExists(FILE_BLN_TOGGLE)) return false;
+	if(!Utils.fileExists(FILE_S2W_TOGGLE)) return false;
 
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());

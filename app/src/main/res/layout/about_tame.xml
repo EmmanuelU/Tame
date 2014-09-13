@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Current Version:"
+            android:text="WildKernel Version:"
             android:id="@+id/versionheader"
             android:gravity="center"
             android:textColor="#ff8a8586" />
