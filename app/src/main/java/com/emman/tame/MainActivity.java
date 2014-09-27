@@ -95,6 +95,11 @@ public class MainActivity extends Activity
 		mTitle = getString(R.string.title_cpusettings);
 		fragment = new CPUSettings();
 		break;
+
+	    case 4:
+		mTitle = getString(R.string.title_sysfs);
+		fragment = new SysFSExplorer();
+		break;
         }
 	if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();

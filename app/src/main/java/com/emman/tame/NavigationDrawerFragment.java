@@ -107,6 +107,7 @@ public class NavigationDrawerFragment extends Fragment {
 			getString(R.string.app_name),
                         getString(R.string.title_kernelsettings),
                         getString(R.string.title_cpusettings),
+			getString(R.string.title_sysfs),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

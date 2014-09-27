@@ -7,6 +7,7 @@
 
     <string name="title_kernelsettings">Kernel Settings</string>
     <string name="title_cpusettings">CPU Control</string>
+    <string name="title_sysfs">SysFS Explorer</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

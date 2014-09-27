@@ -13,9 +13,13 @@ import android.os.NetworkOnMainThreadException;
 import android.os.PowerManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.LayoutInflater;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
 
+import java.lang.Comparable;
 import java.lang.StringBuilder;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -37,6 +41,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
+import java.util.List;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
