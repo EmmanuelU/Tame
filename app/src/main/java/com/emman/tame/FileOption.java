@@ -76,6 +76,10 @@ public class FileOption implements Comparable<FileOption>{
     {
         return data.equals("Folder");
     }
+    public boolean PDir()
+    {
+        return name.equals("..");
+    }
     public boolean isFile()
     {
         return data.equals("File");

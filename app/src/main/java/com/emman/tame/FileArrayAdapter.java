@@ -85,7 +85,7 @@ public class FileArrayAdapter extends ArrayAdapter<FileOption>{
 			if(header!=null) header.setText(o.getName());
 			if(!o.isFolder() && subheader!=null){
 				if(o.isFile()) subheader.setText("Click to Edit");
-				else subheader.setText("Go Back");
+				else if(o.PDir()) subheader.setText("Go Back");
 			}
 
                        

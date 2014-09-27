@@ -20,18 +20,21 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.Gravity;
-import android.widget.ListView;
+import android.view.inputmethod.InputMethodManager;
 import android.view.View.OnKeyListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import java.lang.StringBuilder;
 import java.io.BufferedReader;
@@ -74,7 +77,7 @@ public class SysFSExplorer extends ListFragment
 	super.onCreate(savedInstanceState);
 	currentDir = new File("/sys/");
 	fill(currentDir);
-
+	Utils.toast(getActivity(), "Edit Values with Caution");
     }
 
 	@Override
@@ -87,9 +90,25 @@ public class SysFSExplorer extends ListFragment
 			currentDir = new File(currentPath);
 			fill(currentDir);
 		}
-		else
-		{
-			Utils.toast(getActivity(), o.getPath());
+		else {
+			final Dialog dialog = new Dialog(getActivity());
+			dialog.setContentView(R.layout.syseditdialog);
+			dialog.setTitle("Edit Value");
+			 
+			Button mSaveButton = (Button) dialog.findViewById(R.id.positive);
+			final EditText mEditFile = (EditText) dialog.findViewById(R.id.editfile);
+			final String mEditFilePath = o.getPath();
+			mEditFile.setText(Utils.readOneLine(o.getPath()));
+			mEditFile.setSelection(mEditFile.getText().length());
+			mSaveButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Utils.writeSYSValue(mEditFilePath, mEditFile.getText().toString());
+					Utils.toast(getActivity(), "Value Saved.");
+					dialog.dismiss();
+				}
+			});
+			dialog.show();
 		}
 	}
 
