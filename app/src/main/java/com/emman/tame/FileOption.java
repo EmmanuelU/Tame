@@ -78,7 +78,7 @@ public class FileOption implements Comparable<FileOption>{
     }
     public boolean PDir()
     {
-        return name.equals("..");
+        return data.equals("Parent Directory");
     }
     public boolean isFile()
     {

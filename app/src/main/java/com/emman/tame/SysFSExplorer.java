@@ -70,13 +70,13 @@ public class SysFSExplorer extends ListFragment
 
     private View mView;
     private File currentDir;
-    private String currentPath;
+    private String currentPath = "/sys/";
     private FileArrayAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-	currentDir = new File("/sys/");
+	currentDir = new File(currentPath);
 	fill(currentDir);
 	Utils.toast(getActivity(), "Edit Values with Caution");
     }
@@ -137,7 +137,7 @@ public class SysFSExplorer extends ListFragment
          Collections.sort(fls);
          dir.addAll(fls);
          if(!f.getName().equalsIgnoreCase("sys"))
-             dir.add(0,new FileOption("..","Parent Directory",f.getParent()));
+             dir.add(0,new FileOption(currentPath,"Parent Directory",f.getParent()));
 
 	adapter = new FileArrayAdapter(getActivity(),R.layout.sysfs_explorer,dir);
 	this.setListAdapter(adapter);
