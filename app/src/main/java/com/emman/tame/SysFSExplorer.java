@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
@@ -93,13 +94,14 @@ public class SysFSExplorer extends ListFragment
 		else {
 			final Dialog dialog = new Dialog(getActivity());
 			dialog.setContentView(R.layout.syseditdialog);
-			dialog.setTitle("Edit Value");
-			 
 			Button mSaveButton = (Button) dialog.findViewById(R.id.positive);
 			final EditText mEditFile = (EditText) dialog.findViewById(R.id.editfile);
 			final String mEditFilePath = o.getPath();
+			String[] mTitle = mEditFilePath.split("/");
+			dialog.setTitle("File: " + mTitle[mTitle.length - 1]);
 			mEditFile.setText(Utils.readOneLine(o.getPath()));
-			mEditFile.setSelection(mEditFile.getText().length());
+			if(Utils.isNumeric(Utils.readOneLine(o.getPath()))) mEditFile.setSelection(mEditFile.getText().length());
+			mEditFile.setRawInputType(Configuration.KEYBOARD_QWERTY);
 			mSaveButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -115,7 +117,6 @@ public class SysFSExplorer extends ListFragment
 
     private void fill(File f){
         File[]dirs = f.listFiles();
-         //this.setTitle("Current Directory: "+f.getName());
          List<FileOption>dir = new ArrayList<FileOption>();
          List<FileOption>fls = new ArrayList<FileOption>();
          try{

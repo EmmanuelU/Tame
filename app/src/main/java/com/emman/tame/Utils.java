@@ -94,6 +94,19 @@ public class Utils
         return true;
     }
 
+public static boolean isNumeric(String str)  
+{  
+  try  
+  {  
+    double d = Double.parseDouble(str);  
+  }  
+  catch(NumberFormatException nfe)  
+  {  
+    return false;  
+  }  
+  return true;  
+}
+
     /**
      * Write the "color value" to the specified file. The value is scaled from
      * an integer to an unsigned integer by multiplying by 2.
