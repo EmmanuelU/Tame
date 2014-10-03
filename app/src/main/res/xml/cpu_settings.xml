@@ -14,15 +14,15 @@
     />
 
     <ListPreference
-	android:title="Min Frequency"
+	android:title="Maximum Frequency"
 	android:summary=""
-	android:key="min_freq"
+	android:key="max_freq"
     />
 
     <ListPreference
-	android:title="Max Frequency"
+	android:title="Minimum Frequency"
 	android:summary=""
-	android:key="max_freq"
+	android:key="min_freq"
     />
 
     <ListPreference

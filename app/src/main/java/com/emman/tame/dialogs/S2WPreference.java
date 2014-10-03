@@ -50,6 +50,7 @@ public class S2WPreference extends DialogPreference
     private View mView;
 
     private CheckBox mS2W;
+    private CheckBox mS2WSensitive;
 
     private SharedPreferences mPreferences;
 
@@ -90,6 +91,7 @@ public class S2WPreference extends DialogPreference
                     .getDefaultSharedPreferences(getContext());
 
 	mS2W = (CheckBox) mView.findViewById(R.id.s2w);
+	mS2WSensitive = (CheckBox) mView.findViewById(R.id.s2w_sensitive);
 
 	return true;
     }
@@ -98,6 +100,7 @@ public class S2WPreference extends DialogPreference
 	if(!initiateData()) return;
 
 	updateSharedPrefs(mPreferences, S2W, Utils.writeSYSValue(FILE_S2W_TOGGLE, mS2W.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, S2W_SENSITIVE, Utils.writeSYSValue(FILE_S2W_SENSITIVE, mS2WSensitive.isChecked() ? "1" : "0"));
 
     }
 
@@ -105,6 +108,7 @@ public class S2WPreference extends DialogPreference
 	if(!initiateData()) return;
 
 	mS2W.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_S2W_TOGGLE)));
+	mS2WSensitive.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_S2W_SENSITIVE)));
 
 	updateDependencies();
 
@@ -112,11 +116,12 @@ public class S2WPreference extends DialogPreference
 
     private void updateDependencies(){
 	if(!initiateData()) return;
-
+	if(!Utils.fileExists(FILE_S2W_SENSITIVE)) mS2WSensitive.setEnabled(false);
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
 	Utils.writeSYSValue(FILE_S2W_TOGGLE, preferences.getString(S2W, "1"));
+	Utils.writeSYSValue(FILE_S2W_SENSITIVE, preferences.getString(S2W_SENSITIVE, "0"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
