@@ -47,6 +47,7 @@ public class CPUSettings extends PreferenceFragment
     private ListPreference mGovernor;
     private ListPreference mIOSched;
     private ListPreference mSchedMC;
+    private CheckBoxPreference mCpuBoost;
 
     PreferenceScreen prefSet;
 
@@ -123,13 +124,15 @@ public class CPUSettings extends PreferenceFragment
 		mMaxFreq.setOnPreferenceChangeListener(this);
 		mIOSched.setOnPreferenceChangeListener(this);
 		mSchedMC.setOnPreferenceChangeListener(this);
+		mCpuBoost.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
-
-        final String newValue = (String) value;
-        String fname = "";
+	final String newValue;
+	if(preference == mCpuBoost) newValue = Utils.boolToString((Boolean) value);
+	else newValue = (String) value;
+	String fname = "";
 
 	if (newValue != null) {
 		
@@ -137,12 +140,13 @@ public class CPUSettings extends PreferenceFragment
 		else if (preference == mMinFreq) fname = FREQ_MIN_FILE;
 		else if (preference == mMaxFreq) fname = FREQ_MAX_FILE;
 		else if (preference == mIOSched) fname = IOSCHED_LIST_FILE;
+		else if (preference == mCpuBoost) fname = CPU_BOOST_FILE;
 		else if (preference == mSchedMC){
 			fname = SCHED_MC_FILE;
 			Utils.toast(getActivity(), "Reboot is recommended.");
 		}
-
-		if (Utils.fileExists(fname)) Utils.writeSYSValue(fname, newValue);
+	
+		Utils.writeSYSValue(fname, newValue);
 		setData();
 		return true;
 
@@ -177,8 +181,10 @@ public class CPUSettings extends PreferenceFragment
 	mMaxFreq = (ListPreference) prefSet.findPreference("max_freq");
 	mIOSched = (ListPreference) prefSet.findPreference("iosched");
 	mSchedMC = (ListPreference) prefSet.findPreference("sched_mc");
+	mCpuBoost = (CheckBoxPreference) prefSet.findPreference("cpu_boost");
 
 	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
+	if(!Utils.fileExists(CPU_BOOST_FILE)) mCpuBoost.setEnabled(false);
 
 	availableFrequenciesLine = Utils.readOneLine(FREQ_LIST_FILE);
 	availableFrequencies = availableFrequenciesLine.split(" ");
@@ -217,6 +223,8 @@ public class CPUSettings extends PreferenceFragment
 
 	mSchedMC.setValue(Utils.readOneLine(SCHED_MC_FILE));
 
+	mCpuBoost.setChecked(Utils.stringToBool(Utils.readOneLine(CPU_BOOST_FILE)));
+
 	mCurFreq.setSummary("Core 1: " + Utils.toMHz(Utils.readOneLine(FREQ_CUR_FILE)));
 	mCurCPUThread.start();
 
@@ -243,7 +251,7 @@ public class CPUSettings extends PreferenceFragment
 	updateSharedPrefs(mPreferences, SAVED_GOV, Utils.readOneLine(GOV_FILE));
 	updateSharedPrefs(mPreferences, SAVED_IOSCHED, Utils.readOneLine(IOSCHED_LIST_FILE));
 	updateSharedPrefs(mPreferences, SAVED_SCHED_MC, Utils.readOneLine(SCHED_MC_FILE));
-
+	updateSharedPrefs(mPreferences, SAVED_CPU_BOOST, Utils.readOneLine(CPU_BOOST_FILE));
 	CPUupdate();
     }
 
@@ -253,6 +261,7 @@ public class CPUSettings extends PreferenceFragment
 	Utils.writeSYSValue(GOV_FILE, preferences.getString(SAVED_GOV, "ondemand"));
 	Utils.writeSYSValue(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, "noop deadline row cfq bfq [sio] vr zen fifo"));
 	Utils.writeSYSValue(SCHED_MC_FILE, preferences.getString(SAVED_SCHED_MC, "0"));
+	Utils.writeSYSValue(CPU_BOOST_FILE, preferences.getString(SAVED_CPU_BOOST, "1"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

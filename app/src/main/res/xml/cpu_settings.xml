@@ -39,4 +39,10 @@
 	android:entryValues="@array/mc_array_values"
     />
 
+    <CheckBoxPreference
+	android:title="CPU Boost"
+	android:summary="Speed up commonly used CPU tasks."
+	android:key="cpu_boost"
+    />
+
 </PreferenceScreen>
