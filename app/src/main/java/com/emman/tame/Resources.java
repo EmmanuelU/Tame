@@ -23,8 +23,10 @@ public interface Resources {
 	public static final String SET_ON_BOOT = "set_on_boot";
 
 	public static final String S2W = "s2w";
+	public static final String S2S = "s2s";
 	public static final String S2W_SENSITIVE = "s2w_sensitive";
 	public static final String FILE_S2W_TOGGLE = "/sys/android_touch/sweep2wake";
+	public static final String FILE_S2S_TOGGLE = "/sys/android_touch/sweep2sleep";
 	public static final String FILE_S2W_SENSITIVE = "/sys/android_touch/sweep2wake_sensitive";
 
 	public static final String MPDEC = "mpdec";
