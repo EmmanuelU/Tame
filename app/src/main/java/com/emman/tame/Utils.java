@@ -22,6 +22,7 @@ import android.util.Log;
 import java.lang.Comparable;
 import java.lang.StringBuilder;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -73,25 +74,23 @@ public class Utils
 	return value;
     }
 
-    public static String writeSYSValue(String fname, String value) {
-        if(fileExists(fname)) new CMDProcessor().su.runWaitFor("busybox echo " + value + " > " + fname);
+    public static String appendValue(String filename, String value) {
+        new CMDProcessor().sh.runWaitFor("busybox echo '" + value + "' >> " + filename);
 	return value;
     }
 
-    public static boolean fileWriteOneLine(String fname, String value) {
-        try {
-            FileWriter fw = new FileWriter(fname);
-            try {
-                fw.write(value);
-            } finally {
-                fw.close();
-            }
-        } catch (IOException e) {
-            String Error = "Error writing to " + fname + ". Exception: ";
-            Log.e(TAG, Error, e);
-            return false;
-        }
-        return true;
+    public static String writeSYSValue(String fname, String value) {
+        if(fileExists(fname)) new CMDProcessor().sh.runWaitFor("busybox echo " + value + " > " + fname);
+	return value;
+    }
+
+    public static String SetSOBValue(String fname, String value) {
+        if(!fileExists(FILE_SET_ON_BOOT)){ 
+		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SET_ON_BOOT);
+		appendValue(FILE_SET_ON_BOOT, "#!/bin/sh");
+	}
+	appendValue(FILE_SET_ON_BOOT, "echo \"" + value + "\" > " + fname);
+	return value;
     }
 
 public static boolean isNumeric(String str)  

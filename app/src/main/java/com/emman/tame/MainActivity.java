@@ -216,11 +216,13 @@ public class MainActivity extends Activity
 	editor.commit();
     }
 
-    public static void SetOnBootData(SharedPreferences preferences){
+    public static void ExecuteBootData(SharedPreferences preferences){
+	Utils.CMD("rm -rf " + FILE_SET_ON_BOOT, false);
 	CPUSettings.SetOnBootData(preferences);
 	BLNPreference.SetOnBootData(preferences);
 	MPDecPreference.SetOnBootData(preferences);
 	S2WPreference.SetOnBootData(preferences);
+	Utils.CMD("sh " + FILE_SET_ON_BOOT, true);
     }
 
 }

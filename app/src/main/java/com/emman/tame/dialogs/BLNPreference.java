@@ -235,9 +235,9 @@ public class BLNPreference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.writeSYSValue(FILE_BLN_TOGGLE, preferences.getString(TOUCHKEY_BLN, "0"));
-	Utils.writeSYSValue(FILE_BLN_MAX_BLINK, preferences.getString(TOUCHKEY_BLN_MAX_BLINK, "0"));
-	Utils.writeSYSValue(FILE_BLN_BLINK_OVERRIDE, preferences.getString(TOUCHKEY_BLN_BLINK_OVERRIDE, ""));
+	Utils.SetSOBValue(FILE_BLN_TOGGLE, preferences.getString(TOUCHKEY_BLN, "0"));
+	Utils.SetSOBValue(FILE_BLN_MAX_BLINK, preferences.getString(TOUCHKEY_BLN_MAX_BLINK, "0"));
+	Utils.SetSOBValue(FILE_BLN_BLINK_OVERRIDE, preferences.getString(TOUCHKEY_BLN_BLINK_OVERRIDE, ""));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

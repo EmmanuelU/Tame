@@ -256,12 +256,12 @@ public class CPUSettings extends PreferenceFragment
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.writeSYSValue(FREQ_MIN_FILE, preferences.getString(SAVED_MIN_FREQ, "96000"));
-	Utils.writeSYSValue(FREQ_MAX_FILE, preferences.getString(SAVED_MAX_FREQ, "1512000"));
-	Utils.writeSYSValue(GOV_FILE, preferences.getString(SAVED_GOV, "ondemand"));
-	Utils.writeSYSValue(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, "noop deadline row cfq bfq [sio] vr zen fifo"));
-	Utils.writeSYSValue(SCHED_MC_FILE, preferences.getString(SAVED_SCHED_MC, "0"));
-	Utils.writeSYSValue(CPU_BOOST_FILE, preferences.getString(SAVED_CPU_BOOST, "1"));
+	Utils.SetSOBValue(FREQ_MIN_FILE, preferences.getString(SAVED_MIN_FREQ, "96000"));
+	Utils.SetSOBValue(FREQ_MAX_FILE, preferences.getString(SAVED_MAX_FREQ, "1512000"));
+	Utils.SetSOBValue(GOV_FILE, preferences.getString(SAVED_GOV, "ondemand"));
+	Utils.SetSOBValue(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, "noop deadline row cfq bfq [sio] vr zen fifo"));
+	Utils.SetSOBValue(SCHED_MC_FILE, preferences.getString(SAVED_SCHED_MC, "0"));
+	Utils.SetSOBValue(CPU_BOOST_FILE, preferences.getString(SAVED_CPU_BOOST, "1"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

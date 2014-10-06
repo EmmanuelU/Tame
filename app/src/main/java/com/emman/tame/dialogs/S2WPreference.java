@@ -125,9 +125,9 @@ public class S2WPreference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.writeSYSValue(FILE_S2W_TOGGLE, preferences.getString(S2W, "1"));
-	Utils.writeSYSValue(FILE_S2S_TOGGLE, preferences.getString(S2S, "0"));
-	Utils.writeSYSValue(FILE_S2W_SENSITIVE, preferences.getString(S2W_SENSITIVE, "0"));
+	Utils.SetSOBValue(FILE_S2W_TOGGLE, preferences.getString(S2W, "1"));
+	Utils.SetSOBValue(FILE_S2S_TOGGLE, preferences.getString(S2S, "0"));
+	Utils.SetSOBValue(FILE_S2W_SENSITIVE, preferences.getString(S2W_SENSITIVE, "0"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

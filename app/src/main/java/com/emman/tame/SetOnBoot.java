@@ -68,7 +68,7 @@ public class SetOnBoot extends Service implements Resources {
 	    if(Utils.fileExists(FILE_DISABLE_SET_ON_BOOT)){
 		Utils.CMD("rm -rf " + FILE_DISABLE_SET_ON_BOOT, false);
 		updateSharedPrefs(mPreferences, SET_ON_BOOT, "0");
-	    } else if(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0"))) MainActivity.SetOnBootData(mPreferences);
+	    } else if(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0"))) MainActivity.ExecuteBootData(mPreferences);
 
             return null;
         }
