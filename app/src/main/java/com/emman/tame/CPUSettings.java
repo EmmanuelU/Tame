@@ -47,6 +47,8 @@ public class CPUSettings extends PreferenceFragment
     private ListPreference mGovernor;
     private ListPreference mIOSched;
     private ListPreference mSchedMC;
+    private ListPreference mCeloxUVPanel;
+
     private CheckBoxPreference mCpuBoost;
 
     PreferenceScreen prefSet;
@@ -125,6 +127,7 @@ public class CPUSettings extends PreferenceFragment
 		mIOSched.setOnPreferenceChangeListener(this);
 		mSchedMC.setOnPreferenceChangeListener(this);
 		mCpuBoost.setOnPreferenceChangeListener(this);
+		mCeloxUVPanel.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -141,6 +144,7 @@ public class CPUSettings extends PreferenceFragment
 		else if (preference == mMaxFreq) fname = FREQ_MAX_FILE;
 		else if (preference == mIOSched) fname = IOSCHED_LIST_FILE;
 		else if (preference == mCpuBoost) fname = CPU_BOOST_FILE;
+		else if (preference == mCeloxUVPanel) fname = FILE_CELOX_DISPLAY_UV;
 		else if (preference == mSchedMC){
 			fname = SCHED_MC_FILE;
 			Utils.toast(getActivity(), "Reboot is recommended.");
@@ -182,9 +186,11 @@ public class CPUSettings extends PreferenceFragment
 	mIOSched = (ListPreference) prefSet.findPreference("iosched");
 	mSchedMC = (ListPreference) prefSet.findPreference("sched_mc");
 	mCpuBoost = (CheckBoxPreference) prefSet.findPreference("cpu_boost");
+	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");
 
 	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
 	if(!Utils.fileExists(CPU_BOOST_FILE)) mCpuBoost.setEnabled(false);
+	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)) mCeloxUVPanel.setEnabled(false);
 
 	availableFrequenciesLine = Utils.readOneLine(FREQ_LIST_FILE);
 	availableFrequencies = availableFrequenciesLine.split(" ");
@@ -223,6 +229,8 @@ public class CPUSettings extends PreferenceFragment
 
 	mSchedMC.setValue(Utils.readOneLine(SCHED_MC_FILE));
 
+	mCeloxUVPanel.setValue(Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
+
 	mCpuBoost.setChecked(Utils.stringToBool(Utils.readOneLine(CPU_BOOST_FILE)));
 
 	mCurFreq.setSummary("Core 1: " + Utils.toMHz(Utils.readOneLine(FREQ_CUR_FILE)));
@@ -252,6 +260,7 @@ public class CPUSettings extends PreferenceFragment
 	updateSharedPrefs(mPreferences, SAVED_IOSCHED, Utils.readOneLine(IOSCHED_LIST_FILE));
 	updateSharedPrefs(mPreferences, SAVED_SCHED_MC, Utils.readOneLine(SCHED_MC_FILE));
 	updateSharedPrefs(mPreferences, SAVED_CPU_BOOST, Utils.readOneLine(CPU_BOOST_FILE));
+	updateSharedPrefs(mPreferences, SAVED_CELOX_DISPLAY_UV, Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
 	CPUupdate();
     }
 
@@ -262,6 +271,7 @@ public class CPUSettings extends PreferenceFragment
 	Utils.SetSOBValue(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, "noop deadline row cfq bfq [sio] vr zen fifo"));
 	Utils.SetSOBValue(SCHED_MC_FILE, preferences.getString(SAVED_SCHED_MC, "0"));
 	Utils.SetSOBValue(CPU_BOOST_FILE, preferences.getString(SAVED_CPU_BOOST, "1"));
+	Utils.SetSOBValue(FILE_CELOX_DISPLAY_UV, preferences.getString(SAVED_CELOX_DISPLAY_UV, "0"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

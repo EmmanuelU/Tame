@@ -45,4 +45,12 @@
 	android:key="cpu_boost"
     />
 
+    <ListPreference
+	android:title="Celox Display Undervoltage"
+	android:summary="Undervolting the screen saves battery. Colors may appear different, but this feature is safe to use."
+	android:key="celox_uv_panel"
+	android:entries="@array/celox_uv_array_entries"
+	android:entryValues="@array/celox_uv_array_values"
+    />
+
 </PreferenceScreen>
