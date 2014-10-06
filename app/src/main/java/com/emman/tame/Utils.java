@@ -80,7 +80,7 @@ public class Utils
     }
 
     public static String writeSYSValue(String fname, String value) {
-        if(fileExists(fname)) new CMDProcessor().sh.runWaitFor("busybox echo " + value + " > " + fname);
+        if(fileExists(fname)) new CMDProcessor().su.runWaitFor("busybox echo " + value + " > " + fname);
 	return value;
     }
 
