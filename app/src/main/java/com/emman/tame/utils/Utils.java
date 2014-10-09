@@ -1,4 +1,4 @@
-package com.emman.tame;
+package com.emman.tame.utils;
 
 import android.app.Activity;
 

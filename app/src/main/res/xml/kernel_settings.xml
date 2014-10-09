@@ -3,7 +3,7 @@
 
     <com.emman.tame.dialogs.MPDecPreference
 	android:key="mpdecdialog"
-	android:title="MPDecision"
+	android:title="MpDecision"
 	android:summary="Turn off secondary cores when not in use to save battery."
 	android:positiveButtonText="OK"
     />

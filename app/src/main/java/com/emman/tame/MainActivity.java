@@ -1,3 +1,22 @@
+/*
+ * Tame - An Android Kernel Control application Copyright (C)
+ * Emmanuel Utomi <emmanuelutomi@gmail.com> Copyright (C) 2014
+ * 
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 package com.emman.tame;
 
 import android.app.Activity;
@@ -22,10 +41,16 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.emman.tame.Resources;
 import com.emman.tame.dialogs.BLNPreference;
 import com.emman.tame.dialogs.MPDecPreference;
 import com.emman.tame.dialogs.S2WPreference;
+
+import com.emman.tame.fragments.AboutTame;
+import com.emman.tame.fragments.KernelSettings;
+import com.emman.tame.fragments.CPUSettings;
+import com.emman.tame.fragments.SysFSExplorer;
+import com.emman.tame.utils.Resources;
+import com.emman.tame.utils.Utils;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, Resources {

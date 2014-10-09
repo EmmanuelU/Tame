@@ -1,4 +1,4 @@
-package com.emman.tame;
+package com.emman.tame.fragments;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -29,6 +29,9 @@ import android.widget.Toast;
 import android.util.Log;
 
 import com.emman.tame.dialogs.BLNPreference;
+import com.emman.tame.R;
+import com.emman.tame.utils.Resources;
+import com.emman.tame.utils.Utils;
 
 public class KernelSettings extends PreferenceFragment
 		implements Resources {

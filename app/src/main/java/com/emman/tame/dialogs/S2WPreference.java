@@ -41,8 +41,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 
 import com.emman.tame.R;
-import com.emman.tame.Utils;
-import com.emman.tame.Resources;
+import com.emman.tame.utils.Resources;
+import com.emman.tame.utils.Utils;
 
 public class S2WPreference extends DialogPreference
 		implements Resources {

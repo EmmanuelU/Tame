@@ -1,4 +1,4 @@
-package com.emman.tame;
+package com.emman.tame.fragments;
 
 import android.app.Activity;
 
@@ -63,7 +63,11 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.emman.tame.Resources;
+import com.emman.tame.utils.FileArrayAdapter;
+import com.emman.tame.utils.FileOption;
+import com.emman.tame.R;
+import com.emman.tame.utils.Resources;
+import com.emman.tame.utils.Utils;
 
 public class SysFSExplorer extends ListFragment 
 		implements Resources {

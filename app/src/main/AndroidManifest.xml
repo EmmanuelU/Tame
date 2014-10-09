@@ -29,13 +29,13 @@
             </intent-filter>
         </activity>
 
-	<receiver android:name=".BootCompletedReceiver" >
+	<receiver android:name=".services.BootCompletedReceiver" >
 	    <intent-filter>
 		<action android:name="android.intent.action.BOOT_COMPLETED" />
 	    </intent-filter>
 	</receiver>
 
-	<service android:name="com.emman.tame.SetOnBoot"/>
+	<service android:name="com.emman.tame.services.SetOnBoot"/>
 
     </application>
 

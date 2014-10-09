@@ -1,18 +1,18 @@
-package com.emman.tame;
+package com.emman.tame.utils;
 
 public interface Resources {
 
 	//Global Vars & Stored Data
 
 	class Wild {
-		String device;
-		String latestversion;
-		String latestversiondl;
-		String latestversionreldate;
-		int versionstamp;
-		int latestversionstamp;
-		boolean islatestversion = false;
-		boolean fetchedlatestversion = false;
+		public String device;
+		public String latestversion;
+		public String latestversiondl;
+		public String latestversionreldate;
+		public int versionstamp;
+		public int latestversionstamp;
+		public boolean islatestversion = false;
+		public boolean fetchedlatestversion = false;
 	}
 
 	public static final String FILE_UPDATE_DATA = "/sdcard/updatewild.sh";

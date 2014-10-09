@@ -1,4 +1,4 @@
-package com.emman.tame;
+package com.emman.tame.utils;
 
 import android.app.Activity;
 
@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.NetworkOnMainThreadException;
 import android.os.PowerManager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -50,49 +49,46 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-public class FileArrayAdapter extends ArrayAdapter<FileOption>{
-
-	private Context c;
-	private int id;
-	private List<FileOption>items;
-	
-	public FileArrayAdapter(Context context, int textViewResourceId,
-			List<FileOption> objects) {
-		super(context, textViewResourceId, objects);
-		c = context;
-		id = textViewResourceId;
-		items = objects;
-	}
-
-	public FileOption getItem(int i)
-	 {
-		 return items.get(i);
-	 }
-
-	@Override
-       public View getView(int position, View convertView, ViewGroup parent) {
-               View v = convertView;
-               if (v == null) {
-                   LayoutInflater vi = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                   v = vi.inflate(id, null);
-               }
-               final FileOption o = items.get(position);
-               if (o != null) {
-			TextView header, subheader;
-
-			header = (TextView) v.findViewById(R.id.header);
-			subheader = (TextView) v.findViewById(R.id.subheader);
-                       
-			if(header!=null) header.setText(o.getName());
-			if(!o.isFolder() && subheader!=null){
-				if(o.isFile()) subheader.setText("Click to Edit");
-				else if(o.PDir()) subheader.setText("Press to Go Back");
-				
-			}
-
-                       
-               }
-               return v;
-       }
-
+public class FileOption implements Comparable<FileOption>{
+    private String name;
+    private String data;
+    private String path;
+     
+    public FileOption(String n,String d,String p)
+    {
+        name = n;
+        data = d;
+        path = p;
+    }
+    public String getName()
+    {
+        return name;
+    }
+    public String getData()
+    {
+        return data;
+    }
+    public String getPath()
+    {
+        return path;
+    }
+    public boolean isFolder()
+    {
+        return data.equals("Folder");
+    }
+    public boolean PDir()
+    {
+        return data.equals("Parent Directory");
+    }
+    public boolean isFile()
+    {
+        return data.equals("File");
+    }
+    @Override
+    public int compareTo(FileOption o) {
+        if(this.name != null)
+            return this.name.toLowerCase().compareTo(o.getName().toLowerCase());
+        else
+            throw new IllegalArgumentException();
+    }
 }

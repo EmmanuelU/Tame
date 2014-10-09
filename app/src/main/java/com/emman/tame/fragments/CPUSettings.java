@@ -1,4 +1,4 @@
-package com.emman.tame;
+package com.emman.tame.fragments;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -33,6 +33,10 @@ import android.widget.Toast;
 import android.util.Log;
 
 import java.lang.Runtime;
+
+import com.emman.tame.R;
+import com.emman.tame.utils.Resources;
+import com.emman.tame.utils.Utils;
 
 //Major Thanks to CM Team for references
 
