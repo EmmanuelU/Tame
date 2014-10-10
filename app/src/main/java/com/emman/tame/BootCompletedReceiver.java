@@ -1,8 +1,10 @@
-package com.emman.tame.services;
+package com.emman.tame;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import com.emman.tame.services.SetOnBoot;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
 
