@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.CheckBoxPreference;
+import android.preference.DialogPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -52,8 +53,8 @@ public class CPUSettings extends PreferenceFragment
     private ListPreference mIOSched;
     private ListPreference mSchedMC;
     private ListPreference mCeloxUVPanel;
-
     private CheckBoxPreference mCpuBoost;
+    public static DialogPreference mGPUDialog;
 
     PreferenceScreen prefSet;
 
@@ -85,6 +86,7 @@ public class CPUSettings extends PreferenceFragment
 			cpu0 = Utils.readOneLine(FREQ_CUR_FILE);
 			cpu1 = Utils.readOneLine(FREQ_CUR_FILE.replace("cpu0", "cpu1"));
 			cpu0 = String.format("%s", Utils.toMHz(cpu0));
+			sleep(1);
 			if(cpu1.equals("")) cpu1 = "Offline";
 			else cpu1 = String.format("%s", Utils.toMHz(cpu1));
 			final String curFreq = cpu0 + " " + cpu1;
@@ -190,10 +192,12 @@ public class CPUSettings extends PreferenceFragment
 	mSchedMC = (ListPreference) prefSet.findPreference("sched_mc");
 	mCpuBoost = (CheckBoxPreference) prefSet.findPreference("cpu_boost");
 	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");
+	mGPUDialog = (DialogPreference) prefSet.findPreference("gpu_dialog");
 
 	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
 	if(!Utils.fileExists(CPU_BOOST_FILE)) mCpuBoost.setEnabled(false);
 	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)) mCeloxUVPanel.setEnabled(false);
+	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
 
 	availableFrequenciesLine = Utils.readOneLineSU(FREQ_LIST_FILE);
 	availableFrequencies = availableFrequenciesLine.split(" ");
@@ -232,9 +236,11 @@ public class CPUSettings extends PreferenceFragment
 
 	mSchedMC.setValue(Utils.readOneLineSU(SCHED_MC_FILE));
 
-	mCeloxUVPanel.setValue(Utils.readOneLineSU(FILE_CELOX_DISPLAY_UV));
+	mCeloxUVPanel.setValue(Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
 
-	mCpuBoost.setChecked(Utils.stringToBool(Utils.readOneLineSU(CPU_BOOST_FILE)));
+	mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
+
+	mCpuBoost.setChecked(Utils.stringToBool(Utils.readOneLine(CPU_BOOST_FILE)));
 
 	mCurFreq.setSummary("Core 1: " + Utils.toMHz(Utils.readOneLineSU(FREQ_CUR_FILE)));
 	mCurCPUThread.start();
@@ -253,7 +259,11 @@ public class CPUSettings extends PreferenceFragment
 	mMaxFreq.setSummary(String.format("%s", Utils.toMHz(Utils.readOneLineSU(FREQ_MAX_FILE))));
 	mMinFreq.setSummary(String.format("%s", Utils.toMHz(Utils.readOneLineSU(FREQ_MIN_FILE))));
 	mIOSched.setSummary(String.format("%S", currentIOScheduler));
+	GPUupdate();
+    }
 
+    public static void GPUupdate(){
+	mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
     }
 
     private void setData(){
@@ -262,8 +272,8 @@ public class CPUSettings extends PreferenceFragment
 	updateSharedPrefs(mPreferences, SAVED_GOV, Utils.readOneLineSU(GOV_FILE));
 	updateSharedPrefs(mPreferences, SAVED_IOSCHED, Utils.readOneLineSU(IOSCHED_LIST_FILE));
 	updateSharedPrefs(mPreferences, SAVED_SCHED_MC, Utils.readOneLineSU(SCHED_MC_FILE));
-	updateSharedPrefs(mPreferences, SAVED_CPU_BOOST, Utils.readOneLineSU(CPU_BOOST_FILE));
-	updateSharedPrefs(mPreferences, SAVED_CELOX_DISPLAY_UV, Utils.readOneLineSU(FILE_CELOX_DISPLAY_UV));
+	updateSharedPrefs(mPreferences, SAVED_CPU_BOOST, Utils.readOneLine(CPU_BOOST_FILE));
+	updateSharedPrefs(mPreferences, SAVED_CELOX_DISPLAY_UV, Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
 	CPUupdate();
     }
 

@@ -31,6 +31,12 @@
 	android:key="iosched"
     />
 
+    <com.emman.tame.dialogs.GPUPreference
+	android:key="gpu_dialog"
+	android:title="GPU Control"
+	android:positiveButtonText="OK"
+    />
+
     <ListPreference
 	android:title="Multi-Core Power Saving"
 	android:summary="Group more processes onto primary core."

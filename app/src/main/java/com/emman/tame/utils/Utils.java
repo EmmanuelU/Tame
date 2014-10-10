@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
@@ -42,6 +43,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.client.methods.HttpGet;
@@ -289,6 +291,48 @@ public static boolean isNumeric(String str)
                 .toString();
     }
 
+    public static String toGPUMHz(String mhzString) {
+        return new StringBuilder().append(Integer.valueOf(mhzString) / 1000000).append("MHz")
+                .toString();
+    }
+
+    public static String[] getFileFreqToMhz(String file, int how) {
+        if(fileExists(file)) {
+            ArrayList<String> names = new ArrayList<String>();
+            //setPermissions(file);
+            File freqfile = new File(file);
+            FileInputStream fin1 = null;
+            byte fileContent[] = null;
+            try {
+                fin1 = new FileInputStream(freqfile);
+                fileContent = new byte[(int)freqfile.length()];
+                fin1.read(fileContent);
+            }
+            catch (FileNotFoundException e1) {
+                //System.out.println("File not found" + e1);
+            }
+            catch (IOException ioe1) {
+                //System.out.println("Exception while reading file " + ioe1);
+            }
+            finally {
+                try {
+                    if (fin1 != null) {
+                        fin1.close();
+                    }
+                }
+                catch (IOException ioe1) {
+                    //System.out.println("Error while closing stream: " + ioe1);
+                }
+            }
+            for(String s : new String(fileContent).trim().split(" ")) {
+                names.add((Integer.parseInt(s) / how) + "MHz");
+            }
+            String[] toMhz = new String[names.size()];
+            return names.toArray(toMhz);
+        }
+        return null;
+    }
+
     public static void ExtractAssets(Context context){
 	try {
             AssetManager assetFiles = context.getAssets();
@@ -354,4 +398,21 @@ public static boolean isNumeric(String str)
         }
     }
 
+    public static int getSpinnerIndex(Spinner spinner, String value){
+	int index = 0;
+
+	for(int i=0;i<spinner.getCount();i++){
+		if(spinner.getItemAtPosition(i).equals(value)) index = i;
+	}
+	return index;
+    }
+
+    public static int getArrayIndex(String[] arr, String targetValue) {
+	int index = 0;
+	for(String s: arr){
+		if(s.equals(targetValue)) return index;
+		index++;
+	}
+	return -1;
+    }
 }
