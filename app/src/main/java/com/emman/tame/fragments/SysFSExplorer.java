@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.InputType;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -103,9 +104,9 @@ public class SysFSExplorer extends ListFragment
 			final String mEditFilePath = o.getPath();
 			String[] mTitle = mEditFilePath.split("/");
 			dialog.setTitle("File: " + mTitle[mTitle.length - 1]);
-			mEditFile.setText(Utils.readOneLine(o.getPath()));
-			if(Utils.isNumeric(Utils.readOneLine(o.getPath()))) mEditFile.setSelection(mEditFile.getText().length());
-			mEditFile.setRawInputType(Configuration.KEYBOARD_QWERTY);
+			mEditFile.setText(Utils.readOneLineSU(o.getPath()));
+			if(Utils.isNumeric(mEditFile.getText().toString())) mEditFile.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+			mEditFile.setSelection(mEditFile.getText().length());
 			mSaveButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
