@@ -18,7 +18,6 @@
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/touchkey_bln"
 
-        android:textSize="20dp"
         android:layout_alignParentTop="true"/>
 
     <View
@@ -44,7 +43,6 @@
             android:text="Duration:"
             android:textColor="#FFFFFF"
             android:layout_weight="0.08"
-            android:textSize="20dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
 
@@ -54,7 +52,6 @@
             android:text="## minute(s) - ### Blinks"
             android:textColor="#FFFFFF"
             android:layout_weight="0.08"
-            android:textSize="20dp"
             android:id="@+id/cur_touchkey_bln_blink"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
@@ -93,7 +90,6 @@
 		android:button="@null"
 		android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         	android:id="@+id/touchkey_bln_override_interval"
-        	android:textSize="20dp"
         	android:layout_alignParentTop="true"/>
 	<TableRow
 	    android:layout_width="match_parent"
@@ -103,21 +99,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="On"
             android:layout_marginRight="40dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="(msecs)"
             android:layout_marginRight="40dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Off"/>
 
 	</TableRow>

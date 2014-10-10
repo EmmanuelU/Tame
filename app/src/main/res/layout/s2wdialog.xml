@@ -10,36 +10,33 @@
     android:gravity="center_horizontal">
 
     <CheckBox
-        android:layout_width="wrap_content"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:text="Sweep2Wake"
 	android:button="@null"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/s2w"
 
-        android:textSize="20dp"
         android:layout_alignParentTop="true"/>
 
     <CheckBox
-        android:layout_width="wrap_content"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:text="Sweep2Sleep"
 	android:button="@null"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/s2s"
 
-        android:textSize="20dp"
         android:layout_alignParentTop="true"/>
 
     <CheckBox
-        android:layout_width="wrap_content"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:text="Sensitive Detection"
 	android:button="@null"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/s2w_sensitive"
 
-        android:textSize="20dp"
         android:layout_alignParentTop="true"/>
 
 </LinearLayout>
