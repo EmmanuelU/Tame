@@ -34,6 +34,9 @@ import android.widget.Toast;
 import android.util.Log;
 
 import java.lang.Runtime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.emman.tame.R;
 import com.emman.tame.utils.Resources;
@@ -112,29 +115,29 @@ public class CPUSettings extends PreferenceFragment
 	super.onCreate(savedInstanceState);
 	FragmentManager fragmentManager = getFragmentManager();
 
-		if(!Utils.checkSu()){
-			Utils.toast(getActivity(), "Superuser permissions were denied, restarting.");
-			Intent intent = getActivity().getIntent();
-			getActivity().finish();
-			startActivity(intent);
-		}
+	if(!Utils.checkSu()){
+		Utils.toast(getActivity(), "Superuser permissions were denied, restarting.");
+		Intent intent = getActivity().getIntent();
+		getActivity().finish();
+		startActivity(intent);
+	}
 
-		addPreferencesFromResource(R.xml.cpu_settings);
-		prefSet = getPreferenceScreen();
+	addPreferencesFromResource(R.xml.cpu_settings);
+	prefSet = getPreferenceScreen();
 
-		mPreferences = PreferenceManager
-		    .getDefaultSharedPreferences(getActivity());
+	mPreferences = PreferenceManager
+	    .getDefaultSharedPreferences(getActivity());
 	
-		CPUinit();
+	CPUinit();
 
-		mGovernor.setOnPreferenceChangeListener(this);
-		mMinFreq.setOnPreferenceChangeListener(this);
-		mMaxFreq.setOnPreferenceChangeListener(this);
-		mIOSched.setOnPreferenceChangeListener(this);
-		mSchedMC.setOnPreferenceChangeListener(this);
-		mCpuBoost.setOnPreferenceChangeListener(this);
-		mCeloxUVPanel.setOnPreferenceChangeListener(this);
-		mCpuGovSync.setOnPreferenceChangeListener(this);
+	mGovernor.setOnPreferenceChangeListener(this);
+	mMinFreq.setOnPreferenceChangeListener(this);
+	mMaxFreq.setOnPreferenceChangeListener(this);
+	mIOSched.setOnPreferenceChangeListener(this);
+	mSchedMC.setOnPreferenceChangeListener(this);
+	mCpuBoost.setOnPreferenceChangeListener(this);
+	mCeloxUVPanel.setOnPreferenceChangeListener(this);
+	mCpuGovSync.setOnPreferenceChangeListener(this);
     }
 
     @Override
