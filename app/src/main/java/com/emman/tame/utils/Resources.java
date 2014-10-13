@@ -52,7 +52,7 @@ public interface Resources {
 	public static final String SAVED_SCHED_MC = "saved_sched_mc";
 	public static final String SAVED_CPU_BOOST = "saved_cpu_boost";
 	public static final String SAVED_GPU_MAX_FREQ = "saved_gpu_max_freq";
-	public static final String SAVED_CPU_GOV_SYNC = "cpu_gov_sync";
+	public static final String SAVED_CPU_GOV_SYNC = "force_cpu_gov_sync";
 	public static final String FREQ_CUR_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq";
 	public static final String FREQINFO_CUR_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq";
 	public static final String GOV_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";

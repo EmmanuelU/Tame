@@ -287,17 +287,19 @@ public class CPUSettings extends PreferenceFragment
 	updateSharedPrefs(mPreferences, SAVED_IOSCHED, Utils.readOneLineSU(IOSCHED_LIST_FILE));
 	updateSharedPrefs(mPreferences, SAVED_SCHED_MC, Utils.readOneLineSU(SCHED_MC_FILE));
 	updateSharedPrefs(mPreferences, SAVED_CPU_BOOST, Utils.readOneLine(CPU_BOOST_FILE));
+	updateSharedPrefs(mPreferences, SAVED_CPU_GOV_SYNC, Utils.readOneLine(CPU_GOV_SYNC_FILE));
 	updateSharedPrefs(mPreferences, SAVED_CELOX_DISPLAY_UV, Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
 	CPUupdate();
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.SetSOBValue(FREQ_MIN_FILE, preferences.getString(SAVED_MIN_FREQ, "96000"));
+	Utils.SetSOBValue(FREQ_MIN_FILE, preferences.getString(SAVED_MIN_FREQ, "384000"));
 	Utils.SetSOBValue(FREQ_MAX_FILE, preferences.getString(SAVED_MAX_FREQ, "1512000"));
 	Utils.SetSOBValue(GOV_FILE, preferences.getString(SAVED_GOV, "ondemand"));
 	Utils.SetSOBValue(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, "noop deadline row cfq bfq [sio] vr zen fifo"));
 	Utils.SetSOBValue(SCHED_MC_FILE, preferences.getString(SAVED_SCHED_MC, "0"));
 	Utils.SetSOBValue(CPU_BOOST_FILE, preferences.getString(SAVED_CPU_BOOST, "1"));
+	Utils.SetSOBValue(CPU_GOV_SYNC_FILE, preferences.getString(SAVED_CPU_GOV_SYNC, "1"));
 	Utils.SetSOBValue(FILE_CELOX_DISPLAY_UV, preferences.getString(SAVED_CELOX_DISPLAY_UV, "0"));
     }
 
