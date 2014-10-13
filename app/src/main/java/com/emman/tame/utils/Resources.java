@@ -52,6 +52,7 @@ public interface Resources {
 	public static final String SAVED_SCHED_MC = "saved_sched_mc";
 	public static final String SAVED_CPU_BOOST = "saved_cpu_boost";
 	public static final String SAVED_GPU_MAX_FREQ = "saved_gpu_max_freq";
+	public static final String SAVED_CPU_GOV_SYNC = "cpu_gov_sync";
 	public static final String FREQ_CUR_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq";
 	public static final String FREQINFO_CUR_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq";
 	public static final String GOV_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
@@ -64,5 +65,6 @@ public interface Resources {
 	public static final String CPU_BOOST_FILE = "/sys/kernel/cpu_boost/enabled";
 	public static final String GPU_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpu_available_frequencies";
 	public static final String GPU_MAX_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/max_gpuclk";
+	public static final String CPU_GOV_SYNC_FILE = "/sys/kernel/cpu_gov_sync/force_cpu_gov_sync";
 
 }

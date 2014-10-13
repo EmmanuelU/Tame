@@ -54,6 +54,7 @@ public class CPUSettings extends PreferenceFragment
     private ListPreference mSchedMC;
     private ListPreference mCeloxUVPanel;
     private CheckBoxPreference mCpuBoost;
+    private CheckBoxPreference mCpuGovSync;
     public static DialogPreference mGPUDialog;
 
     PreferenceScreen prefSet;
@@ -133,12 +134,13 @@ public class CPUSettings extends PreferenceFragment
 		mSchedMC.setOnPreferenceChangeListener(this);
 		mCpuBoost.setOnPreferenceChangeListener(this);
 		mCeloxUVPanel.setOnPreferenceChangeListener(this);
+		mCpuGovSync.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
 	final String newValue;
-	if(preference == mCpuBoost) newValue = Utils.boolToString((Boolean) value);
+	if(preference == mCpuBoost || preference == mCpuGovSync) newValue = Utils.boolToString((Boolean) value);
 	else newValue = (String) value;
 	String fname = "";
 
@@ -150,6 +152,7 @@ public class CPUSettings extends PreferenceFragment
 		else if (preference == mIOSched) fname = IOSCHED_LIST_FILE;
 		else if (preference == mCpuBoost) fname = CPU_BOOST_FILE;
 		else if (preference == mCeloxUVPanel) fname = FILE_CELOX_DISPLAY_UV;
+		else if (preference == mCpuGovSync) fname = CPU_GOV_SYNC_FILE;
 		else if (preference == mSchedMC){
 			fname = SCHED_MC_FILE;
 			Utils.toast(getActivity(), "Reboot is recommended.");
@@ -193,11 +196,13 @@ public class CPUSettings extends PreferenceFragment
 	mCpuBoost = (CheckBoxPreference) prefSet.findPreference("cpu_boost");
 	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");
 	mGPUDialog = (DialogPreference) prefSet.findPreference("gpu_dialog");
+	mCpuGovSync = (CheckBoxPreference) prefSet.findPreference("cpu_gov_sync");
 
 	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
 	if(!Utils.fileExists(CPU_BOOST_FILE)) mCpuBoost.setEnabled(false);
 	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)) mCeloxUVPanel.setEnabled(false);
 	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
+	if(!Utils.fileExists(CPU_GOV_SYNC_FILE)) mCpuGovSync.setEnabled(false);
 	if(!Utils.fileExists(FREQ_CUR_FILE)){
 		mGovernor.setEnabled(false);
 		mCurFreq.setEnabled(false);
@@ -250,6 +255,8 @@ public class CPUSettings extends PreferenceFragment
 	if(mGPUDialog.isEnabled()) mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
 
 	mCpuBoost.setChecked(Utils.stringToBool(Utils.readOneLine(CPU_BOOST_FILE)));
+
+	mCpuGovSync.setChecked(Utils.stringToBool(Utils.readOneLine(CPU_GOV_SYNC_FILE)));
 
     }
 

@@ -59,4 +59,10 @@
 	android:entryValues="@array/celox_uv_array_values"
     />
 
+    <CheckBoxPreference
+	android:title="Sync CPU Policies"
+	android:summary="Unify all CPU settings across cores."
+	android:key="cpu_gov_sync"
+    />
+
 </PreferenceScreen>
