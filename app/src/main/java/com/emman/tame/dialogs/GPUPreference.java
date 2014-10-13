@@ -92,7 +92,7 @@ public class GPUPreference extends DialogPreference
     }
 
     private boolean initiateData(){
-	if(!Utils.fileExists(FILE_S2W_TOGGLE)) return false;
+	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) return false;
 
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());

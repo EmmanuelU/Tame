@@ -189,21 +189,7 @@ public static boolean isNumeric(String str)
 
     public static String readOneLineSU(String fname) {
 	if(!fileExists(fname)) return "";
-        BufferedReader br;
-        String line = null;
-        try {
-            br = new BufferedReader(new FileReader(fname), 512);
-            try {
-                line = br.readLine();
-            } finally {
-                br.close();
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "IO Exception when reading sys file", e);
-            // attempt to do magic!
-            return readFileViaShell(fname, true);
-        }
-        return line;
+	return readFileViaShell(fname, true);
     }
 
     public static boolean fileIsReadable(String fname) {
