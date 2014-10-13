@@ -104,7 +104,7 @@ public class SysFSExplorer extends ListFragment
 			final String mEditFilePath = o.getPath();
 			String[] mTitle = mEditFilePath.split("/");
 			dialog.setTitle("File: " + mTitle[mTitle.length - 1]);
-			mEditFile.setText(Utils.readOneLineSU(o.getPath()));
+			mEditFile.setText(Utils.readOneLine(o.getPath()));
 			if(Utils.isNumeric(mEditFile.getText().toString())) mEditFile.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 			mEditFile.setSelection(mEditFile.getText().length());
 			mSaveButton.setOnClickListener(new OnClickListener() {

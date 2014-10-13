@@ -182,14 +182,9 @@ public static boolean isNumeric(String str)
         } catch (Exception e) {
             Log.e(TAG, "IO Exception when reading sys file", e);
             // attempt to do magic!
-            return readFileViaShell(fname, false);
+            return readFileViaShell(fname, true);
         }
         return line;
-    }
-
-    public static String readOneLineSU(String fname) {
-	if(!fileExists(fname)) return "";
-	return readFileViaShell(fname, true);
     }
 
     public static boolean fileIsReadable(String fname) {

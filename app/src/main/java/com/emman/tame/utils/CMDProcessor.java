@@ -13,6 +13,7 @@ public class CMDProcessor {
     private Boolean can_su;
     public SH sh;
     public SH su;
+    public Process runningShell;
 
     public CMDProcessor() {
         sh = new SH("sh");
@@ -79,20 +80,19 @@ public class CMDProcessor {
         }
 
         public Process run(final String s) {
-            Process process = null;
             try {
-                process = Runtime.getRuntime().exec(SHELL);
+                if(runningShell == null) runningShell = Runtime.getRuntime().exec(SHELL);
                 final DataOutputStream toProcess = new DataOutputStream(
-                        process.getOutputStream());
+                        runningShell.getOutputStream());
                 toProcess.writeBytes("exec " + s + "\n");
                 toProcess.flush();
             } catch (final Exception e) {
                 Log.e(TAG,
                         "Exception while trying to run: '" + s + "' "
                                 + e.getMessage());
-                process = null;
+                runningShell = null;
             }
-            return process;
+            return runningShell;
         }
 
         public CommandResult runWaitFor(final String s) {

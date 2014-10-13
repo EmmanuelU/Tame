@@ -209,36 +209,36 @@ public class CPUSettings extends PreferenceFragment
 		mMinFreq.setEnabled(false);
 		mMaxFreq.setEnabled(false);
 	} else {
-		availableFrequenciesLine = Utils.readOneLineSU(FREQ_LIST_FILE);
+		availableFrequenciesLine = Utils.readOneLine(FREQ_LIST_FILE);
 		availableFrequencies = availableFrequenciesLine.split(" ");
 		frequencies = new String[availableFrequencies.length];
 		for (int i = 0; i < frequencies.length; i++) frequencies[i] = Utils.toMHz(availableFrequencies[i]);
 
-		availableGovernorsLine = Utils.readOneLineSU(GOV_LIST_FILE);
+		availableGovernorsLine = Utils.readOneLine(GOV_LIST_FILE);
 
 		availableGovernors = availableGovernorsLine.split(" ");
 
 		mGovernor.setEntryValues(availableGovernors);
 		mGovernor.setEntries(availableGovernors);
-		mGovernor.setValue(Utils.readOneLineSU(GOV_FILE));
-		mGovernor.setSummary(String.format("%S", Utils.readOneLineSU(GOV_FILE)));
+		mGovernor.setValue(Utils.readOneLine(GOV_FILE));
+		mGovernor.setSummary(String.format("%S", Utils.readOneLine(GOV_FILE)));
 
 		mMaxFreq.setEntryValues(availableFrequencies);
 		mMaxFreq.setEntries(frequencies);
-		mMaxFreq.setValue(Utils.readOneLineSU(FREQ_MAX_FILE));
-		mMaxFreq.setSummary(String.format("%s", Utils.toMHz(Utils.readOneLineSU(FREQ_MAX_FILE))));
+		mMaxFreq.setValue(Utils.readOneLine(FREQ_MAX_FILE));
+		mMaxFreq.setSummary(String.format("%s", Utils.toMHz(Utils.readOneLine(FREQ_MAX_FILE))));
 
 		mMinFreq.setEntryValues(availableFrequencies);
 		mMinFreq.setEntries(frequencies);
-		mMinFreq.setValue(Utils.readOneLineSU(FREQ_MIN_FILE));
-		mMinFreq.setSummary(String.format("%s", Utils.toMHz(Utils.readOneLineSU(FREQ_MIN_FILE))));
+		mMinFreq.setValue(Utils.readOneLine(FREQ_MIN_FILE));
+		mMinFreq.setSummary(String.format("%s", Utils.toMHz(Utils.readOneLine(FREQ_MIN_FILE))));
 
-		availableIOSchedulersLine = Utils.readOneLineSU(IOSCHED_LIST_FILE);
+		availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
 		availableIOSchedulers = availableIOSchedulersLine.replace("[", "").replace("]", "").split(" ");
 		bropen = availableIOSchedulersLine.indexOf("[");
 		brclose = availableIOSchedulersLine.lastIndexOf("]");
 		if (bropen >= 0 && brclose >= 0) currentIOScheduler = availableIOSchedulersLine.substring(bropen + 1, brclose);
-		mCurFreq.setSummary("Core 1: " + Utils.toMHz(Utils.readOneLineSU(FREQ_CUR_FILE)));
+		mCurFreq.setSummary("Core 1: " + Utils.toMHz(Utils.readOneLine(FREQ_CUR_FILE)));
 		mCurCPUThread.start();
 
 	}
@@ -248,7 +248,7 @@ public class CPUSettings extends PreferenceFragment
 	if (currentIOScheduler != null) mIOSched.setValue(currentIOScheduler);
 	mIOSched.setSummary(String.format("%S", currentIOScheduler));
 
-	mSchedMC.setValue(Utils.readOneLineSU(SCHED_MC_FILE));
+	mSchedMC.setValue(Utils.readOneLine(SCHED_MC_FILE));
 
 	mCeloxUVPanel.setValue(Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
 
@@ -262,15 +262,15 @@ public class CPUSettings extends PreferenceFragment
 
     private void CPUupdate(){
 	if(Utils.fileExists(FREQ_CUR_FILE)){
-		availableIOSchedulersLine = Utils.readOneLineSU(IOSCHED_LIST_FILE);
+		availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
 		availableIOSchedulers = availableIOSchedulersLine.replace("[", "").replace("]", "").split(" ");
 		bropen = availableIOSchedulersLine.indexOf("[");
 		brclose = availableIOSchedulersLine.lastIndexOf("]");
 		if (bropen >= 0 && brclose >= 0) currentIOScheduler = availableIOSchedulersLine.substring(bropen + 1, brclose);
 
-		mGovernor.setSummary(String.format("%S", Utils.readOneLineSU(GOV_FILE)));
-		mMaxFreq.setSummary(String.format("%s", Utils.toMHz(Utils.readOneLineSU(FREQ_MAX_FILE))));
-		mMinFreq.setSummary(String.format("%s", Utils.toMHz(Utils.readOneLineSU(FREQ_MIN_FILE))));
+		mGovernor.setSummary(String.format("%S", Utils.readOneLine(GOV_FILE)));
+		mMaxFreq.setSummary(String.format("%s", Utils.toMHz(Utils.readOneLine(FREQ_MAX_FILE))));
+		mMinFreq.setSummary(String.format("%s", Utils.toMHz(Utils.readOneLine(FREQ_MIN_FILE))));
 		mIOSched.setSummary(String.format("%S", currentIOScheduler));
 	}
 	GPUupdate();
@@ -281,11 +281,11 @@ public class CPUSettings extends PreferenceFragment
     }
 
     private void setData(){
-	updateSharedPrefs(mPreferences, SAVED_MIN_FREQ, Utils.readOneLineSU(FREQ_MIN_FILE));
-	updateSharedPrefs(mPreferences, SAVED_MAX_FREQ, Utils.readOneLineSU(FREQ_MAX_FILE));
-	updateSharedPrefs(mPreferences, SAVED_GOV, Utils.readOneLineSU(GOV_FILE));
-	updateSharedPrefs(mPreferences, SAVED_IOSCHED, Utils.readOneLineSU(IOSCHED_LIST_FILE));
-	updateSharedPrefs(mPreferences, SAVED_SCHED_MC, Utils.readOneLineSU(SCHED_MC_FILE));
+	updateSharedPrefs(mPreferences, SAVED_MIN_FREQ, Utils.readOneLine(FREQ_MIN_FILE));
+	updateSharedPrefs(mPreferences, SAVED_MAX_FREQ, Utils.readOneLine(FREQ_MAX_FILE));
+	updateSharedPrefs(mPreferences, SAVED_GOV, Utils.readOneLine(GOV_FILE));
+	updateSharedPrefs(mPreferences, SAVED_IOSCHED, Utils.readOneLine(IOSCHED_LIST_FILE));
+	updateSharedPrefs(mPreferences, SAVED_SCHED_MC, Utils.readOneLine(SCHED_MC_FILE));
 	updateSharedPrefs(mPreferences, SAVED_CPU_BOOST, Utils.readOneLine(CPU_BOOST_FILE));
 	updateSharedPrefs(mPreferences, SAVED_CPU_GOV_SYNC, Utils.readOneLine(CPU_GOV_SYNC_FILE));
 	updateSharedPrefs(mPreferences, SAVED_CELOX_DISPLAY_UV, Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
