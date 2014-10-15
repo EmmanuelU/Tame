@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_centerHorizontal="true"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Governor"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cpu_gov"
+	android:layout_marginLeft="2dp"/>
+
+	<TableRow
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_horizontal">
+
+	    <TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Maximum Frequency"
+		android:layout_marginRight="5dp"/>
+
+	    <TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Minimum Frequency"
+		android:layout_marginLeft="5dp"/>
+
+	</TableRow>
+
+	<TableRow
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_horizontal">
+
+	    <Spinner
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/cpu_max_freq"
+		android:layout_marginRight="30dp"/>
+
+	    <Spinner
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/cpu_min_freq"
+		android:layout_marginLeft="30dp"/>
+
+	</TableRow>
+
+
+</LinearLayout>

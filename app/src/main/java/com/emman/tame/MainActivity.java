@@ -42,6 +42,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.emman.tame.dialogs.BLNPreference;
+import com.emman.tame.dialogs.CPUPolicyPreference;
 import com.emman.tame.dialogs.GPUPreference;
 import com.emman.tame.dialogs.MPDecPreference;
 import com.emman.tame.dialogs.S2WPreference;
@@ -249,6 +250,7 @@ public class MainActivity extends Activity
 	MPDecPreference.SetOnBootData(preferences);
 	S2WPreference.SetOnBootData(preferences);
 	GPUPreference.SetOnBootData(preferences);
+	CPUPolicyPreference.SetOnBootData(preferences);
 	Utils.CMD("sh " + FILE_SET_ON_BOOT, true);
     }
 

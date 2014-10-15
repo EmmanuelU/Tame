@@ -82,7 +82,15 @@ public class Utils
     }
 
     public static String writeSYSValue(String fname, String value) {
-        if(fileExists(fname)) new CMDProcessor().su.runWaitFor("busybox echo " + value + " > " + fname);
+        if(!fileExists(fname)) return value;
+        try {
+            FileOutputStream fos = new FileOutputStream(new File(fname));
+            fos.write(value.getBytes());
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+		new CMDProcessor().su.runWaitFor("busybox echo " + value + " > " + fname);
+        }
 	return value;
     }
 
@@ -386,6 +394,11 @@ public static boolean isNumeric(String str)
 		if(spinner.getItemAtPosition(i).equals(value)) index = i;
 	}
 	return index;
+    }
+
+    public static boolean spinnerValueChanged(Spinner spinner, String value, int highlighted){
+	int selection = Utils.getSpinnerIndex(spinner, value);
+	return (selection == highlighted);
     }
 
     public static int getArrayIndex(String[] arr, String targetValue) {

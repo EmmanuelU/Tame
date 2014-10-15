@@ -7,22 +7,10 @@
         android:title="Current Frequency"
         android:selectable="false" />
 
-    <ListPreference
-	android:title="Governor"
-	android:summary=""
-	android:key="governor"
-    />
-
-    <ListPreference
-	android:title="Maximum Frequency"
-	android:summary=""
-	android:key="max_freq"
-    />
-
-    <ListPreference
-	android:title="Minimum Frequency"
-	android:summary=""
-	android:key="min_freq"
+    <com.emman.tame.dialogs.CPUPolicyPreference
+	android:key="cpupolicy_dialog"
+	android:title="Processor Policy"
+	android:positiveButtonText="Save"
     />
 
     <ListPreference
@@ -34,7 +22,7 @@
     <com.emman.tame.dialogs.GPUPreference
 	android:key="gpu_dialog"
 	android:title="GPU Control"
-	android:positiveButtonText="OK"
+	android:positiveButtonText="Save"
     />
 
     <ListPreference
