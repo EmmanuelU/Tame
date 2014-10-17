@@ -101,7 +101,7 @@ public class CPUPolicyPreference extends DialogPreference
 
 	list = new ArrayList<String>(Arrays.asList(Utils.readOneLine(GOV_LIST_FILE).split("\\s+")));
 	dataAdapter = new ArrayAdapter<String>(getContext(),
-		android.R.layout.simple_spinner_item, list);
+		R.layout.bigspinlayout, list);
 	mCpuGovernor.setAdapter(dataAdapter);
 
 	List<String> CpuNames = new ArrayList<String>();
@@ -112,7 +112,7 @@ public class CPUPolicyPreference extends DialogPreference
 		number = number + 1;
 	}
 	dataAdapter = new ArrayAdapter<String>(getContext(),
-		android.R.layout.simple_spinner_item, CpuNames);
+		R.layout.biggerspinlayout, CpuNames);
 	mCpuCore.setAdapter(dataAdapter);
 
 	mCpuCore.setOnItemSelectedListener(this);
