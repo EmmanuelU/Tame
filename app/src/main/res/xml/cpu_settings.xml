@@ -8,9 +8,15 @@
         android:selectable="false" />
 
     <com.emman.tame.dialogs.CPUPolicyPreference
+	android:title="Processor Policies"
 	android:key="cpupolicy_dialog"
-	android:title="Processor Policy"
 	android:positiveButtonText="Save"
+    />
+
+    <CheckBoxPreference
+	android:title="Sync Processor Policies"
+	android:summary="Unify CPU settings across all cores."
+	android:key="cpu_gov_sync"
     />
 
     <ListPreference
@@ -45,12 +51,6 @@
 	android:key="celox_uv_panel"
 	android:entries="@array/celox_uv_array_entries"
 	android:entryValues="@array/celox_uv_array_values"
-    />
-
-    <CheckBoxPreference
-	android:title="Sync CPU Policies"
-	android:summary="Unify all CPU settings across cores."
-	android:key="cpu_gov_sync"
     />
 
 </PreferenceScreen>

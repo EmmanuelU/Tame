@@ -45,6 +45,7 @@ import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
@@ -103,18 +104,39 @@ public class Utils
 	return value;
     }
 
-public static boolean isNumeric(String str)  
-{  
-  try  
-  {  
-    double d = Double.parseDouble(str);  
-  }  
-  catch(NumberFormatException nfe)  
-  {  
-    return false;  
-  }  
-  return true;  
-}
+    public static String toCPU(String value, int cpu) {
+	return value.replace("cpu0", "cpu" + cpu);
+    }
+
+    public static boolean isNumeric(String str){
+	try{
+		double d = Double.parseDouble(str);
+	}
+	catch(NumberFormatException nfe){
+		return false;
+	}
+	return true;  
+    }
+
+   public static int getNumOfCpus() {
+        int numOfCpu = 1;
+        String numOfCpus = readOneLine(NUM_OF_CPUS_PATH);
+        String[] cpuCount = numOfCpus.split("-");
+        if (cpuCount.length > 1) {
+            try {
+                int cpuStart = Integer.parseInt(cpuCount[0]);
+                int cpuEnd = Integer.parseInt(cpuCount[1]);
+
+                numOfCpu = cpuEnd - cpuStart + 1;
+
+                if (numOfCpu < 0)
+                    numOfCpu = 1;
+            } catch (NumberFormatException ex) {
+                numOfCpu = 1;
+            }
+        }
+        return numOfCpu;
+    }
 
     /**
      * Write the "color value" to the specified file. The value is scaled from
