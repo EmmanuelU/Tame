@@ -19,6 +19,7 @@ public interface Resources {
 
 	public static final String PATH_TAME_LOCAL = "/sdcard/Tame/";
 	public static final String FILE_SET_ON_BOOT = PATH_TAME_LOCAL + "Tame-SOB.sh";
+	public static final String FILE_SYS_QUEUE = PATH_TAME_LOCAL + "Tame-SYSQueue.sh";
 	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP = PATH_TAME_LOCAL + "DisableTame_S-O-B.zip";
 	public static final String FILE_DISABLE_SET_ON_BOOT = "/sdcard/WildNFree.tame";
 	public static final String SET_ON_BOOT = "set_on_boot";

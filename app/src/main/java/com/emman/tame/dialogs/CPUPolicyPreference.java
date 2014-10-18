@@ -169,9 +169,10 @@ public class CPUPolicyPreference extends DialogPreference
 	mCore[mCpu].governor = mCpuGovernor.getSelectedItem().toString();
 	mCore[mCpu].min = mCpuFreqList[(int) mCpuMinFreq.getSelectedItemId()];
 	mCore[mCpu].max = mCpuFreqList[(int) mCpuMaxFreq.getSelectedItemId()];
-	Utils.writeSYSValue(Utils.toCPU(GOV_FILE, mCpu), mCore[mCpu].governor);
-	Utils.writeSYSValue(Utils.toCPU(FREQ_MIN_FILE, mCpu), mCore[mCpu].min);
-	Utils.writeSYSValue(Utils.toCPU(FREQ_MAX_FILE, mCpu), mCore[mCpu].max);
+	Utils.queueSYSValue(Utils.toCPU(GOV_FILE, mCpu), mCore[mCpu].governor);
+	Utils.queueSYSValue(Utils.toCPU(FREQ_MIN_FILE, mCpu), mCore[mCpu].min);
+	Utils.queueSYSValue(Utils.toCPU(FREQ_MAX_FILE, mCpu), mCore[mCpu].max);
+	Utils.launchSYSQueue();
 
 	governors = mCore[0].governor;
 	minfreqs = mCore[0].min;

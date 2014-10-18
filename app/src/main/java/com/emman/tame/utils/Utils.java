@@ -95,13 +95,39 @@ public class Utils
 	return value;
     }
 
+    public static String queueSYSValue(String fname, String value) {
+        if(!fileExists(FILE_SYS_QUEUE)){ 
+		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SYS_QUEUE);
+		appendValue(FILE_SYS_QUEUE, "#!/bin/sh");
+	}
+	if(!fileExists(fname)) return value;
+	appendValue(FILE_SYS_QUEUE, "echo \"" + value + "\" > " + fname);
+	return value;
+    }
+
+    public static void launchSYSQueue() {
+	Utils.CMD("sh " + FILE_SYS_QUEUE, true);
+	Utils.CMD("rm -rf " + FILE_SYS_QUEUE, false);
+    }
+
     public static String SetSOBValue(String fname, String value) {
         if(!fileExists(FILE_SET_ON_BOOT)){ 
 		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SET_ON_BOOT);
 		appendValue(FILE_SET_ON_BOOT, "#!/bin/sh");
 	}
+	if(!fileExists(fname)) return value;
 	appendValue(FILE_SET_ON_BOOT, "echo \"" + value + "\" > " + fname);
 	return value;
+    }
+
+    public static void writeLocalFile(Context context, String filename){
+	try {
+		FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+		outputStream.write(filename.getBytes());
+		outputStream.close();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
     }
 
     public static String toCPU(String value, int cpu) {
