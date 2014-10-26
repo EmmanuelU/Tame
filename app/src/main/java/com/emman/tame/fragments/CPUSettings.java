@@ -78,15 +78,10 @@ public class CPUSettings extends PreferenceFragment
             try {
 		while (!mInterrupt) {
 			sleep(500);
-			String cpu0, cpu1;
+			String cpu0;
 			cpu0 = Utils.readOneLine(FREQ_CUR_FILE);
-			cpu1 = Utils.readOneLine(FREQ_CUR_FILE.replace("cpu0", "cpu1"));
 			cpu0 = String.format("%s", Utils.toMHz(cpu0));
-			sleep(1);
-			if(cpu1.equals("")) cpu1 = "Offline";
-			else cpu1 = String.format("%s", Utils.toMHz(cpu1));
-			final String curFreq = cpu0 + " " + cpu1;
-			if (curFreq != null) mCurCPUHandler.sendMessage(mCurCPUHandler.obtainMessage(0, curFreq));
+			if (cpu0 != null) mCurCPUHandler.sendMessage(mCurCPUHandler.obtainMessage(0, cpu0));
 		}
             } catch (InterruptedException e) {
             }
@@ -97,8 +92,8 @@ public class CPUSettings extends PreferenceFragment
 
     private Handler mCurCPUHandler = new Handler() {
         public void handleMessage(Message msg) {
-		String[] cpu = ((String) msg.obj).split("\\s+");
-		mCurFreq.setSummary("Core 1: " + cpu[0] + "		Core 2: " + cpu[1]);
+		String freq = ((String) msg.obj);
+		mCurFreq.setSummary("Primary Core: " + freq);
         }
     };
 

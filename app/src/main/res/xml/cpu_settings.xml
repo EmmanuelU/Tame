@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
+    <com.emman.tame.dialogs.CPUStatsPreference
         android:key="cur_freq"
-        style="?android:preferenceInformationStyle"
-        android:title="Current Frequency"
-        android:selectable="false" />
+	android:positiveButtonText="Go Back"
+        android:title="Processor Statistics"/>
 
     <com.emman.tame.dialogs.CPUPolicyPreference
 	android:title="Processor Policies"

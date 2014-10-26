@@ -227,7 +227,7 @@ public class Utils
     public static String readOneLine(String fname) {
 	if(!fileExists(fname)) return "";
         BufferedReader br;
-        String line = null;
+        String line = "";
         try {
             br = new BufferedReader(new FileReader(fname), 512);
             try {
