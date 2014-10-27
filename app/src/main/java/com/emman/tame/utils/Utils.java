@@ -238,7 +238,7 @@ public class Utils
         } catch (Exception e) {
             Log.e(TAG, "IO Exception when reading sys file", e);
             // attempt to do magic!
-            return readFileViaShell(fname, true);
+            return (readFileViaShell(fname, false) == null) ? readFileViaShell(fname, true) : readFileViaShell(fname, false);
         }
         return line;
     }
@@ -248,14 +248,12 @@ public class Utils
     }
 
     public static boolean fileIsWritable(String fname) {
-        return new File(fname).canWrite();
+        return new File(fname).canWrite(); //only returns true if world-writeable
     }
 
     public static boolean stringToBool(String s) {
 	if (s.equals("")) return false;
-	else if (s.equals("1")) return true;
-	else if (s.equals("0")) return false;
-	throw new IllegalArgumentException(s+" is not a bool. Only 1 and 0 are.");
+	else return (s.equals("1"));
     }
 
     public static String boolToString(boolean b) {

@@ -89,7 +89,7 @@ public class CPUPolicyPreference extends DialogPreference
 	super.onBindDialogView(view);
 	mView = view;
 
-	updateData();
+	if(!initiateData()) return;
 
 	list = new ArrayList<String>(Arrays.asList(Utils.getFileFreqToMhz(FREQ_LIST_FILE, 1000)));
 	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
@@ -125,7 +125,6 @@ public class CPUPolicyPreference extends DialogPreference
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
-	else updateData();
     }
 
     @Override
@@ -152,28 +151,37 @@ public class CPUPolicyPreference extends DialogPreference
 	mCpuFreqList = Utils.readOneLine(FREQ_LIST_FILE).split("\\s+");
 	mCpuGovList = Utils.readOneLine(GOV_LIST_FILE).split("\\s+");
 
+	return true;
+    }
+
+    private void setData(){
+	if(!initiateData()) return;
+
 	for(int i = 0; i < Utils.getNumOfCpus();){
-		Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
+		if(i > 0) Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
 		mCore[i] = new CpuPolicy();
 		mCore[i].governor = Utils.readOneLine(Utils.toCPU(GOV_FILE, i));
 		mCore[i].min = Utils.readOneLine(Utils.toCPU(FREQ_MIN_FILE, i));
 		mCore[i].max = Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, i));
 		i++;
 	}
-	return true;
-    }
 
-    private void setData(){
-	if(!initiateData()) return;
 	String governors, minfreqs, maxfreqs;
 	mCore[mCpu].governor = mCpuGovernor.getSelectedItem().toString();
 	mCore[mCpu].min = mCpuFreqList[(int) mCpuMinFreq.getSelectedItemId()];
 	mCore[mCpu].max = mCpuFreqList[(int) mCpuMaxFreq.getSelectedItemId()];
+	for(int i = 0; i < Utils.getNumOfCpus();){
+		if(i != mCpu){ //wait to apply new value last
+			Utils.queueSYSValue(Utils.toCPU(GOV_FILE, i), mCore[i].governor);
+			Utils.queueSYSValue(Utils.toCPU(FREQ_MIN_FILE, i), mCore[i].min);
+			Utils.queueSYSValue(Utils.toCPU(FREQ_MAX_FILE, i), mCore[i].max);
+		}
+		i++;
+	}
 	Utils.queueSYSValue(Utils.toCPU(GOV_FILE, mCpu), mCore[mCpu].governor);
 	Utils.queueSYSValue(Utils.toCPU(FREQ_MIN_FILE, mCpu), mCore[mCpu].min);
 	Utils.queueSYSValue(Utils.toCPU(FREQ_MAX_FILE, mCpu), mCore[mCpu].max);
 	Utils.launchSYSQueue();
-
 	governors = mCore[0].governor;
 	minfreqs = mCore[0].min;
 	maxfreqs = mCore[0].max;
@@ -186,23 +194,14 @@ public class CPUPolicyPreference extends DialogPreference
 	updateSharedPrefs(mPreferences, SAVED_GOV, governors);
 	updateSharedPrefs(mPreferences, SAVED_MIN_FREQ, minfreqs);
 	updateSharedPrefs(mPreferences, SAVED_MAX_FREQ, maxfreqs);
-	
     }
 
     private void updateData(){
 	if(!initiateData()) return;
 
-	updateDependencies();
-
 	mCpuMaxFreq.setSelection(Utils.getArrayIndex(mCpuFreqList, Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, mCpu))));
 	mCpuMinFreq.setSelection(Utils.getArrayIndex(mCpuFreqList, Utils.readOneLine(Utils.toCPU(FREQ_MIN_FILE, mCpu))));
 	mCpuGovernor.setSelection(Utils.getArrayIndex(mCpuGovList, Utils.readOneLine(Utils.toCPU(GOV_FILE, mCpu))));
-    }
-
-    private void updateDependencies(){
-	if(!initiateData()) return;
-	if(!Utils.stringToBool(Utils.readOneLine(Utils.toCPU(CPU_ONLINE, mCpu))) && mCpu > 0) mCpuCore.setSelection(0);
-	
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
