@@ -105,11 +105,15 @@ public class CPUPolicyPreference extends DialogPreference
 	mCpuGovernor.setAdapter(dataAdapter);
 
 	List<String> CpuNames = new ArrayList<String>();
-	int number = 1;
-	while(number <= Utils.getNumOfCpus()){
-		if(!Utils.stringToBool(Utils.readOneLine(Utils.toCPU(CPU_ONLINE, number-1))) && number > 1) CpuNames.add("Core: " + number + " (offline)");
-		else CpuNames.add("Core:    " + number);
-		number = number + 1;
+	
+	for(int i = 0; i < Utils.getNumOfCpus();){
+		if(i > 0){
+			Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
+			if(!Utils.stringToBool(Utils.readOneLine(Utils.toCPU(CPU_ONLINE, i)))) CpuNames.add("Core: " + (i+1) + " (offline)");
+			else CpuNames.add("Core:    " + (i+1));
+		}
+		else CpuNames.add("Primary Core");
+		i++;
 	}
 	dataAdapter = new ArrayAdapter<String>(getContext(),
 		R.layout.biggerspinlayout, CpuNames);
@@ -129,6 +133,12 @@ public class CPUPolicyPreference extends DialogPreference
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+	if(!initiateData()) return;
+
+	mCpuMinFreq.setEnabled(false);
+	mCpuMaxFreq.setEnabled(false);
+	mCpuGovernor.setEnabled(false);
+
 	mCpu = pos;
 	updateData();
     }
@@ -199,9 +209,13 @@ public class CPUPolicyPreference extends DialogPreference
     private void updateData(){
 	if(!initiateData()) return;
 
-	mCpuMaxFreq.setSelection(Utils.getArrayIndex(mCpuFreqList, Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, mCpu))));
 	mCpuMinFreq.setSelection(Utils.getArrayIndex(mCpuFreqList, Utils.readOneLine(Utils.toCPU(FREQ_MIN_FILE, mCpu))));
+	mCpuMaxFreq.setSelection(Utils.getArrayIndex(mCpuFreqList, Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, mCpu))));
 	mCpuGovernor.setSelection(Utils.getArrayIndex(mCpuGovList, Utils.readOneLine(Utils.toCPU(GOV_FILE, mCpu))));
+
+	mCpuMinFreq.setEnabled(true);
+	mCpuMaxFreq.setEnabled(true);
+	mCpuGovernor.setEnabled(true);
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
