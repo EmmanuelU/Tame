@@ -19,6 +19,13 @@
     />
 
     <ListPreference
+	android:title="Processor Voltage"
+	android:key="vdd"
+	android:entries="@array/vdd_array_entries"
+	android:entryValues="@array/vdd_array_values"
+    />
+
+    <ListPreference
 	android:title="IO Scheduler"
 	android:summary=""
 	android:key="iosched"

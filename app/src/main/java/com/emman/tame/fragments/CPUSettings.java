@@ -53,9 +53,12 @@ public class CPUSettings extends PreferenceFragment
     private ListPreference mIOSched;
     private ListPreference mSchedMC;
     private ListPreference mCeloxUVPanel;
+    private ListPreference mVDD;
     private CheckBoxPreference mCpuBoost;
     private CheckBoxPreference mCpuGovSync;
     public static DialogPreference mGPUDialog;
+
+    String mVDDLevel;
 
     PreferenceScreen prefSet;
 
@@ -122,6 +125,7 @@ public class CPUSettings extends PreferenceFragment
 	mCpuBoost.setOnPreferenceChangeListener(this);
 	mCeloxUVPanel.setOnPreferenceChangeListener(this);
 	mCpuGovSync.setOnPreferenceChangeListener(this);
+	mVDD.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -140,6 +144,16 @@ public class CPUSettings extends PreferenceFragment
 		else if (preference == mSchedMC){
 			fname = SCHED_MC_FILE;
 			Utils.toast(getActivity(), "Reboot is recommended.");
+		}
+		else if (preference == mVDD){
+			String undovdd = mVDDLevel;
+			fname = VDD_LEVELS_FILE;
+
+			if((undovdd.substring(0, 1)).equals("+")) undovdd = "-" + undovdd.substring(1);
+			else if((undovdd.substring(0, 1)).equals("-")) undovdd = "+" + undovdd.substring(1);
+			else undovdd = "";
+			mVDDLevel = newValue;
+			Utils.writeSYSValue(fname, undovdd);
 		}
 	
 		Utils.writeSYSValue(fname, newValue);
@@ -175,12 +189,14 @@ public class CPUSettings extends PreferenceFragment
 	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");
 	mGPUDialog = (DialogPreference) prefSet.findPreference("gpu_dialog");
 	mCpuGovSync = (CheckBoxPreference) prefSet.findPreference("cpu_gov_sync");
+	mVDD = (ListPreference) prefSet.findPreference("vdd");
 
 	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
 	if(!Utils.fileExists(CPU_BOOST_FILE)) mCpuBoost.setEnabled(false);
 	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)) mCeloxUVPanel.setEnabled(false);
 	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
 	if(!Utils.fileExists(CPU_GOV_SYNC_FILE)) mCpuGovSync.setEnabled(false);
+	if(!Utils.fileExists(VDD_LEVELS_FILE)) mVDD.setEnabled(false);
 
 	availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
 	availableIOSchedulers = availableIOSchedulersLine.replace("[", "").replace("]", "").split(" ");
@@ -205,6 +221,12 @@ public class CPUSettings extends PreferenceFragment
 
 	mCpuGovSync.setChecked(Utils.stringToBool(Utils.readOneLine(CPU_GOV_SYNC_FILE)));
 
+	mVDDLevel = mPreferences.getString(SAVED_VDD_LEVELS, "0");
+
+	mVDD.setValue(mVDDLevel);
+	if(mVDDLevel.equals("0")) mVDD.setSummary("Default Voltage");
+	else mVDD.setSummary("Voltage: " + (Integer.parseInt(mVDDLevel) / 1000) + "mV");
+
     }
 
     private void CPUupdate(){
@@ -217,6 +239,8 @@ public class CPUSettings extends PreferenceFragment
 
 		mIOSched.setSummary(String.format("%S", currentIOScheduler));
 	}
+	if(mVDDLevel.equals("0")) mVDD.setSummary("Default Voltage");
+	else mVDD.setSummary("Voltage: " + (Integer.parseInt(mVDDLevel) / 1000) + "mV");
 	GPUupdate();
     }
 
@@ -230,6 +254,8 @@ public class CPUSettings extends PreferenceFragment
 	updateSharedPrefs(mPreferences, SAVED_CPU_BOOST, Utils.readOneLine(CPU_BOOST_FILE));
 	updateSharedPrefs(mPreferences, SAVED_CPU_GOV_SYNC, Utils.readOneLine(CPU_GOV_SYNC_FILE));
 	updateSharedPrefs(mPreferences, SAVED_CELOX_DISPLAY_UV, Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
+	updateSharedPrefs(mPreferences, SAVED_VDD_LEVELS, mVDDLevel);
+	
 	CPUupdate();
     }
 
@@ -239,6 +265,7 @@ public class CPUSettings extends PreferenceFragment
 	Utils.SetSOBValue(SCHED_MC_FILE, preferences.getString(SAVED_SCHED_MC, "0"));
 	Utils.SetSOBValue(CPU_BOOST_FILE, preferences.getString(SAVED_CPU_BOOST, "1"));
 	Utils.SetSOBValue(FILE_CELOX_DISPLAY_UV, preferences.getString(SAVED_CELOX_DISPLAY_UV, "0"));
+	Utils.SetSOBValue(VDD_LEVELS_FILE, preferences.getString(SAVED_VDD_LEVELS, "0"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

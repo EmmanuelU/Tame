@@ -33,5 +33,21 @@
 	<item>500</item>
     </string-array>
 
+    <string-array name="vdd_array_entries">
+	<item>Undervolt: -50mV</item>
+	<item>Undervolt: -25mV</item>
+	<item>Default</item>
+	<item>Overvolt: +25mV</item>
+	<item>Overvolt: +50mV</item>
+    </string-array>
+
+    <string-array name="vdd_array_values">
+	<item>-50000</item>
+	<item>-25000</item>
+	<item>0</item>
+	<item>+25000</item>
+	<item>+50000</item>
+    </string-array>
+
 
 </resources>
