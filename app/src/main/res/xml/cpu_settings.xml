@@ -25,10 +25,10 @@
 	android:entryValues="@array/vdd_array_values"
     />
 
-    <ListPreference
-	android:title="IO Scheduler"
-	android:summary=""
+    <com.emman.tame.dialogs.IOPreference
 	android:key="iosched"
+	android:title="I/O Control"
+	android:positiveButtonText="Save"
     />
 
     <com.emman.tame.dialogs.GPUPreference

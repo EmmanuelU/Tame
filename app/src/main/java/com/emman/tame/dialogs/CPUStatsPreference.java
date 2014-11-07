@@ -59,6 +59,7 @@ public class CPUStatsPreference extends DialogPreference
     private View mView;
 
     private TextView mCpuFreqs;
+    private TextView mGpuFreq;
 
     private SharedPreferences mPreferences;
 
@@ -75,10 +76,12 @@ public class CPUStatsPreference extends DialogPreference
 				freq = Utils.readOneLine(Utils.toCPU(FREQ_CUR_FILE, i));
 				if(freq == null || freq.equals("")) freq = "Offline";
 				else freq = String.format("%s", Utils.toMHz(freq));
-				freqs = freqs + "Core " + (i+1) + ": " + freq + "\n\n";
+				freqs = freqs + "Core " + (i+1) + ": " + freq + "\n";
 				i++;
 			}
 			if (freqs != null) mCurCPUHandler.sendMessage(mCurCPUHandler.obtainMessage(0, freqs));
+			freqs = Utils.toGPUMHz(Utils.readOneLine(GPU_CUR_FREQ_FILE));
+			if (freqs != null) mCurGPUHandler.sendMessage(mCurGPUHandler.obtainMessage(0, freqs));
 		}
             } catch (InterruptedException e) {
             }
@@ -94,6 +97,13 @@ public class CPUStatsPreference extends DialogPreference
         }
     };
 
+    private Handler mCurGPUHandler = new Handler() {
+        public void handleMessage(Message msg) {
+		String freq = ((String) msg.obj);
+		mGpuFreq.setText("GPU 3D: " + freq);
+        }
+    };
+
     public CPUStatsPreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
 	setPersistent(false);
@@ -105,6 +115,7 @@ public class CPUStatsPreference extends DialogPreference
 	super.onBindDialogView(view);
 	mView = view;
 	mCpuFreqs = (TextView) mView.findViewById(R.id.cpufreqs);
+	mGpuFreq = (TextView) mView.findViewById(R.id.gpufreq);
 	if(mCurCPUThread.isAlive()){
 	    mCurCPUThread.interrupt(); 
 	}

@@ -50,35 +50,39 @@ import com.emman.tame.fragments.CPUSettings;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
-public class GPUPreference extends DialogPreference
+public class IOPreference extends DialogPreference
 		implements Resources {
 
     private View mView;
 
-    private Spinner mGpuMaxFreq;
-    private String[] mGpuFreqList;
+    private Spinner mIOSched;
 
     private SharedPreferences mPreferences;
 
-    public GPUPreference(Context context, AttributeSet attrs) {
+    String[] availableIOSchedulers;
+    String availableIOSchedulersLine;
+    int bropen, brclose;
+    String currentIOScheduler;
+
+    public IOPreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
 	setPersistent(false);
-	setDialogLayoutResource(R.layout.gpudialog);
+	setDialogLayoutResource(R.layout.iodialog);
     }
 
     @Override
     protected void onBindDialogView(final View view) {
 	super.onBindDialogView(view);
 	mView = view;
-	updateData();
+	if(!initiateData()) return;
 
-	List<String> list = new ArrayList<String>(Arrays.asList(Utils.getFileFreqToMhz(GPU_FREQ_FILE, 1000000)));
+	List<String> list = new ArrayList<String>(Arrays.asList(availableIOSchedulers));
 	
 	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
 		android.R.layout.simple_spinner_item, list);
-	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	mGpuMaxFreq.setAdapter(dataAdapter);
-	
+	dataAdapter.setDropDownViewResource(R.layout.bigspinlayout);
+	mIOSched.setAdapter(dataAdapter);
+
 	updateData();
     }
 
@@ -87,19 +91,20 @@ public class GPUPreference extends DialogPreference
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
-
-	CPUSettings.GPUupdate();
     }
 
     private boolean initiateData(){
-	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) return false;
 
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());
 
-	mGpuMaxFreq = (Spinner) mView.findViewById(R.id.gpu_max_freq);
-	
-	mGpuFreqList = Utils.readOneLine(GPU_FREQ_FILE).split("\\s+");
+	mIOSched = (Spinner) mView.findViewById(R.id.iosched);
+
+	availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
+	availableIOSchedulers = availableIOSchedulersLine.replace("[", "").replace("]", "").split(" ");
+	bropen = availableIOSchedulersLine.indexOf("[");
+	brclose = availableIOSchedulersLine.lastIndexOf("]");
+	if (bropen >= 0 && brclose >= 0) currentIOScheduler = availableIOSchedulersLine.substring(bropen + 1, brclose);
 
 	return true;
     }
@@ -107,25 +112,17 @@ public class GPUPreference extends DialogPreference
     private void setData(){
 	if(!initiateData()) return;
 	
-	updateSharedPrefs(mPreferences, SAVED_GPU_MAX_FREQ, Utils.writeSYSValue(GPU_MAX_FREQ_FILE, mGpuFreqList[(int) mGpuMaxFreq.getSelectedItemId()]));
+	updateSharedPrefs(mPreferences, SAVED_IOSCHED, Utils.writeSYSValue(IOSCHED_LIST_FILE, availableIOSchedulers[(int) mIOSched.getSelectedItemId()]));
 	
     }
 
     private void updateData(){
 	if(!initiateData()) return;
-
-	updateDependencies();
-
-	mGpuMaxFreq.setSelection(Utils.getArrayIndex(mGpuFreqList, Utils.readOneLine(GPU_MAX_FREQ_FILE)));
-    }
-
-    private void updateDependencies(){
-	if(!initiateData()) return;
-
+	mIOSched.setSelection(Utils.getArrayIndex(availableIOSchedulers, currentIOScheduler));
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.SetSOBValue(GPU_MAX_FREQ_FILE, preferences.getString(SAVED_GPU_MAX_FREQ, ""));
+	Utils.SetSOBValue(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, ""));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

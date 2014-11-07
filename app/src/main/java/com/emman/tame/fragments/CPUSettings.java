@@ -50,7 +50,6 @@ public class CPUSettings extends PreferenceFragment
     private static final String TAG = "Tame";
 
     private Preference mCurFreq;
-    private ListPreference mIOSched;
     private ListPreference mSchedMC;
     private ListPreference mCeloxUVPanel;
     private ListPreference mVDD;
@@ -63,11 +62,6 @@ public class CPUSettings extends PreferenceFragment
     PreferenceScreen prefSet;
 
     private SharedPreferences mPreferences;
-
-    String[] availableIOSchedulers;
-    String availableIOSchedulersLine;
-    int bropen, brclose;
-    String currentIOScheduler;
 
     private class CurCPUThread extends Thread {
         private boolean mInterrupt = false;
@@ -120,7 +114,6 @@ public class CPUSettings extends PreferenceFragment
 	
 	CPUinit();
 
-	mIOSched.setOnPreferenceChangeListener(this);
 	mSchedMC.setOnPreferenceChangeListener(this);
 	mCpuBoost.setOnPreferenceChangeListener(this);
 	mCeloxUVPanel.setOnPreferenceChangeListener(this);
@@ -137,8 +130,7 @@ public class CPUSettings extends PreferenceFragment
 
 	if (newValue != null) {
 		
-		if (preference == mIOSched) fname = IOSCHED_LIST_FILE;
-		else if (preference == mCpuBoost) fname = CPU_BOOST_FILE;
+		if (preference == mCpuBoost) fname = CPU_BOOST_FILE;
 		else if (preference == mCeloxUVPanel) fname = FILE_CELOX_DISPLAY_UV;
 		else if (preference == mCpuGovSync) fname = CPU_GOV_SYNC_FILE;
 		else if (preference == mSchedMC){
@@ -183,7 +175,6 @@ public class CPUSettings extends PreferenceFragment
     private void CPUinit(){
 
 	mCurFreq = (Preference) prefSet.findPreference("cur_freq");
-	mIOSched = (ListPreference) prefSet.findPreference("iosched");
 	mSchedMC = (ListPreference) prefSet.findPreference("sched_mc");
 	mCpuBoost = (CheckBoxPreference) prefSet.findPreference("cpu_boost");
 	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");
@@ -198,18 +189,8 @@ public class CPUSettings extends PreferenceFragment
 	if(!Utils.fileExists(CPU_GOV_SYNC_FILE)) mCpuGovSync.setEnabled(false);
 	if(!Utils.fileExists(VDD_LEVELS_FILE)) mVDD.setEnabled(false);
 
-	availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
-	availableIOSchedulers = availableIOSchedulersLine.replace("[", "").replace("]", "").split(" ");
-	bropen = availableIOSchedulersLine.indexOf("[");
-	brclose = availableIOSchedulersLine.lastIndexOf("]");
-	if (bropen >= 0 && brclose >= 0) currentIOScheduler = availableIOSchedulersLine.substring(bropen + 1, brclose);
 	mCurFreq.setSummary("Core 1: " + Utils.toMHz(Utils.readOneLine(FREQ_CUR_FILE)));
 	mCurCPUThread.start();
-
-	mIOSched.setEntryValues(availableIOSchedulers);
-	mIOSched.setEntries(availableIOSchedulers);
-	if (currentIOScheduler != null) mIOSched.setValue(currentIOScheduler);
-	mIOSched.setSummary(String.format("%S", currentIOScheduler));
 
 	mSchedMC.setValue(Utils.readOneLine(SCHED_MC_FILE));
 
@@ -225,22 +206,13 @@ public class CPUSettings extends PreferenceFragment
 
 	mVDD.setValue(mVDDLevel);
 	if(mVDDLevel.equals("0")) mVDD.setSummary("Default Voltage");
-	else mVDD.setSummary("Voltage: " + (Integer.parseInt(mVDDLevel) / 1000) + "mV");
+	else mVDD.setSummary("Voltage: " + (mVDDLevel.substring(0, 1)) + (Integer.parseInt(mVDDLevel.substring(1)) / 1000) + "mV");
 
     }
 
     private void CPUupdate(){
-	if(Utils.fileExists(FREQ_CUR_FILE)){
-		availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
-		availableIOSchedulers = availableIOSchedulersLine.replace("[", "").replace("]", "").split(" ");
-		bropen = availableIOSchedulersLine.indexOf("[");
-		brclose = availableIOSchedulersLine.lastIndexOf("]");
-		if (bropen >= 0 && brclose >= 0) currentIOScheduler = availableIOSchedulersLine.substring(bropen + 1, brclose);
-
-		mIOSched.setSummary(String.format("%S", currentIOScheduler));
-	}
 	if(mVDDLevel.equals("0")) mVDD.setSummary("Default Voltage");
-	else mVDD.setSummary("Voltage: " + (Integer.parseInt(mVDDLevel) / 1000) + "mV");
+	else mVDD.setSummary("Voltage: " + (mVDDLevel.substring(0, 1)) + (Integer.parseInt(mVDDLevel.substring(1)) / 1000) + "mV");
 	GPUupdate();
     }
 
@@ -249,7 +221,6 @@ public class CPUSettings extends PreferenceFragment
     }
 
     private void setData(){
-	updateSharedPrefs(mPreferences, SAVED_IOSCHED, Utils.readOneLine(IOSCHED_LIST_FILE));
 	updateSharedPrefs(mPreferences, SAVED_SCHED_MC, Utils.readOneLine(SCHED_MC_FILE));
 	updateSharedPrefs(mPreferences, SAVED_CPU_BOOST, Utils.readOneLine(CPU_BOOST_FILE));
 	updateSharedPrefs(mPreferences, SAVED_CPU_GOV_SYNC, Utils.readOneLine(CPU_GOV_SYNC_FILE));
@@ -261,7 +232,6 @@ public class CPUSettings extends PreferenceFragment
 
     public static void SetOnBootData(SharedPreferences preferences){
 	Utils.SetSOBValue(CPU_GOV_SYNC_FILE, preferences.getString(SAVED_CPU_GOV_SYNC, "1"));
-	Utils.SetSOBValue(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, ""));
 	Utils.SetSOBValue(SCHED_MC_FILE, preferences.getString(SAVED_SCHED_MC, "0"));
 	Utils.SetSOBValue(CPU_BOOST_FILE, preferences.getString(SAVED_CPU_BOOST, "1"));
 	Utils.SetSOBValue(FILE_CELOX_DISPLAY_UV, preferences.getString(SAVED_CELOX_DISPLAY_UV, "0"));

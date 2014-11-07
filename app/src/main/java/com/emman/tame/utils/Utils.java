@@ -321,6 +321,24 @@ public class Utils
 	}
     }
 
+    public static String[] readAheadValues() {
+        ArrayList<String> values = new ArrayList<String>();
+        int start = 128;
+        for(int i = 1; i<=32; i++) {
+            values.add((start*i)+"");
+        }
+        return values.toArray(new String[values.size()]);
+    }
+
+    public static String[] readAheadEntries() {
+        ArrayList<String> values = new ArrayList<String>();
+        int start = 128;
+        for(int i = 1; i<=32; i++) {
+            values.add((start*i)+" KB");
+        }
+        return values.toArray(new String[values.size()]);
+    }
+
     public static String toMHz(String mhzString) {
         return new StringBuilder().append(Integer.valueOf(mhzString) / 1000).append("MHz")
                 .toString();
