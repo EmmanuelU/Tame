@@ -59,8 +59,6 @@ public class CPUStatsPreference extends DialogPreference
     private View mView;
 
     private TextView mCpuFreqs;
-    private TextView mTeaserlol;
-    private int mTeaserVar = 0;
 
     private SharedPreferences mPreferences;
 
@@ -72,7 +70,6 @@ public class CPUStatsPreference extends DialogPreference
 		while (!this.isInterrupted()) {
 			sleep(500);
 			String freqs = "";
-			String teaser = "";
 			for(int i = 0; i < Utils.getNumOfCpus();){
 				String freq;
 				freq = Utils.readOneLine(Utils.toCPU(FREQ_CUR_FILE, i));
@@ -81,27 +78,7 @@ public class CPUStatsPreference extends DialogPreference
 				freqs = freqs + "Core " + (i+1) + ": " + freq + "\n\n";
 				i++;
 			}
-			switch(mTeaserVar){
-				case 0:
-					teaser = "Moar Stat Coming Soon .";
-				break;
-
-				case 1:
-					teaser = "Moar Stat Coming Soon ..";
-				break;
-
-				case 2:
-					teaser = "Moar Stat Coming Soon ...";
-				break;
-
-				case 3:
-					teaser = "Having Fun?";
-				break;
-			}
-			if(mTeaserVar > 2) mTeaserVar = 0;
-			else mTeaserVar++;
 			if (freqs != null) mCurCPUHandler.sendMessage(mCurCPUHandler.obtainMessage(0, freqs));
-			if (teaser != null) mLolHandler.sendMessage(mLolHandler.obtainMessage(0, teaser));
 		}
             } catch (InterruptedException e) {
             }
@@ -117,13 +94,6 @@ public class CPUStatsPreference extends DialogPreference
         }
     };
 
-    private Handler mLolHandler = new Handler() {
-        public void handleMessage(Message msg) {
-		String teasertext = ((String) msg.obj);
-		mTeaserlol.setText(teasertext);
-        }
-    };
-
     public CPUStatsPreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
 	setPersistent(false);
@@ -135,7 +105,6 @@ public class CPUStatsPreference extends DialogPreference
 	super.onBindDialogView(view);
 	mView = view;
 	mCpuFreqs = (TextView) mView.findViewById(R.id.cpufreqs);
-	mTeaserlol = (TextView) mView.findViewById(R.id.teaser);
 	if(mCurCPUThread.isAlive()){
 	    mCurCPUThread.interrupt(); 
 	}

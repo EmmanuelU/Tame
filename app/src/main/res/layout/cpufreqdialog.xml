@@ -13,12 +13,4 @@
 	android:text="Loading ..."
         android:id="@+id/cpufreqs"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-	android:textSize="14pt"
-	android:textAppearance="?android:attr/textAppearanceMedium"
-	android:text="Moar Stat Coming Soon lol"
-        android:id="@+id/teaser"/>
-
 </LinearLayout>
