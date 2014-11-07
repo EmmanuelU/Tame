@@ -50,6 +50,7 @@ public interface Resources {
 	public static final String SAVED_MAX_FREQ = "saved_max_freq";
 	public static final String SAVED_GOV = "saved_gov";
 	public static final String SAVED_IOSCHED = "saved_iosched";
+	public static final String SAVED_READAHEAD = "saved_readahead";
 	public static final String SAVED_SCHED_MC = "saved_sched_mc";
 	public static final String SAVED_CPU_BOOST = "saved_cpu_boost";
 	public static final String SAVED_GPU_MAX_FREQ = "saved_gpu_max_freq";
@@ -62,6 +63,7 @@ public interface Resources {
 	public static final String NUM_OF_CPUS_PATH = "/sys/devices/system/cpu/present";
 	public static final String GOV_LIST_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors";
 	public static final String IOSCHED_LIST_FILE = "/sys/block/mmcblk0/queue/scheduler";
+	public static final String READAHEAD_FILE = "/sys/block/mmcblk0/queue/read_ahead_kb";
 	public static final String FREQ_LIST_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies";
 	public static final String FREQ_MIN_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq";
 	public static final String FREQ_MAX_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq";

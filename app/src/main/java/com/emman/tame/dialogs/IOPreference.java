@@ -56,6 +56,7 @@ public class IOPreference extends DialogPreference
     private View mView;
 
     private Spinner mIOSched;
+    private Spinner mReadAhead;
 
     private SharedPreferences mPreferences;
 
@@ -75,13 +76,22 @@ public class IOPreference extends DialogPreference
 	super.onBindDialogView(view);
 	mView = view;
 	if(!initiateData()) return;
+	List<String> list;
+	ArrayAdapter<String> dataAdapter;
 
-	List<String> list = new ArrayList<String>(Arrays.asList(availableIOSchedulers));
+	list = new ArrayList<String>(Arrays.asList(availableIOSchedulers));
 	
-	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
+	dataAdapter = new ArrayAdapter<String>(getContext(),
 		android.R.layout.simple_spinner_item, list);
 	dataAdapter.setDropDownViewResource(R.layout.bigspinlayout);
 	mIOSched.setAdapter(dataAdapter);
+
+	list = new ArrayList<String>(Arrays.asList(Utils.getReadAhead(false)));
+	
+	dataAdapter = new ArrayAdapter<String>(getContext(),
+		android.R.layout.simple_spinner_item, list);
+	dataAdapter.setDropDownViewResource(R.layout.bigspinlayout);
+	mReadAhead.setAdapter(dataAdapter);
 
 	updateData();
     }
@@ -99,6 +109,7 @@ public class IOPreference extends DialogPreference
                     .getDefaultSharedPreferences(getContext());
 
 	mIOSched = (Spinner) mView.findViewById(R.id.iosched);
+	mReadAhead = (Spinner) mView.findViewById(R.id.readahead);
 
 	availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
 	availableIOSchedulers = availableIOSchedulersLine.replace("[", "").replace("]", "").split(" ");
@@ -113,16 +124,19 @@ public class IOPreference extends DialogPreference
 	if(!initiateData()) return;
 	
 	updateSharedPrefs(mPreferences, SAVED_IOSCHED, Utils.writeSYSValue(IOSCHED_LIST_FILE, availableIOSchedulers[(int) mIOSched.getSelectedItemId()]));
-	
+	updateSharedPrefs(mPreferences, SAVED_READAHEAD, Utils.writeSYSValue(READAHEAD_FILE, Utils.getReadAhead(true)[(int) mReadAhead.getSelectedItemId()]));
+
     }
 
     private void updateData(){
 	if(!initiateData()) return;
 	mIOSched.setSelection(Utils.getArrayIndex(availableIOSchedulers, currentIOScheduler));
+	mReadAhead.setSelection(Utils.getArrayIndex(Utils.getReadAhead(true), Utils.readOneLine(READAHEAD_FILE)));
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
 	Utils.SetSOBValue(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, ""));
+	Utils.SetSOBValue(READAHEAD_FILE, preferences.getString(SAVED_READAHEAD, ""));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

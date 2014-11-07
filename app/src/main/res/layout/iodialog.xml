@@ -16,4 +16,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/iosched"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SDCard Read-Ahead"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/readahead"/>
+
 </LinearLayout>

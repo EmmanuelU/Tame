@@ -321,20 +321,12 @@ public class Utils
 	}
     }
 
-    public static String[] readAheadValues() {
+    public static String[] getReadAhead(boolean realvalue) {
         ArrayList<String> values = new ArrayList<String>();
         int start = 128;
         for(int i = 1; i<=32; i++) {
-            values.add((start*i)+"");
-        }
-        return values.toArray(new String[values.size()]);
-    }
-
-    public static String[] readAheadEntries() {
-        ArrayList<String> values = new ArrayList<String>();
-        int start = 128;
-        for(int i = 1; i<=32; i++) {
-            values.add((start*i)+" KB");
+		if(realvalue) values.add((start*i)+"");
+		else values.add((start*i)+"KB");
         }
         return values.toArray(new String[values.size()]);
     }
