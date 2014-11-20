@@ -53,6 +53,9 @@ public interface Resources {
 	public static final String SAVED_READAHEAD = "saved_readahead";
 	public static final String SAVED_SCHED_MC = "saved_sched_mc";
 	public static final String SAVED_CPU_BOOST = "saved_cpu_boost";
+	public static final String SAVED_CPU_BOOST_INPUT_BOOST = "saved_cpu_boost_input_boost";
+	public static final String SAVED_CPU_BOOST_INPUT_FREQ = "saved_cpu_boost_input_freq";
+	public static final String SAVED_CPU_BOOST_INPUT_DUR = "saved_cpu_boost_input_dur";
 	public static final String SAVED_GPU_MAX_FREQ = "saved_gpu_max_freq";
 	public static final String SAVED_CPU_GOV_SYNC = "force_cpu_gov_sync";
 	public static final String SAVED_VDD_LEVELS = "vdd_levels";
@@ -69,6 +72,8 @@ public interface Resources {
 	public static final String FREQ_MAX_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq";
 	public static final String SCHED_MC_FILE = "/sys/devices/system/cpu/sched_mc_power_savings";
 	public static final String CPU_BOOST_FILE = "/sys/kernel/cpu_boost/enabled";
+	public static final String CPU_BOOST_INPUT_FREQ_FILE = "/sys/module/cpu_boost_framework/parameters/input_boost_freq";
+	public static final String CPU_BOOST_INPUT_DUR_FILE = "/sys/module/cpu_boost_framework/parameters/input_boost_ms";
 	public static final String GPU_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpu_available_frequencies";
 	public static final String GPU_MAX_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/max_gpuclk";
 	public static final String GPU_CUR_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpuclk";

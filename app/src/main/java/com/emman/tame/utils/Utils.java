@@ -252,8 +252,7 @@ public class Utils
     }
 
     public static boolean stringToBool(String s) {
-	if (s.equals("")) return false;
-	else return (s.equals("1"));
+	return (s.equals("1"));
     }
     public static boolean isStringEmpty(String s) {
 	return (s.equals("") || s == null);

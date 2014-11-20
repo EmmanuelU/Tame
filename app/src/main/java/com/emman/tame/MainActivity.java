@@ -42,6 +42,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.emman.tame.dialogs.BLNPreference;
+import com.emman.tame.dialogs.CPUBoostPreference;
 import com.emman.tame.dialogs.CPUPolicyPreference;
 import com.emman.tame.dialogs.GPUPreference;
 import com.emman.tame.dialogs.IOPreference;
@@ -247,8 +248,9 @@ public class MainActivity extends Activity
     public static void ExecuteBootData(SharedPreferences preferences){
 	Utils.CMD("rm -rf " + FILE_SET_ON_BOOT, false);
 	CPUPolicyPreference.SetOnBootData(preferences);
-	IOPreference.SetOnBootData(preferences);
+	CPUBoostPreference.SetOnBootData(preferences);
 	CPUSettings.SetOnBootData(preferences);
+	IOPreference.SetOnBootData(preferences);
 	BLNPreference.SetOnBootData(preferences);
 	MPDecPreference.SetOnBootData(preferences);
 	S2WPreference.SetOnBootData(preferences);

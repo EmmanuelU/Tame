@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="15dp"
+    android:weightSum="1"
+    android:layout_centerHorizontal="true"
+    android:gravity="center_horizontal">
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Native Hooks"
+	android:button="@null"
+	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        android:id="@+id/cpu_boost"
+
+        android:layout_alignParentTop="true"/>
+
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="#DBDBDB"/>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:focusableInTouchMode="true"
+	    android:focusable="true"
+	    android:gravity="center_horizontal"
+	    android:id="@+id/boost_input_group">>
+
+	    <CheckBox
+		android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Input Boost"
+		android:button="@null"
+		android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        	android:id="@+id/boost_input_enable"
+        	android:layout_alignParentTop="true"/>
+	<TableRow
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duration (msecs)"
+            android:layout_marginRight="80dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="Frequency"/>
+
+	</TableRow>
+
+	<TableRow
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_horizontal">
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:maxLength="4"
+            android:id="@+id/boost_input_dur"
+            android:layout_marginRight="30dp"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/boost_input_freq"
+        android:layout_marginLeft="30dp"/>
+
+	</TableRow>
+
+    </LinearLayout>
+
+</LinearLayout>

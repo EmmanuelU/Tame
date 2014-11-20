@@ -57,10 +57,10 @@ public class CPUPolicyPreference extends DialogPreference
 
     private View mView;
 
-    Spinner mCpuCore;
-    Spinner mCpuMaxFreq;
-    Spinner mCpuMinFreq;
-    Spinner mCpuGovernor;
+    private Spinner mCpuCore;
+    private Spinner mCpuMaxFreq;
+    private Spinner mCpuMinFreq;
+    private Spinner mCpuGovernor;
 
     private String[] mCpuFreqList;
     private String[] mCpuGovList;

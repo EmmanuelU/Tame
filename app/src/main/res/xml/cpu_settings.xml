@@ -18,6 +18,12 @@
 	android:key="cpu_gov_sync"
     />
 
+    <com.emman.tame.dialogs.CPUBoostPreference
+	android:title="CPU-Boost Framework"
+	android:summary="Expedite commonly used processor tasks."
+	android:key="cpu_boost"
+    />
+
     <ListPreference
 	android:title="Processor Voltage"
 	android:key="vdd"
@@ -43,12 +49,6 @@
 	android:key="sched_mc"
 	android:entries="@array/mc_array_entries"
 	android:entryValues="@array/mc_array_values"
-    />
-
-    <CheckBoxPreference
-	android:title="CPU Boost"
-	android:summary="Speed up commonly used CPU tasks."
-	android:key="cpu_boost"
     />
 
     <ListPreference
