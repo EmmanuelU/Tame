@@ -255,6 +255,9 @@ public class Utils
 	if (s.equals("")) return false;
 	else return (s.equals("1"));
     }
+    public static boolean isStringEmpty(String s) {
+	return (s.equals("") || s == null);
+    }
 
     public static String boolToString(boolean b) {
 	if (b) return "1";

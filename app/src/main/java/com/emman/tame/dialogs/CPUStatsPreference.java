@@ -70,18 +70,20 @@ public class CPUStatsPreference extends DialogPreference
             try {
 		while (!this.isInterrupted()) {
 			sleep(500);
-			String freqs = "";
+			String stats = "";
 			for(int i = 0; i < Utils.getNumOfCpus();){
-				String freq;
-				freq = Utils.readOneLine(Utils.toCPU(FREQ_CUR_FILE, i));
-				if(freq == null || freq.equals("")) freq = "Offline";
-				else freq = String.format("%s", Utils.toMHz(freq));
-				freqs = freqs + "Core " + (i+1) + ": " + freq + "\n";
+				String minfreq, maxfreq, curfreq;
+				curfreq = Utils.readOneLine(Utils.toCPU(FREQ_CUR_FILE, i));
+				minfreq = Utils.toMHz(Utils.readOneLine(Utils.toCPU(FREQ_MIN_FILE, i))).replace("MHz", "-");
+				maxfreq = Utils.toMHz(Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, i)));
+				if(Utils.isStringEmpty(curfreq)) curfreq = "Offline";
+				else curfreq = String.format("%s", Utils.toMHz(curfreq));
+				stats = stats + "Core " + (i+1) + " (" + minfreq + maxfreq + "): " + curfreq + "\n";
 				i++;
 			}
-			if (freqs != null) mCurCPUHandler.sendMessage(mCurCPUHandler.obtainMessage(0, freqs));
-			freqs = Utils.toGPUMHz(Utils.readOneLine(GPU_CUR_FREQ_FILE));
-			if (freqs != null) mCurGPUHandler.sendMessage(mCurGPUHandler.obtainMessage(0, freqs));
+			if (stats != null) mCurCPUHandler.sendMessage(mCurCPUHandler.obtainMessage(0, stats));
+			stats = Utils.toGPUMHz(Utils.readOneLine(GPU_CUR_FREQ_FILE));
+			if (stats != null) mCurGPUHandler.sendMessage(mCurGPUHandler.obtainMessage(0, stats));
 		}
             } catch (InterruptedException e) {
             }
@@ -92,8 +94,8 @@ public class CPUStatsPreference extends DialogPreference
 
     private Handler mCurCPUHandler = new Handler() {
         public void handleMessage(Message msg) {
-		String freqs = ((String) msg.obj);
-		mCpuFreqs.setText(freqs);
+		String stats = ((String) msg.obj);
+		mCpuFreqs.setText(stats);
         }
     };
 
