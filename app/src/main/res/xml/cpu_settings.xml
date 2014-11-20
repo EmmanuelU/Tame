@@ -12,12 +12,6 @@
 	android:positiveButtonText="Save"
     />
 
-    <CheckBoxPreference
-	android:title="Sync Processor Policies"
-	android:summary="Unify CPU settings across all cores."
-	android:key="cpu_gov_sync"
-    />
-
     <com.emman.tame.dialogs.CPUBoostPreference
 	android:title="CPU-Boost Framework"
 	android:summary="Expedite commonly used processor tasks."

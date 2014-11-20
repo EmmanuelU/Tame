@@ -62,6 +62,8 @@ public class CPUPolicyPreference extends DialogPreference
     private Spinner mCpuMinFreq;
     private Spinner mCpuGovernor;
 
+    private CheckBox mCpuGovSync;
+
     private String[] mCpuFreqList;
     private String[] mCpuGovList;
 
@@ -120,6 +122,14 @@ public class CPUPolicyPreference extends DialogPreference
 	mCpuCore.setAdapter(dataAdapter);
 
 	mCpuCore.setOnItemSelectedListener(this);
+
+	mCpuGovSync.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			Utils.writeSYSValue(CPU_GOV_SYNC_FILE, mCpuGovSync.isChecked() ? "1" : "0");
+			updateDependencies();
+		}
+	});
 	
 	updateData();
     }
@@ -129,6 +139,7 @@ public class CPUPolicyPreference extends DialogPreference
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
+	Utils.writeSYSValue(CPU_GOV_SYNC_FILE, mPreferences.getString(SAVED_CPU_GOV_SYNC, "1"));
     }
 
     @Override
@@ -157,6 +168,7 @@ public class CPUPolicyPreference extends DialogPreference
 	mCpuGovernor = (Spinner) mView.findViewById(R.id.cpu_gov);
 	mCpuMaxFreq = (Spinner) mView.findViewById(R.id.cpu_max_freq);
 	mCpuMinFreq = (Spinner) mView.findViewById(R.id.cpu_min_freq);
+	mCpuGovSync = (CheckBox) mView.findViewById(R.id.cpu_gov_sync);
 	
 	mCpuFreqList = Utils.readOneLine(FREQ_LIST_FILE).split("\\s+");
 	mCpuGovList = Utils.readOneLine(GOV_LIST_FILE).split("\\s+");
@@ -204,10 +216,25 @@ public class CPUPolicyPreference extends DialogPreference
 	updateSharedPrefs(mPreferences, SAVED_GOV, governors);
 	updateSharedPrefs(mPreferences, SAVED_MIN_FREQ, minfreqs);
 	updateSharedPrefs(mPreferences, SAVED_MAX_FREQ, maxfreqs);
+	updateSharedPrefs(mPreferences, SAVED_CPU_GOV_SYNC, Utils.writeSYSValue(CPU_GOV_SYNC_FILE, mCpuGovSync.isChecked() ? "1" : "0"));
+    }
+
+    private void updateDependencies(){
+	if(!initiateData()) return;
+	if(!Utils.fileExists(CPU_GOV_SYNC_FILE)) mCpuGovSync.setEnabled(false);
+	if(mCpuGovSync.isChecked()){
+		mCpu = 0;
+		mCpuCore.setSelection(0);
+		mCpuCore.setEnabled(false);
+	}
+	else mCpuCore.setEnabled(true);
     }
 
     private void updateData(){
 	if(!initiateData()) return;
+	updateDependencies();
+
+	mCpuGovSync.setChecked(Utils.stringToBool(Utils.readOneLine(CPU_GOV_SYNC_FILE)));
 
 	mCpuMinFreq.setSelection(Utils.getArrayIndex(mCpuFreqList, Utils.readOneLine(Utils.toCPU(FREQ_MIN_FILE, mCpu))));
 	mCpuMaxFreq.setSelection(Utils.getArrayIndex(mCpuFreqList, Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, mCpu))));
@@ -236,6 +263,7 @@ public class CPUPolicyPreference extends DialogPreference
 			i++;
 		}
 	}
+	Utils.SetSOBValue(CPU_GOV_SYNC_FILE, preferences.getString(SAVED_CPU_GOV_SYNC, "1"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

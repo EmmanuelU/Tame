@@ -4,5 +4,4 @@
               android:layout_height="wrap_content"
               android:textSize="16pt"
               android:textAppearance="?android:attr/textAppearanceMedium"
-              android:textColor="#AA0114"
               android:gravity="center"/>
