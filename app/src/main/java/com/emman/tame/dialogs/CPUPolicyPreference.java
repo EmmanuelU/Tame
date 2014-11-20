@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -92,6 +93,11 @@ public class CPUPolicyPreference extends DialogPreference
 	mView = view;
 
 	if(!initiateData()) return;
+
+	if(Utils.stringToBool(mPreferences.getString(SAVED_CPU_BOOST_INPUT_BOOST, "0"))){
+		Utils.toast(getContext(), "Please temporarily disable Input Boosting while changing policies.");
+		mView.setVisibility(View.GONE);
+	}
 
 	list = new ArrayList<String>(Arrays.asList(Utils.getFileFreqToMhz(FREQ_LIST_FILE, 1000)));
 	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
