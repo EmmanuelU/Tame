@@ -85,7 +85,6 @@ public class BLNPreference extends DialogPreference
 	mTouchKeyOverrideIntervals.setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			Utils.writeSYSValue(FILE_BLN_BLINK_OVERRIDE, "500 1000");
 			updateDependencies();
 		}
 	});
@@ -93,8 +92,11 @@ public class BLNPreference extends DialogPreference
 	mTouchKeyONInterval.addTextChangedListener(new TextWatcher() {
 
 		public void afterTextChanged(Editable s) {
-			String[] intervals = (mTouchKeyONInterval.getText() + " " + mTouchKeyOFFInterval.getText()).split("\\s+");
-			if(!(intervals[0]).isEmpty() && !(intervals[1]).isEmpty()) mCurTouchKeyBLNBlink.setText(((mTouchKeyOverrideIntervals.isChecked() ? (String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s) - ") : "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks"));
+			if(Utils.isInteger(mTouchKeyONInterval.getText().toString()) && Utils.isInteger(mTouchKeyOFFInterval.getText().toString())){
+				String[] intervals = (mTouchKeyONInterval.getText().toString() + " " + mTouchKeyOFFInterval.getText().toString()).split("\\s+");
+				mCurTouchKeyBLNBlink.setText(((mTouchKeyOverrideIntervals.isChecked() ? (String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s) - ") : "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks"));
+			}
+			else mCurTouchKeyBLNBlink.setText(( "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks");
 		}
 
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -105,8 +107,11 @@ public class BLNPreference extends DialogPreference
 	mTouchKeyOFFInterval.addTextChangedListener(new TextWatcher() {
 
 		public void afterTextChanged(Editable s) {
-			String[] intervals = (mTouchKeyONInterval.getText() + " " + mTouchKeyOFFInterval.getText()).split("\\s+");
-			if(!(intervals[0]).isEmpty() && !(intervals[1]).isEmpty()) mCurTouchKeyBLNBlink.setText(((mTouchKeyOverrideIntervals.isChecked() ? (String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s) - ") : "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks"));
+			if(Utils.isInteger(mTouchKeyONInterval.getText().toString()) && Utils.isInteger(mTouchKeyOFFInterval.getText().toString())){
+				String[] intervals = (mTouchKeyONInterval.getText().toString() + " " + mTouchKeyOFFInterval.getText().toString()).split("\\s+");
+				mCurTouchKeyBLNBlink.setText(((mTouchKeyOverrideIntervals.isChecked() ? (String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s) - ") : "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks"));
+			}
+			else mCurTouchKeyBLNBlink.setText(( "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks");
 		}
 
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -118,10 +123,11 @@ public class BLNPreference extends DialogPreference
 
 	    @Override
 	    public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-		
-		String[] intervals = Utils.readOneLine(FILE_BLN_BLINK_OVERRIDE).split("\\s+");
-		mCurTouchKeyBLNBlink.setText(((mTouchKeyOverrideIntervals.isChecked() ? (String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s) - ") : "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks"));
-
+			if(Utils.isInteger(mTouchKeyONInterval.getText().toString()) && Utils.isInteger(mTouchKeyOFFInterval.getText().toString())){
+				String[] intervals = (mTouchKeyONInterval.getText().toString() + " " + mTouchKeyOFFInterval.getText().toString()).split("\\s+");
+				mCurTouchKeyBLNBlink.setText(((mTouchKeyOverrideIntervals.isChecked() ? (String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s) - ") : "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks"));
+			}
+			else mCurTouchKeyBLNBlink.setText(( "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks");
 	    }
 
 	    @Override
@@ -142,8 +148,6 @@ public class BLNPreference extends DialogPreference
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
-	else updateData();
-
 	
     }
 
@@ -177,7 +181,7 @@ public class BLNPreference extends DialogPreference
 	updateSharedPrefs(mPreferences, TOUCHKEY_BLN_MAX_BLINK, Utils.writeSYSValue(FILE_BLN_MAX_BLINK, String.valueOf(mTouchKeyBLNMaxBlink.getProgress())));
 
 	if(!mTouchKeyOverrideIntervals.isChecked()) updateSharedPrefs(mPreferences, TOUCHKEY_BLN_BLINK_OVERRIDE, Utils.writeSYSValue(FILE_BLN_BLINK_OVERRIDE, " "));
-	else updateSharedPrefs(mPreferences, TOUCHKEY_BLN_BLINK_OVERRIDE, Utils.writeSYSValue(FILE_BLN_BLINK_OVERRIDE, mTouchKeyONInterval.getText() + " " + mTouchKeyOFFInterval.getText()));
+	else updateSharedPrefs(mPreferences, TOUCHKEY_BLN_BLINK_OVERRIDE, Utils.writeSYSValue(FILE_BLN_BLINK_OVERRIDE, mTouchKeyONInterval.getText().toString() + " " + mTouchKeyOFFInterval.getText().toString()));
     }
 
     private void updateData(){
@@ -190,8 +194,16 @@ public class BLNPreference extends DialogPreference
 
 	if(Utils.fileExists(FILE_BLN_BLINK_OVERRIDE)){
 		String[] intervals = Utils.readOneLine(FILE_BLN_BLINK_OVERRIDE).split("\\s+");
-		if(((Integer.parseInt(intervals[0]) <= 0) || (Integer.parseInt(intervals[1]) <= 0)) || ((intervals[0].equals("")) || (intervals[1].equals("")))) mTouchKeyOverrideIntervals.setChecked(false);
-		else mTouchKeyOverrideIntervals.setChecked(true);
+		if(!(Utils.isInteger(intervals[0]) || Utils.isInteger(intervals[1]))){
+			mTouchKeyOverrideIntervals.setChecked(false);
+			mTouchKeyONInterval.setText("0");
+			mTouchKeyOFFInterval.setText("0");
+		}
+		else{
+			if(!(intervals[0].equals("0") || intervals[1].equals("0"))) mTouchKeyOverrideIntervals.setChecked(true);
+			mTouchKeyONInterval.setText(intervals[0]);
+			mTouchKeyOFFInterval.setText(intervals[1]);
+		}
 	}
 
 	 updateDependencies();
@@ -210,19 +222,16 @@ public class BLNPreference extends DialogPreference
 		Utils.layoutDisable(mTouchKeyOverrideIntervalsGroup);
 
 	}
-
 	if(!Utils.fileExists(FILE_BLN_BLINK_OVERRIDE)) Utils.layoutDisable(mTouchKeyOverrideIntervalsGroup);
 
-	String[] intervals;
-
-	if(!Utils.fileExists(FILE_BLN_BLINK_OVERRIDE)) intervals = ("0 0").split("\\s+");
-	else intervals = Utils.readOneLine(FILE_BLN_BLINK_OVERRIDE).split("\\s+");
-
-	mTouchKeyONInterval.setText(intervals[0]);
-	mTouchKeyOFFInterval.setText(intervals[1]);
-
-	mCurTouchKeyBLNBlink.setText(((mTouchKeyOverrideIntervals.isChecked() ? (String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s) - ") : "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks"));
-	if(!mTouchKeyOverrideIntervals.isChecked()) Utils.writeSYSValue(FILE_BLN_BLINK_OVERRIDE, " ");
+	if(Utils.isInteger(mTouchKeyONInterval.getText().toString()) && Utils.isInteger(mTouchKeyOFFInterval.getText().toString())){
+		if(mTouchKeyOverrideIntervals.isChecked() && (mTouchKeyONInterval.getText().toString()).equals("0") && (mTouchKeyOFFInterval.getText().toString()).equals("0")){
+			mTouchKeyONInterval.setText("300");
+			mTouchKeyOFFInterval.setText("1500");
+		}
+		String[] intervals = (mTouchKeyONInterval.getText().toString() + " " + mTouchKeyOFFInterval.getText().toString()).split("\\s+");
+		mCurTouchKeyBLNBlink.setText(((mTouchKeyOverrideIntervals.isChecked() ? (String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s) - ") : "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks"));
+	}
 
 	if(mTouchKeyOverrideIntervals.isChecked()){
 		mTouchKeyONInterval.setEnabled(true);

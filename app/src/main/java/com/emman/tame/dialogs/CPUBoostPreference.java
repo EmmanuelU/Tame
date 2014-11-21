@@ -153,7 +153,7 @@ public class CPUBoostPreference extends DialogPreference
 	
 	if(mCpuBoostTouch.isChecked()){
 		if(mPreferences.getString(CPU_BOOST_INPUT_DUR_FILE, "0").equals("0")){
-			mCpuBoostTouchDur.setText("4000");
+			mCpuBoostTouchDur.setText("3000");
 			mCpuBoostTouchFreq.setSelection(Utils.getArrayIndex(mCpuFreqList, "384000"));
 		}
 		mCpuBoostTouchDur.setEnabled(true);

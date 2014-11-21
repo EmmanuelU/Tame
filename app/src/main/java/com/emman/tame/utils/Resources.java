@@ -77,6 +77,7 @@ public interface Resources {
 	public static final String GPU_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpu_available_frequencies";
 	public static final String GPU_MAX_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/max_gpuclk";
 	public static final String GPU_CUR_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpuclk";
+	public static final String RETAIN_CPU_GOV_SYNC_FILE = "/sys/kernel/retain_cpu_policy/sync_cores";
 	public static final String CPU_GOV_SYNC_FILE = "/sys/kernel/cpu_gov_sync/force_cpu_gov_sync";
 	public static final String VDD_LEVELS_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/vdd_levels";
 

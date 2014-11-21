@@ -255,7 +255,7 @@ public class Utils
 	return (s.equals("1"));
     }
     public static boolean isStringEmpty(String s) {
-	return (s.equals("") || s == null);
+	return (s == null || s.equals(""));
     }
 
     public static String boolToString(boolean b) {
@@ -263,6 +263,16 @@ public class Utils
 	else return "0"; 
     }
 
+public static boolean isInteger(String s) {
+    if(isStringEmpty(s)) return false;
+    try { 
+        Integer.parseInt(s); 
+    } catch(NumberFormatException e) { 
+        return false; 
+    }
+    // only got here if we didn't return false
+    return true;
+}
 
     /**
      * Read file via shell
