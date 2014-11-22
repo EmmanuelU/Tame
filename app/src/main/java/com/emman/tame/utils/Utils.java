@@ -309,6 +309,10 @@ public static boolean isInteger(String s) {
 	Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    public static void burnttoast(Context context, String message) {
+	Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
     public static void layoutDisable(ViewGroup layout) {
 	layout.setEnabled(false);
 	for (int i = 0; i < layout.getChildCount(); i++) {

@@ -107,7 +107,7 @@ public class CPUPolicyPreference extends DialogPreference
 	mCpuMinFreq.setAdapter(dataAdapter);
 	mCpuMaxFreq.setAdapter(dataAdapter);
 
-	list = new ArrayList<String>(Arrays.asList(Utils.readOneLine(GOV_LIST_FILE).split("\\s+")));
+	list = new ArrayList<String>(Arrays.asList(mCpuGovList));
 	dataAdapter = new ArrayAdapter<String>(getContext(),
 		R.layout.bigspinlayout, list);
 	mCpuGovernor.setAdapter(dataAdapter);
