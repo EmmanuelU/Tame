@@ -128,7 +128,6 @@ public class CPUBoostPreference extends DialogPreference
 	if(mCpuBoostTouch.isChecked()){
 		updateSharedPrefs(mPreferences, SAVED_CPU_BOOST_INPUT_DUR, Utils.writeSYSValue(CPU_BOOST_INPUT_DUR_FILE, mCpuBoostTouchDur.getText().toString()));
 		updateSharedPrefs(mPreferences, SAVED_CPU_BOOST_INPUT_FREQ, Utils.writeSYSValue(CPU_BOOST_INPUT_FREQ_FILE, mCpuFreqList[(int) mCpuBoostTouchFreq.getSelectedItemId()]));
-		Utils.burnttoast(getContext(), "You will not be able to change your Processor Policies while input boost is enabled.");
 	}
     }
 

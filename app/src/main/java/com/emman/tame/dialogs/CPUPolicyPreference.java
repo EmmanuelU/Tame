@@ -2,6 +2,7 @@ package com.emman.tame.dialogs;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -58,12 +59,16 @@ public class CPUPolicyPreference extends DialogPreference
 
     private View mView;
 
+    private CheckBox mCpuGovSync;
+
     private Spinner mCpuCore;
     private Spinner mCpuMaxFreq;
     private Spinner mCpuMinFreq;
     private Spinner mCpuGovernor;
 
-    private CheckBox mCpuGovSync;
+    private LinearLayout mCpuPolicyGroup;
+
+    private TextView IBDisclaimer;
 
     private String[] mCpuFreqList;
     private String[] mCpuGovList;
@@ -95,59 +100,68 @@ public class CPUPolicyPreference extends DialogPreference
 	if(!initiateData()) return;
 
 	if(Utils.stringToBool(mPreferences.getString(SAVED_CPU_BOOST_INPUT_BOOST, "0"))){
-		Utils.burnttoast(getContext(), "Please temporarily disable Input Boosting while changing policies.");
-		mView.setVisibility(View.GONE);
+		IBDisclaimer.setVisibility(View.VISIBLE);
+		Utils.layoutDisable(mCpuPolicyGroup);
 	}
+	else{
+		IBDisclaimer.setVisibility(View.GONE);
 
-	list = new ArrayList<String>(Arrays.asList(Utils.getFileFreqToMhz(FREQ_LIST_FILE, 1000)));
-	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
-		android.R.layout.simple_spinner_item, list);
-	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		list = new ArrayList<String>(Arrays.asList(Utils.getFileFreqToMhz(FREQ_LIST_FILE, 1000)));
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
+			android.R.layout.simple_spinner_item, list);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	
-	mCpuMinFreq.setAdapter(dataAdapter);
-	mCpuMaxFreq.setAdapter(dataAdapter);
+		mCpuMinFreq.setAdapter(dataAdapter);
+		mCpuMaxFreq.setAdapter(dataAdapter);
 
-	list = new ArrayList<String>(Arrays.asList(mCpuGovList));
-	dataAdapter = new ArrayAdapter<String>(getContext(),
-		R.layout.bigspinlayout, list);
-	mCpuGovernor.setAdapter(dataAdapter);
+		list = new ArrayList<String>(Arrays.asList(mCpuGovList));
+		dataAdapter = new ArrayAdapter<String>(getContext(),
+			R.layout.bigspinlayout, list);
+		mCpuGovernor.setAdapter(dataAdapter);
 
-	List<String> CpuNames = new ArrayList<String>();
+		List<String> CpuNames = new ArrayList<String>();
 	
-	for(int i = 0; i < Utils.getNumOfCpus();){
-		if(i > 0){
-			Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
-			if(!Utils.stringToBool(Utils.readOneLine(Utils.toCPU(CPU_ONLINE, i)))) CpuNames.add("Core: " + (i+1) + " (offline)");
-			else CpuNames.add("Core:    " + (i+1));
+		for(int i = 0; i < Utils.getNumOfCpus();){
+			if(i > 0){
+				Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
+				if(!Utils.stringToBool(Utils.readOneLine(Utils.toCPU(CPU_ONLINE, i)))) CpuNames.add("Core: " + (i+1) + " (offline)");
+				else CpuNames.add("Core:    " + (i+1));
+			}
+			else CpuNames.add("Primary Core");
+			i++;
 		}
-		else CpuNames.add("Primary Core");
-		i++;
-	}
-	dataAdapter = new ArrayAdapter<String>(getContext(),
-		R.layout.biggerspinlayout, CpuNames);
-	mCpuCore.setAdapter(dataAdapter);
+		dataAdapter = new ArrayAdapter<String>(getContext(),
+			R.layout.biggerspinlayout, CpuNames);
+		mCpuCore.setAdapter(dataAdapter);
 
-	mCpuCore.setOnItemSelectedListener(this);
+		mCpuCore.setOnItemSelectedListener(this);
 
-	mCpuGovSync.setOnClickListener(new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			updateDependencies();
+		mCpuGovSync.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				updateDependencies();
+			}
+		});
+
+		for(int i = 0; i < Utils.getNumOfCpus();){
+			if(i > 0) Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
+			mCore[i] = new CpuPolicy();
+			mCore[i].governor = Utils.readOneLine(Utils.toCPU(GOV_FILE, i));
+			mCore[i].min = Utils.readOneLine(Utils.toCPU(FREQ_MIN_FILE, i));
+			mCore[i].max = Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, i));
+			i++;
 		}
-	});
 
-	for(int i = 0; i < Utils.getNumOfCpus();){
-		if(i > 0) Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
-		mCore[i] = new CpuPolicy();
-		mCore[i].governor = Utils.readOneLine(Utils.toCPU(GOV_FILE, i));
-		mCore[i].min = Utils.readOneLine(Utils.toCPU(FREQ_MIN_FILE, i));
-		mCore[i].max = Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, i));
-		i++;
-	}
-
-	mCpuGovSync.setChecked(Utils.stringToBool(Utils.readOneLine(CPU_GOV_SYNC_FILE)));
+		mCpuGovSync.setChecked(Utils.stringToBool(Utils.readOneLine(CPU_GOV_SYNC_FILE)));
 	
-	updateData();
+		updateData();
+	}
+    }
+
+    @Override
+    protected void onPrepareDialogBuilder(Builder builder) {
+	super.onPrepareDialogBuilder(builder);
+	if(Utils.stringToBool(mPreferences.getString(SAVED_CPU_BOOST_INPUT_BOOST, "0"))) builder.setPositiveButton(null, null);
     }
 
     @Override
@@ -188,6 +202,8 @@ public class CPUPolicyPreference extends DialogPreference
 	mCpuMaxFreq = (Spinner) mView.findViewById(R.id.cpu_max_freq);
 	mCpuMinFreq = (Spinner) mView.findViewById(R.id.cpu_min_freq);
 	mCpuGovSync = (CheckBox) mView.findViewById(R.id.cpu_gov_sync);
+	IBDisclaimer = (TextView) mView.findViewById(R.id.IBdisclaimer);
+	mCpuPolicyGroup = (LinearLayout) mView.findViewById(R.id.cpu_policy_group);
 	
 	mCpuFreqList = Utils.readOneLine(FREQ_LIST_FILE).split("\\s+");
 	mCpuGovList = Utils.readOneLine(GOV_LIST_FILE).split("\\s+");

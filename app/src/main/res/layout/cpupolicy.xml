@@ -4,7 +4,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_centerHorizontal="true"
+    android:id="@+id/cpu_policy_group"
     android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	android:textSize="12pt"
+	android:gravity="center"
+	android:textColor="#AA0114"
+	android:text="CPU Input Boosting must be disabled while changing policies, as it may interfere with CPU Policy records."
+        android:id="@+id/IBdisclaimer"/>
 
     <CheckBox
         android:layout_width="wrap_content"
