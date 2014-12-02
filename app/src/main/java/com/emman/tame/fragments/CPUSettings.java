@@ -49,6 +49,7 @@ public class CPUSettings extends PreferenceFragment
 
     private static final String TAG = "Tame";
 
+    private Preference mCpuBoost;
     private Preference mCurFreq;
     private ListPreference mSchedMC;
     private ListPreference mCeloxUVPanel;
@@ -167,12 +168,14 @@ public class CPUSettings extends PreferenceFragment
 
     private void CPUinit(){
 
+	mCpuBoost = (DialogPreference) prefSet.findPreference("cpu_boost");
 	mCurFreq = (Preference) prefSet.findPreference("cur_freq");
 	mSchedMC = (ListPreference) prefSet.findPreference("sched_mc");
 	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");
 	mGPUDialog = (DialogPreference) prefSet.findPreference("gpu_dialog");
 	mVDD = (ListPreference) prefSet.findPreference("vdd");
 
+	if(!(Utils.fileExists(CPU_BOOST_INPUT_FREQ_FILE) && Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE))) mCpuBoost.setEnabled(false);
 	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
 	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)) mCeloxUVPanel.setEnabled(false);
 	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);

@@ -10,33 +10,6 @@
     android:layout_centerHorizontal="true"
     android:gravity="center_horizontal">
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enable Native Hooks"
-	android:button="@null"
-	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:id="@+id/cpu_boost"
-
-        android:layout_alignParentTop="true"/>
-
-    <View
-    android:layout_width="fill_parent"
-    android:layout_height="1dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:background="#DBDBDB"/>
-
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:focusableInTouchMode="true"
-	    android:focusable="true"
-	    android:gravity="center_horizontal"
-	    android:id="@+id/boost_input_group">>
 
 	    <CheckBox
 		android:layout_width="wrap_content"
@@ -86,7 +59,5 @@
         android:layout_marginLeft="30dp"/>
 
 	</TableRow>
-
-    </LinearLayout>
 
 </LinearLayout>

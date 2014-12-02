@@ -71,9 +71,8 @@ public interface Resources {
 	public static final String FREQ_MIN_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq";
 	public static final String FREQ_MAX_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq";
 	public static final String SCHED_MC_FILE = "/sys/devices/system/cpu/sched_mc_power_savings";
-	public static final String CPU_BOOST_FILE = "/sys/kernel/cpu_boost/enabled";
-	public static final String CPU_BOOST_INPUT_FREQ_FILE = "/sys/module/cpu_boost_framework/parameters/input_boost_freq";
-	public static final String CPU_BOOST_INPUT_DUR_FILE = "/sys/module/cpu_boost_framework/parameters/input_boost_ms";
+	public static final String CPU_BOOST_INPUT_FREQ_FILE = "/sys/module/cpu_input_boost/parameters/input_boost_freq";
+	public static final String CPU_BOOST_INPUT_DUR_FILE = "/sys/module/cpu_input_boost/parameters/input_boost_ms";
 	public static final String GPU_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpu_available_frequencies";
 	public static final String GPU_MAX_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/max_gpuclk";
 	public static final String GPU_CUR_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpuclk";

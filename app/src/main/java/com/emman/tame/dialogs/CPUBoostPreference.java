@@ -55,10 +55,8 @@ public class CPUBoostPreference extends DialogPreference
 
     private View mView;
 
-    private CheckBox mCpuBoost;
     private CheckBox mCpuBoostTouch;
     private EditText mCpuBoostTouchDur;
-    private LinearLayout mCpuBoostTouchGroup;
     private Spinner mCpuBoostTouchFreq;
 
     private String[] mCpuFreqList;
@@ -98,10 +96,6 @@ public class CPUBoostPreference extends DialogPreference
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
-	if(!mCpuBoostTouch.isChecked()){
-		updateSharedPrefs(mPreferences, SAVED_CPU_BOOST_INPUT_DUR, Utils.writeSYSValue(CPU_BOOST_INPUT_DUR_FILE, "0"));
-		updateSharedPrefs(mPreferences, SAVED_CPU_BOOST_INPUT_FREQ, Utils.writeSYSValue(CPU_BOOST_INPUT_FREQ_FILE, "0"));
-	}
     }
 
     private boolean initiateData(){
@@ -109,11 +103,9 @@ public class CPUBoostPreference extends DialogPreference
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());
 
-	mCpuBoost = (CheckBox) mView.findViewById(R.id.cpu_boost);
 	mCpuBoostTouch = (CheckBox) mView.findViewById(R.id.boost_input_enable);
 	mCpuBoostTouchFreq = (Spinner) mView.findViewById(R.id.boost_input_freq);
 	mCpuBoostTouchDur = (EditText) mView.findViewById(R.id.boost_input_dur);
-	mCpuBoostTouchGroup = (LinearLayout) mView.findViewById(R.id.boost_input_group);
 
 	mCpuFreqList = Utils.readOneLine(FREQ_LIST_FILE).split("\\s+");
 
@@ -123,11 +115,14 @@ public class CPUBoostPreference extends DialogPreference
     private void setData(){
 	if(!initiateData()) return;
 
-	updateSharedPrefs(mPreferences, SAVED_CPU_BOOST, Utils.writeSYSValue(CPU_BOOST_FILE, mCpuBoost.isChecked() ? "1" : "0"));
 	updateSharedPrefs(mPreferences, SAVED_CPU_BOOST_INPUT_BOOST, mCpuBoostTouch.isChecked() ? "1" : "0");
 	if(mCpuBoostTouch.isChecked()){
 		updateSharedPrefs(mPreferences, SAVED_CPU_BOOST_INPUT_DUR, Utils.writeSYSValue(CPU_BOOST_INPUT_DUR_FILE, mCpuBoostTouchDur.getText().toString()));
 		updateSharedPrefs(mPreferences, SAVED_CPU_BOOST_INPUT_FREQ, Utils.writeSYSValue(CPU_BOOST_INPUT_FREQ_FILE, mCpuFreqList[(int) mCpuBoostTouchFreq.getSelectedItemId()]));
+	}
+	else{
+		updateSharedPrefs(mPreferences, SAVED_CPU_BOOST_INPUT_DUR, Utils.writeSYSValue(CPU_BOOST_INPUT_DUR_FILE, "0"));
+		updateSharedPrefs(mPreferences, SAVED_CPU_BOOST_INPUT_FREQ, Utils.writeSYSValue(CPU_BOOST_INPUT_FREQ_FILE, "0"));
 	}
     }
 
@@ -136,8 +131,6 @@ public class CPUBoostPreference extends DialogPreference
 	mCpuBoostTouch.setChecked(Utils.stringToBool(mPreferences.getString(SAVED_CPU_BOOST_INPUT_BOOST, "0")));
 
 	updateDependencies();
-	
-	mCpuBoost.setChecked(Utils.stringToBool(Utils.readOneLine(CPU_BOOST_FILE)));
 	mCpuBoostTouchDur.setText(Utils.readOneLine(CPU_BOOST_INPUT_DUR_FILE));
 	mCpuBoostTouchFreq.setSelection(Utils.getArrayIndex(mCpuFreqList, Utils.readOneLine(CPU_BOOST_INPUT_FREQ_FILE)));
 
@@ -145,10 +138,6 @@ public class CPUBoostPreference extends DialogPreference
 
     private void updateDependencies(){
 	if(!initiateData()) return;
-	if(!Utils.fileExists(CPU_BOOST_FILE)) mCpuBoost.setEnabled(false);
-	if(!Utils.fileExists(CPU_BOOST_INPUT_FREQ_FILE) || !Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE)){
-		Utils.layoutDisable(mCpuBoostTouchGroup);
-	}
 	
 	if(mCpuBoostTouch.isChecked()){
 		if(mPreferences.getString(CPU_BOOST_INPUT_DUR_FILE, "0").equals("0")){
@@ -164,7 +153,6 @@ public class CPUBoostPreference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.SetSOBValue(CPU_BOOST_FILE, preferences.getString(SAVED_CPU_BOOST, "1"));
 	Utils.SetSOBValue(CPU_BOOST_INPUT_DUR_FILE, preferences.getString(SAVED_CPU_BOOST_INPUT_DUR, "0"));
 	Utils.SetSOBValue(CPU_BOOST_INPUT_FREQ_FILE, preferences.getString(SAVED_CPU_BOOST_INPUT_FREQ, "0"));
     }

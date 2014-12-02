@@ -13,8 +13,8 @@
     />
 
     <com.emman.tame.dialogs.CPUBoostPreference
-	android:title="CPU-Boost Framework"
-	android:summary="Expedite commonly used processor tasks."
+	android:title="CPU Input Boost"
+	android:summary="Boost CPU thresholds during input events."
 	android:key="cpu_boost"
     />
 

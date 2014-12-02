@@ -99,7 +99,7 @@ public class CPUPolicyPreference extends DialogPreference
 
 	if(!initiateData()) return;
 
-	if(Utils.stringToBool(mPreferences.getString(SAVED_CPU_BOOST_INPUT_BOOST, "0"))){
+	if(Utils.stringToBool(mPreferences.getString(SAVED_CPU_BOOST_INPUT_BOOST, "0")) && Utils.fileExists(CPU_BOOST_INPUT_FREQ_FILE) && Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE)){
 		IBDisclaimer.setVisibility(View.VISIBLE);
 		Utils.layoutDisable(mCpuPolicyGroup);
 	}
