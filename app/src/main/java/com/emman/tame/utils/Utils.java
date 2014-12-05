@@ -100,8 +100,7 @@ public class Utils
 		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SYS_QUEUE);
 		appendValue(FILE_SYS_QUEUE, "#!/bin/sh");
 	}
-	if(!fileExists(fname)) return value;
-	appendValue(FILE_SYS_QUEUE, "echo \"" + value + "\" > " + fname);
+	if(fileExists(fname)) appendValue(FILE_SYS_QUEUE, "echo \"" + value + "\" > " + fname);
 	return value;
     }
 
@@ -132,6 +131,10 @@ public class Utils
 
     public static String toCPU(String value, int cpu) {
 	return value.replace("cpu0", "cpu" + cpu);
+    }
+
+    public static String toSDCARD(String value, int sdcard) {
+	return value.replace("mmcblk0", "mmcblk" + sdcard);
     }
 
     public static boolean isNumeric(String str){

@@ -63,8 +63,8 @@ public interface Resources {
 
 	public static final String SAVED_IOSCHED = "saved_iosched";
 	public static final String IOSCHED_LIST_FILE = "/sys/block/mmcblk0/queue/scheduler";
-	public static final String SAVED_READAHEAD = "saved_readahead";
 	public static final String READAHEAD_FILE = "/sys/block/mmcblk0/queue/read_ahead_kb";
+	public static final String SAVED_READAHEAD = "saved_readahead";
 	public static final String SAVED_SCHED_MC = "saved_sched_mc";
 	public static final String SCHED_MC_FILE = "/sys/devices/system/cpu/sched_mc_power_savings";
 	public static final String SAVED_CPU_BOOST_INPUT_BOOST = "saved_cpu_boost_input_boost";
@@ -81,5 +81,7 @@ public interface Resources {
 	public static final String GPU_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpu_available_frequencies";
 	public static final String GPU_MAX_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/max_gpuclk";
 	public static final String GPU_CUR_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpuclk";
+
+	public static final String BAT_VOLT_PATH = "/sys/class/power_supply/battery/voltage_now";
 
 }

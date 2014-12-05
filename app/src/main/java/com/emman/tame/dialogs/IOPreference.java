@@ -122,10 +122,14 @@ public class IOPreference extends DialogPreference
 
     private void setData(){
 	if(!initiateData()) return;
-	
-	updateSharedPrefs(mPreferences, SAVED_IOSCHED, Utils.writeSYSValue(IOSCHED_LIST_FILE, availableIOSchedulers[(int) mIOSched.getSelectedItemId()]));
-	updateSharedPrefs(mPreferences, SAVED_READAHEAD, Utils.writeSYSValue(READAHEAD_FILE, Utils.getReadAhead(true)[(int) mReadAhead.getSelectedItemId()]));
-
+	for(int i = 0; i < 2;){ //devices can hopefully only have 2 sdcards
+		Utils.queueSYSValue(Utils.toSDCARD(IOSCHED_LIST_FILE, i), availableIOSchedulers[(int) mIOSched.getSelectedItemId()]);
+		Utils.queueSYSValue(Utils.toSDCARD(READAHEAD_FILE, i), Utils.getReadAhead(true)[(int) mReadAhead.getSelectedItemId()]);
+		i++;
+	}
+	updateSharedPrefs(mPreferences, SAVED_IOSCHED, availableIOSchedulers[(int) mIOSched.getSelectedItemId()]);
+	updateSharedPrefs(mPreferences, SAVED_READAHEAD, Utils.getReadAhead(true)[(int) mReadAhead.getSelectedItemId()]);
+	Utils.launchSYSQueue();
     }
 
     private void updateData(){
@@ -135,8 +139,11 @@ public class IOPreference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.SetSOBValue(IOSCHED_LIST_FILE, preferences.getString(SAVED_IOSCHED, ""));
-	Utils.SetSOBValue(READAHEAD_FILE, preferences.getString(SAVED_READAHEAD, ""));
+	for(int i = 0; i < 2;){ //devices can hopefully only have 2 sdcards
+		Utils.SetSOBValue(Utils.toSDCARD(IOSCHED_LIST_FILE, i), preferences.getString(SAVED_IOSCHED, ""));
+		Utils.SetSOBValue(Utils.toSDCARD(READAHEAD_FILE, i), preferences.getString(SAVED_READAHEAD, "128"));
+		i++;
+	}
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
