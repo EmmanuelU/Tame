@@ -36,8 +36,6 @@ import com.emman.tame.utils.Utils;
 public class KernelSettings extends PreferenceFragment
 		implements Resources {
 
-    private static final String TAG = "Tame";
-
     private Preference mBlnDialog;
     private Preference mS2WDialog;
 

@@ -74,6 +74,15 @@
     android:layout_marginRight="10dp"
     android:background="#DBDBDB"/>
 
+	    <CheckBox
+		android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Custom Blink Intervals"
+		android:button="@null"
+		android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        	android:id="@+id/touchkey_bln_override_interval"
+        	android:layout_alignParentTop="true"/>
+
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
@@ -83,14 +92,6 @@
 	    android:gravity="center_horizontal"
 	    android:id="@+id/touchkey_bln_override_group">>
 
-	    <CheckBox
-		android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text="Custom Blink Intervals"
-		android:button="@null"
-		android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        	android:id="@+id/touchkey_bln_override_interval"
-        	android:layout_alignParentTop="true"/>
 	<TableRow
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
@@ -141,6 +142,22 @@
             android:layout_gravity="center_horizontal" />
 	</TableRow>
 
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="#DBDBDB"/>
+
     </LinearLayout>
+
+	<Button
+	    android:id="@+id/blntest"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Test Notification"
+            android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

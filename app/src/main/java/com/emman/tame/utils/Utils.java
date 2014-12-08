@@ -3,6 +3,7 @@ package com.emman.tame.utils;
 import android.app.Activity;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.content.res.AssetManager;
 import android.content.DialogInterface;
 import android.content.Context;
@@ -11,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.NetworkOnMainThreadException;
 import android.os.PowerManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Builder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -19,6 +22,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
+
+import com.emman.tame.utils.NotificationID;
+
+import com.emman.tame.R;
 
 import java.lang.Comparable;
 import java.lang.StringBuilder;
@@ -55,8 +62,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class Utils 
 		implements Resources {
-
-    private static final String TAG = "Tame";
 
     /**
      * Write a string value to the specified file.
@@ -314,6 +319,24 @@ public static boolean isInteger(String s) {
 
     public static void burnttoast(Context context, String message) {
 	Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static int getNotificationID(NotificationID id) {
+	return id.ordinal();
+    }
+
+    public static void notification(Context context, NotificationID id, String message) {
+	NotificationCompat.Builder Notif;
+	NotificationManager mNotifyMgr;
+
+	Notif = new NotificationCompat.Builder(context)
+		.setSmallIcon(R.drawable.ic_launcher)
+		.setContentTitle(TAG)
+		.setLights(0xff00ff00, 300, 1500)
+		.setContentText(message);
+
+	mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
     }
 
     public static void layoutDisable(ViewGroup layout) {

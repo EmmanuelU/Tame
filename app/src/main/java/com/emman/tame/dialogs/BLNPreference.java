@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -43,6 +44,7 @@ import android.util.Log;
 import com.emman.tame.R;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
+import com.emman.tame.utils.NotificationID;
 
 public class BLNPreference extends DialogPreference
 		implements Resources {
@@ -58,6 +60,8 @@ public class BLNPreference extends DialogPreference
     private CheckBox mTouchKeyOverrideIntervals;
     private EditText mTouchKeyONInterval;
     private EditText mTouchKeyOFFInterval;
+
+    private Button mBLNTest;
 
     private View mView;
 
@@ -86,6 +90,16 @@ public class BLNPreference extends DialogPreference
 		@Override
 		public void onClick(View v) {
 			updateDependencies();
+		}
+	});
+
+	mBLNTest.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			String[] intervals = Utils.readOneLine(FILE_BLN_BLINK_OVERRIDE).split("\\s+");
+			if(!intervals[0].equals("0")) Utils.notification(getContext(), NotificationID.BLN_TEST, "BLN: Using custom light intervals (" + intervals[0] + "/" + intervals[1] + "msecs).");
+			else Utils.notification(getContext(), NotificationID.BLN_TEST, "BLN: Using default light intervals (300/1500msecs).");
+			Utils.toast(getContext(), "Put device to sleep to test");
 		}
 	});
 
@@ -157,6 +171,8 @@ public class BLNPreference extends DialogPreference
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());
 
+	mBLNTest = (Button) mView.findViewById(R.id.blntest);
+
 	mTouchKeyBLN = (CheckBox) mView.findViewById(R.id.touchkey_bln);
 	mTouchKeyOverrideIntervals = (CheckBox) mView.findViewById(R.id.touchkey_bln_override_interval);
 
@@ -213,16 +229,21 @@ public class BLNPreference extends DialogPreference
     private void updateDependencies(){
 	if(!initiateData()) return;
 
+	if(mTouchKeyOverrideIntervals.isChecked()){
+		Utils.layoutEnable(mTouchKeyOverrideIntervalsGroup);
+	} else {
+		Utils.layoutDisable(mTouchKeyOverrideIntervalsGroup);
+	}
+
 	if(mTouchKeyBLN.isChecked()){
 		Utils.layoutEnable(mTouchKeyBLNBlinkGroup);
-		Utils.layoutEnable(mTouchKeyOverrideIntervalsGroup);
 
 	} else {
 		Utils.layoutDisable(mTouchKeyBLNBlinkGroup);
 		Utils.layoutDisable(mTouchKeyOverrideIntervalsGroup);
 
 	}
-	if(!Utils.fileExists(FILE_BLN_BLINK_OVERRIDE)) Utils.layoutDisable(mTouchKeyOverrideIntervalsGroup);
+	if(!Utils.fileExists(FILE_BLN_BLINK_OVERRIDE)) mTouchKeyOverrideIntervals.setEnabled(false);
 
 	if(Utils.isInteger(mTouchKeyONInterval.getText().toString()) && Utils.isInteger(mTouchKeyOFFInterval.getText().toString())){
 		if(mTouchKeyOverrideIntervals.isChecked() && (mTouchKeyONInterval.getText().toString()).equals("0") && (mTouchKeyOFFInterval.getText().toString()).equals("0")){
@@ -231,14 +252,6 @@ public class BLNPreference extends DialogPreference
 		}
 		String[] intervals = (mTouchKeyONInterval.getText().toString() + " " + mTouchKeyOFFInterval.getText().toString()).split("\\s+");
 		mCurTouchKeyBLNBlink.setText(((mTouchKeyOverrideIntervals.isChecked() ? (String.valueOf((((Integer.parseInt(intervals[0]) + Integer.parseInt(intervals[1])) * mTouchKeyBLNMaxBlink.getProgress()) / 1000) / 60) + " minute(s) - ") : "N/A - ") + String.valueOf(mTouchKeyBLNMaxBlink.getProgress()) + " Blinks"));
-	}
-
-	if(mTouchKeyOverrideIntervals.isChecked()){
-		mTouchKeyONInterval.setEnabled(true);
-		mTouchKeyOFFInterval.setEnabled(true);
-	} else {
-		mTouchKeyONInterval.setEnabled(false);
-		mTouchKeyOFFInterval.setEnabled(false);
 	}
 
     }

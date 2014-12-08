@@ -47,8 +47,6 @@ import com.emman.tame.utils.Utils;
 public class CPUSettings extends PreferenceFragment 
 		implements Resources, Preference.OnPreferenceChangeListener {
 
-    private static final String TAG = "Tame";
-
     private Preference mCpuBoost;
     private Preference mCurFreq;
     private ListPreference mSchedMC;

@@ -15,6 +15,8 @@ public interface Resources {
 		public boolean fetchedlatestversion = false;
 	}
 
+	public static final String TAG = "Tame";
+
 	public static final String PATH_TAME_LOCAL = "/sdcard/Tame/";
 
 	public static final String FILE_SET_ON_BOOT = PATH_TAME_LOCAL + "Tame-SOB.sh";
