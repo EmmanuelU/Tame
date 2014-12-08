@@ -44,7 +44,7 @@ import com.emman.tame.R;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
-public class MPDecPreference extends DialogPreference
+public class SMPPreference extends DialogPreference
 		implements Resources {
 
     private View mView;
@@ -56,10 +56,10 @@ public class MPDecPreference extends DialogPreference
 
     private SharedPreferences mPreferences;
 
-    public MPDecPreference(Context context, AttributeSet attrs) {
+    public SMPPreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
 	setPersistent(false);
-	setDialogLayoutResource(R.layout.mpdecdialog);
+	setDialogLayoutResource(R.layout.smpdialog);
     }
 
     @Override

@@ -46,7 +46,7 @@ import com.emman.tame.dialogs.CPUBoostPreference;
 import com.emman.tame.dialogs.CPUPolicyPreference;
 import com.emman.tame.dialogs.GPUPreference;
 import com.emman.tame.dialogs.IOPreference;
-import com.emman.tame.dialogs.MPDecPreference;
+import com.emman.tame.dialogs.SMPPreference;
 import com.emman.tame.dialogs.S2WPreference;
 
 import com.emman.tame.fragments.AboutTame;
@@ -252,7 +252,7 @@ public class MainActivity extends Activity
 	CPUSettings.SetOnBootData(preferences);
 	IOPreference.SetOnBootData(preferences);
 	BLNPreference.SetOnBootData(preferences);
-	MPDecPreference.SetOnBootData(preferences);
+	SMPPreference.SetOnBootData(preferences);
 	S2WPreference.SetOnBootData(preferences);
 	GPUPreference.SetOnBootData(preferences);
 	Utils.CMD("sh " + FILE_SET_ON_BOOT, true);

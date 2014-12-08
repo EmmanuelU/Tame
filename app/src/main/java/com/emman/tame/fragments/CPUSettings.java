@@ -55,6 +55,7 @@ public class CPUSettings extends PreferenceFragment
     private ListPreference mCeloxUVPanel;
     private ListPreference mVDD;
     public static DialogPreference mGPUDialog;
+    private Preference mSMPDialog;
 
     String mVDDLevel;
 
@@ -111,7 +112,7 @@ public class CPUSettings extends PreferenceFragment
 	mPreferences = PreferenceManager
 	    .getDefaultSharedPreferences(getActivity());
 	
-	CPUinit();
+	updateDependencies();
 
 	mSchedMC.setOnPreferenceChangeListener(this);
 	mCeloxUVPanel.setOnPreferenceChangeListener(this);
@@ -166,7 +167,18 @@ public class CPUSettings extends PreferenceFragment
 	}
     }
 
-    private void CPUinit(){
+    private void updateDependencies(){
+	if(!initiateData()) return;
+
+	if(!(Utils.fileExists(CPU_BOOST_INPUT_FREQ_FILE) && Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE))) mCpuBoost.setEnabled(false);
+	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
+	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)) mCeloxUVPanel.setEnabled(false);
+	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
+	if(!Utils.fileExists(VDD_LEVELS_FILE)) mVDD.setEnabled(false);
+	if(!Utils.fileExists(FILE_MPDEC_TOGGLE)) mSMPDialog.setEnabled(false);
+    }
+
+    private boolean initiateData(){
 
 	mCpuBoost = (DialogPreference) prefSet.findPreference("cpu_boost");
 	mCurFreq = (Preference) prefSet.findPreference("cur_freq");
@@ -174,12 +186,7 @@ public class CPUSettings extends PreferenceFragment
 	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");
 	mGPUDialog = (DialogPreference) prefSet.findPreference("gpu_dialog");
 	mVDD = (ListPreference) prefSet.findPreference("vdd");
-
-	if(!(Utils.fileExists(CPU_BOOST_INPUT_FREQ_FILE) && Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE))) mCpuBoost.setEnabled(false);
-	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
-	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)) mCeloxUVPanel.setEnabled(false);
-	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
-	if(!Utils.fileExists(VDD_LEVELS_FILE)) mVDD.setEnabled(false);
+	mSMPDialog = findPreference("smpdialog");
 
 	mCurFreq.setSummary("Core 1: " + Utils.toMHz(Utils.readOneLine(FREQ_CUR_FILE)));
 	mCurCPUThread.start();
@@ -195,6 +202,8 @@ public class CPUSettings extends PreferenceFragment
 	mVDD.setValue(mVDDLevel);
 	if(mVDDLevel.equals("0")) mVDD.setSummary("Default Voltage");
 	else mVDD.setSummary("Voltage: " + (mVDDLevel.substring(0, 1)) + (Integer.parseInt(mVDDLevel.substring(1)) / 1000) + "mV");
+
+	return true;
 
     }
 

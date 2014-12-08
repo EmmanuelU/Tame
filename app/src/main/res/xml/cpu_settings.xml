@@ -12,17 +12,24 @@
 	android:positiveButtonText="Save"
     />
 
-    <com.emman.tame.dialogs.CPUBoostPreference
-	android:title="CPU Input Boost"
-	android:summary="Boost CPU thresholds during input events."
-	android:key="cpu_boost"
-    />
-
     <ListPreference
 	android:title="Processor Voltage"
 	android:key="vdd"
 	android:entries="@array/vdd_array_entries"
 	android:entryValues="@array/vdd_array_values"
+    />
+
+    <com.emman.tame.dialogs.SMPPreference
+	android:key="smpdialog"
+	android:title="SMP Plug Management"
+	android:summary="Disable cores when not in use to save battery."
+	android:positiveButtonText="Save"
+    />
+
+    <com.emman.tame.dialogs.CPUBoostPreference
+	android:title="CPU Input Boost"
+	android:summary="Boost CPU thresholds during input events."
+	android:key="cpu_boost"
     />
 
     <com.emman.tame.dialogs.IOPreference

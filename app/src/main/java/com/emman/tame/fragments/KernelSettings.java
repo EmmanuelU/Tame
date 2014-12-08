@@ -39,9 +39,6 @@ public class KernelSettings extends PreferenceFragment
     private static final String TAG = "Tame";
 
     private Preference mBlnDialog;
-
-    private Preference mMPDecDialog;
-
     private Preference mS2WDialog;
 
     private SharedPreferences mPreferences;
@@ -67,7 +64,6 @@ public class KernelSettings extends PreferenceFragment
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
 	mBlnDialog = findPreference("blndialog");
-	mMPDecDialog = findPreference("mpdecdialog");
 	mS2WDialog = findPreference("s2wdialog");
 
 	return true;
@@ -77,7 +73,6 @@ public class KernelSettings extends PreferenceFragment
 	if(!initiateData()) return;
 
 	if(!Utils.fileExists(FILE_BLN_TOGGLE)) mBlnDialog.setEnabled(false);
-	if(!Utils.fileExists(FILE_MPDEC_TOGGLE)) mMPDecDialog.setEnabled(false);
 	if(!Utils.fileExists(FILE_S2W_TOGGLE)) mS2WDialog.setEnabled(false);
     }
 
