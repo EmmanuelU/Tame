@@ -64,6 +64,8 @@ public interface Resources {
 	public static final String FREQINFO_CUR_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq";
 	public static final String NUM_OF_CPUS_PATH = "/sys/devices/system/cpu/present";
 	public static final String FREQ_LIST_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies";
+	public static final String KERNEL_BUILD_VERSION = "/proc/version";
+	public static final String KERNEL_INFO = "/proc/cpuinfo";
 
 	public static final String SAVED_IOSCHED = "saved_iosched";
 	public static final String IOSCHED_LIST_FILE = "/sys/block/mmcblk0/queue/scheduler";

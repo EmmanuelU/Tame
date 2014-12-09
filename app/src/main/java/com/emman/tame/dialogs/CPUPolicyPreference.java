@@ -89,7 +89,7 @@ public class CPUPolicyPreference extends DialogPreference
     public CPUPolicyPreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
 	setPersistent(false);
-	setDialogLayoutResource(R.layout.cpupolicy);
+	setDialogLayoutResource(R.layout.cpupolicydialog);
     }
 
     @Override

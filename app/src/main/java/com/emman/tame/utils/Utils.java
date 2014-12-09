@@ -255,6 +255,24 @@ public class Utils
         return line;
     }
 
+    public static String readFile(String fname) {
+	File file = new File(fname);
+	StringBuilder text = new StringBuilder();
+	try {
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String line;
+
+		while((line = br.readLine()) != null) {
+			text.append(line);
+			text.append('\n');
+		}
+	}
+	catch (Exception e) {
+		return "";
+	}
+	return text.toString();
+    }
+
     public static boolean fileIsReadable(String fname) {
         return new File(fname).canRead();
     }

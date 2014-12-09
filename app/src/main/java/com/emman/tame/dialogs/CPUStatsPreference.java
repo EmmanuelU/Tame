@@ -60,6 +60,9 @@ public class CPUStatsPreference extends DialogPreference
 
     private TextView mCpuFreqs;
     private TextView mGpuFreq;
+    private TextView mKernInfo;
+
+    private String mKernelVersion;
 
     private SharedPreferences mPreferences;
 
@@ -115,15 +118,20 @@ public class CPUStatsPreference extends DialogPreference
     public CPUStatsPreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
 	setPersistent(false);
-	setDialogLayoutResource(R.layout.cpufreqdialog);
+	setDialogLayoutResource(R.layout.cpustatsdialog);
     }
 
     @Override
     protected void onBindDialogView(final View view) {
 	super.onBindDialogView(view);
+
 	mView = view;
 	mCpuFreqs = (TextView) mView.findViewById(R.id.cpufreqs);
 	mGpuFreq = (TextView) mView.findViewById(R.id.gpufreq);
+	mKernInfo = (TextView) mView.findViewById(R.id.kerninfo);
+
+	mKernInfo.setText("\n" + Utils.readOneLine(KERNEL_BUILD_VERSION) + "\n\n" + Utils.readFile(KERNEL_INFO));
+
 	if(mCurCPUThread.isAlive()){
 	    mCurCPUThread.interrupt(); 
 	}
