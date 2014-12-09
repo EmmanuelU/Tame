@@ -26,6 +26,8 @@ public interface Resources {
 	public static final String FILE_DISABLE_SET_ON_BOOT = "/sdcard/WildNFree.tame";
 	public static final String SET_ON_BOOT = "set_on_boot";
 
+	public static final String LINK_WK_CPU_PATCH = "https://github.com/EmmanuelU/wild_kernel_htc_msm8660/commit/f9d17e63e7f9055fde6febd0b709405b023bdb38";
+
 	public static final String S2W = "s2w";
 	public static final String FILE_S2W_TOGGLE = "/sys/android_touch/sweep2wake";
 	public static final String S2S = "s2s";

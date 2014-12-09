@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.emman.tame.R;
+import com.emman.tame.utils.NotificationID;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
@@ -98,11 +100,16 @@ public class CPUSettings extends PreferenceFragment
 	FragmentManager fragmentManager = getFragmentManager();
 
 	if(!Utils.checkSu()){
-		Utils.toast(getActivity(), "Superuser permissions were denied, restarting.");
 		Intent intent = getActivity().getIntent();
+		Utils.notification(getActivity(), NotificationID.ROOTFAIL, intent, "Please restart me with Superuser access.");
 		getActivity().finish();
-		startActivity(intent);
 	}
+
+	if(!Utils.fileIsReadable(FREQ_MIN_FILE) || !Utils.fileIsReadable(FREQ_MAX_FILE)){
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LINK_WK_CPU_PATCH));
+		Utils.notification(getActivity(), NotificationID.CPUPERM, intent, "Your kernel has a bug, please forward this URL link to your kernel developer. You may experience lag using this app.");
+	}
+
 
 	addPreferencesFromResource(R.xml.cpu_settings);
 	prefSet = getPreferenceScreen();

@@ -1,6 +1,8 @@
 package com.emman.tame.utils;
 
 public enum NotificationID {
-	GENERAL,
+	EXTRACT,
 	BLN_TEST,
+	ROOTFAIL,
+	CPUPERM,
 }

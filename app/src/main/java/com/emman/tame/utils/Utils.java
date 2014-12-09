@@ -332,11 +332,14 @@ public static boolean isInteger(String s) {
     public static void notification(Context context, NotificationID id, Intent intent, String message) {
 	NotificationCompat.Builder Notif;
 	NotificationManager mNotifyMgr;
+	PendingIntent pIntent;
 
 	Notif = new NotificationCompat.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher)
 		.setContentTitle(TAG)
 		.setLights(0xff00ff00, 300, 1500)
+		.setStyle(new NotificationCompat.BigTextStyle()
+		.bigText(message))
 		.setContentText(message);
 
 	//All these flags, and you still dont auto cancel.
@@ -344,9 +347,13 @@ public static boolean isInteger(String s) {
 	Notif.build().flags |= Notification.FLAG_AUTO_CANCEL;
 
 	if(intent != null){
-		PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
-		Notif.setContentIntent(pIntent);
+		pIntent = PendingIntent.getActivity(context, 0, intent, 0);
 	}
+	else{
+		//but this'll do it #logicispower
+		pIntent = PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+	Notif.setContentIntent(pIntent);
 	mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
     }
@@ -462,14 +469,12 @@ public static boolean isInteger(String s) {
                     copyAssets(in, out);
             }
  
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+            Utils.notification(context, NotificationID.EXTRACT, null, "Failed to extract zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Do you have an sdcard?");
+	    return;
         }
- 
+	Utils.notification(context, NotificationID.EXTRACT, null, "Extracted emergency zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Flash in recovery to disable Tame's next Set on Boot.");
     }
  
     private static void copyAssets(InputStream in, OutputStream out) {
