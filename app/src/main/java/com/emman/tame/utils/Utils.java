@@ -3,11 +3,15 @@ package com.emman.tame.utils;
 import android.app.Activity;
 
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.app.NotificationManager;
-import android.content.res.AssetManager;
-import android.content.DialogInterface;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.NetworkOnMainThreadException;
@@ -325,7 +329,7 @@ public static boolean isInteger(String s) {
 	return id.ordinal();
     }
 
-    public static void notification(Context context, NotificationID id, String message) {
+    public static void notification(Context context, NotificationID id, Intent intent, String message) {
 	NotificationCompat.Builder Notif;
 	NotificationManager mNotifyMgr;
 
@@ -335,6 +339,14 @@ public static boolean isInteger(String s) {
 		.setLights(0xff00ff00, 300, 1500)
 		.setContentText(message);
 
+	//All these flags, and you still dont auto cancel.
+	Notif.setAutoCancel(true);
+	Notif.build().flags |= Notification.FLAG_AUTO_CANCEL;
+
+	if(intent != null){
+		PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+		Notif.setContentIntent(pIntent);
+	}
 	mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
     }

@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -97,8 +98,8 @@ public class BLNPreference extends DialogPreference
 		@Override
 		public void onClick(View v) {
 			String[] intervals = Utils.readOneLine(FILE_BLN_BLINK_OVERRIDE).split("\\s+");
-			if(!intervals[0].equals("0")) Utils.notification(getContext(), NotificationID.BLN_TEST, "BLN: Using custom light intervals (" + intervals[0] + "/" + intervals[1] + "msecs).");
-			else Utils.notification(getContext(), NotificationID.BLN_TEST, "BLN: Using default light intervals (300/1500msecs).");
+			if(!intervals[0].equals("0")) Utils.notification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using custom light intervals (" + intervals[0] + "/" + intervals[1] + "msecs).");
+			else Utils.notification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using default light intervals (300/1500msecs).");
 			Utils.toast(getContext(), "Put device to sleep to test");
 		}
 	});
