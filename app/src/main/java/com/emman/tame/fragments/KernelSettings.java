@@ -70,7 +70,10 @@ public class KernelSettings extends PreferenceFragment
     private void updateDependencies(){
 	if(!initiateData()) return;
 
-	if(!Utils.fileExists(FILE_BLN_TOGGLE)) mBlnDialog.setEnabled(false);
+	if(!Utils.fileExists(FILE_BLN_TOGGLE)){
+		mBlnDialog.setEnabled(false);
+		if(Utils.fileExists(FILE_EBLN)) mBlnDialog.setSummary("Enhanced BLN detected. Use your System Settings to configure.");
+	}
 	if(!Utils.fileExists(FILE_S2W_TOGGLE)) mS2WDialog.setEnabled(false);
     }
 
