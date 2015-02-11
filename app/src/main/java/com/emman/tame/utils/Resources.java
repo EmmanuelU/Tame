@@ -43,11 +43,14 @@ public interface Resources {
 	public static final String TOUCHKEY_BLN = "touchkey_bln";
 	public static final String FILE_BLN_TOGGLE = "/sys/class/misc/backlightnotification/enabled";
 	public static final String TOUCHKEY_BLN_MAX_BLINK = "touchkey_bln_max_blink";
+
 	public static final String FILE_BLN_MAX_BLINK = "/sys/class/misc/backlightnotification/max_blink_count";
 	public static final String TOUCHKEY_BLN_BLINK_OVERRIDE = "touchkey_bln_blink_override";
 	public static final String FILE_BLN_BLINK_OVERRIDE = "/sys/class/misc/backlightnotification/override_blink_interval";
 	public static final String FILE_EBLN = "/sys/class/misc/enhanced_bln/blink_control";
-
+	public static final String TOUCHKEY_EBLN_BLINK_TIMEOUT = "touchkey_ebln_blink_timeout";
+	public static final String FILE_EBLN_BLINK_TIMEOUT = "/sys/class/misc/enhanced_bln/blink_timeout_ms";
+	public static final String FILE_EBLN_BLINK_OVERRIDE = "/sys/class/misc/enhanced_bln/blink_override_interval_ms";
 	public static final String SAVED_CELOX_DISPLAY_UV = "celox_panel_uv";
 	public static final String FILE_CELOX_DISPLAY_UV = "/sys/module/board_msm8x60_celox/parameters/panel_uv";
 

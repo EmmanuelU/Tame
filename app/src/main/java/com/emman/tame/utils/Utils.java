@@ -362,7 +362,7 @@ public static boolean isInteger(String s) {
 
 	//All these flags, and you still dont auto cancel.
 	Notif.setAutoCancel(true);
-	Notif.build().flags |= Notification.FLAG_AUTO_CANCEL;
+	Notif.build().flags |= Notification.FLAG_SHOW_LIGHTS;
 
 	if(intent != null){
 		pIntent = PendingIntent.getActivity(context, 0, intent, 0);

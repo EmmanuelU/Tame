@@ -99,12 +99,6 @@ public class CPUSettings extends PreferenceFragment
 	super.onCreate(savedInstanceState);
 	FragmentManager fragmentManager = getFragmentManager();
 
-	if(!Utils.checkSu()){
-		Intent intent = getActivity().getIntent();
-		Utils.notification(getActivity(), NotificationID.ROOTFAIL, intent, "Please restart me with Superuser access.");
-		getActivity().finish();
-	}
-
 	if(!Utils.fileIsReadable(FREQ_MIN_FILE) || !Utils.fileIsReadable(FREQ_MAX_FILE)){
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LINK_WK_CPU_PATCH));
 		Utils.notification(getActivity(), NotificationID.CPUPERM, intent, "Your kernel has a bug, please forward this URL link to your kernel developer. You may experience lag using this app.");
@@ -180,7 +174,11 @@ public class CPUSettings extends PreferenceFragment
 	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)) mCeloxUVPanel.setEnabled(false);
 	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
 	if(!Utils.fileExists(VDD_LEVELS_FILE)) mVDD.setEnabled(false);
-	if(!Utils.fileExists(FILE_MPDEC_TOGGLE)) mSMPDialog.setEnabled(false);
+	if(!Utils.fileExists(FILE_MPDEC_TOGGLE)){
+		mSMPDialog.setEnabled(false);
+		mSMPDialog.setSummary("Your's is most likely not kernel-based, therfore not customizable.");
+	}
+	
     }
 
     private boolean initiateData(){

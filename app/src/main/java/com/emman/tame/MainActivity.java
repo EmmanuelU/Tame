@@ -25,6 +25,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.emman.tame.dialogs.BLNPreference;
+import com.emman.tame.dialogs.EBLNPreference;
 import com.emman.tame.dialogs.CPUBoostPreference;
 import com.emman.tame.dialogs.CPUPolicyPreference;
 import com.emman.tame.dialogs.GPUPreference;
@@ -53,6 +55,8 @@ import com.emman.tame.fragments.AboutTame;
 import com.emman.tame.fragments.KernelSettings;
 import com.emman.tame.fragments.CPUSettings;
 import com.emman.tame.fragments.SysFSExplorer;
+
+import com.emman.tame.utils.NotificationID;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
@@ -80,6 +84,13 @@ public class MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+	if(!Utils.checkSu()){
+		Intent intent = getIntent();
+		Utils.notification(this, NotificationID.ROOTFAIL, intent, "Please restart me with Superuser access.");
+		this.finish();
+	}
+
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -252,6 +263,7 @@ public class MainActivity extends Activity
 	CPUSettings.SetOnBootData(preferences);
 	IOPreference.SetOnBootData(preferences);
 	BLNPreference.SetOnBootData(preferences);
+	EBLNPreference.SetOnBootData(preferences);
 	SMPPreference.SetOnBootData(preferences);
 	S2WPreference.SetOnBootData(preferences);
 	GPUPreference.SetOnBootData(preferences);

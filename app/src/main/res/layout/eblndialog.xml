@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="15dp"
+    android:weightSum="1"
+    android:layout_centerHorizontal="true"
+    android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Timeout:"
+            android:textColor="#FFFFFF"
+            android:layout_weight="0.08"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="## minute(s)"
+            android:textColor="#FFFFFF"
+            android:layout_weight="0.08"
+            android:id="@+id/cur_touchkey_bln_blink"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+	<SeekBar
+            android:layout_width="263dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/touchkey_bln_timeout"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="#DBDBDB"/>
+
+	    <CheckBox
+		android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Custom Blink Intervals"
+		android:button="@null"
+		android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        	android:id="@+id/touchkey_bln_override_interval"
+        	android:layout_alignParentTop="true"/>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:focusableInTouchMode="true"
+	    android:focusable="true"
+	    android:gravity="center_horizontal"
+	    android:id="@+id/touchkey_bln_override_group">>
+
+	<TableRow
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On"
+            android:layout_marginRight="40dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(msecs)"
+            android:layout_marginRight="40dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Off"/>
+
+	</TableRow>
+
+	<TableRow
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_horizontal"
+	    android:id="@+id/touchkey_bln_intervals">
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:maxLength="4"
+            android:id="@+id/touchkey_bln_on_interval"
+            android:layout_gravity="center_horizontal" />
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:maxLength="4"
+            android:gravity="right"
+            android:id="@+id/touchkey_bln_off_interval"
+            android:layout_gravity="center_horizontal" />
+	</TableRow>
+
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="#DBDBDB"/>
+
+    </LinearLayout>
+
+	<Button
+	    android:id="@+id/blntest"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Test Notification"
+            android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

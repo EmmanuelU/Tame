@@ -36,10 +36,13 @@ import com.emman.tame.utils.Utils;
 public class KernelSettings extends PreferenceFragment
 		implements Resources {
 
+    private Preference mEBlnDialog;
     private Preference mBlnDialog;
     private Preference mS2WDialog;
 
     private SharedPreferences mPreferences;
+
+    private PreferenceScreen prefSet;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class KernelSettings extends PreferenceFragment
 
         addPreferencesFromResource(R.xml.kernel_settings);
 
-        PreferenceScreen prefSet = getPreferenceScreen();
+        prefSet = getPreferenceScreen();
 
 	updateDependencies();
     }
@@ -61,6 +64,7 @@ public class KernelSettings extends PreferenceFragment
     private boolean initiateData(){
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+	mEBlnDialog = findPreference("eblndialog");
 	mBlnDialog = findPreference("blndialog");
 	mS2WDialog = findPreference("s2wdialog");
 
@@ -71,9 +75,14 @@ public class KernelSettings extends PreferenceFragment
 	if(!initiateData()) return;
 
 	if(!Utils.fileExists(FILE_BLN_TOGGLE)){
-		mBlnDialog.setEnabled(false);
-		if(Utils.fileExists(FILE_EBLN)) mBlnDialog.setSummary("Enhanced BLN detected. Use your System Settings to configure.");
+		if(!Utils.fileExists(FILE_EBLN)){
+			mBlnDialog.setEnabled(false);
+			prefSet.removePreference(mEBlnDialog);
+		} else{
+			prefSet.removePreference(mBlnDialog);
+		}
 	}
+	
 	if(!Utils.fileExists(FILE_S2W_TOGGLE)) mS2WDialog.setEnabled(false);
     }
 
