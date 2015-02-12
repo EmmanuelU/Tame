@@ -1,5 +1,7 @@
 package com.emman.tame.utils;
 
+import android.os.Environment;
+
 public interface Resources {
 
 	//Global Variables and stored data
@@ -17,14 +19,17 @@ public interface Resources {
 
 	public static final String TAG = "Tame";
 
-	public static final String PATH_TAME_LOCAL = "/sdcard/Tame/";
+	public static final String PATH_TAME_LOCAL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tame/";
 
 	public static final String FILE_SET_ON_BOOT = PATH_TAME_LOCAL + "Tame-SOB.sh";
 	public static final String FILE_SYS_QUEUE = PATH_TAME_LOCAL + "Tame-SYSQueue.sh";
 	public static final String FILE_UPDATE_DATA = PATH_TAME_LOCAL + "updatewild.sh";
 	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP = PATH_TAME_LOCAL + "DisableTame_S-O-B.zip";
-	public static final String FILE_DISABLE_SET_ON_BOOT = "/sdcard/WildNFree.tame";
+	public static final String FILE_DISABLE_SET_ON_BOOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "WildNFree.tame";
 	public static final String SET_ON_BOOT = "set_on_boot";
+	public static final String FILE_TMP_BUILD_PROP = PATH_TAME_LOCAL + "tmp.prop";
+	public static final String FILE_LOCAL_BUILD_PROP = PATH_TAME_LOCAL + "build.prop";
+	public static final String FILE_BACKUP_BUILD_PROP = PATH_TAME_LOCAL + "build.prop.bak";
 
 	public static final String LINK_WK_CPU_PATCH = "https://github.com/EmmanuelU/wild_kernel_htc_msm8660/commit/f9d17e63e7f9055fde6febd0b709405b023bdb38";
 

@@ -52,8 +52,9 @@ import com.emman.tame.dialogs.SMPPreference;
 import com.emman.tame.dialogs.S2WPreference;
 
 import com.emman.tame.fragments.AboutTame;
-import com.emman.tame.fragments.KernelSettings;
 import com.emman.tame.fragments.CPUSettings;
+import com.emman.tame.fragments.GeneralSettings;
+import com.emman.tame.fragments.KernelSettings;
 import com.emman.tame.fragments.SysFSExplorer;
 
 import com.emman.tame.utils.NotificationID;
@@ -125,18 +126,22 @@ public class MainActivity extends Activity
 		mTitle = getString(R.string.app_name);
 		fragment = new AboutTame();
 		 break;
-
 	    case 2:
+		mTitle = getString(R.string.title_generalsettings);
+		fragment = new GeneralSettings();
+		break;
+
+	    case 3:
 		mTitle = getString(R.string.title_kernelsettings);
 		fragment = new KernelSettings();
 		break;
 
-	    case 3:
+	    case 4:
 		mTitle = getString(R.string.title_cpusettings);
 		fragment = new CPUSettings();
 		break;
 
-	    case 4:
+	    case 5:
 		mTitle = getString(R.string.title_sysfs);
 		fragment = new SysFSExplorer();
 		break;

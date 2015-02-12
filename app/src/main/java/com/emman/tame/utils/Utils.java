@@ -32,10 +32,12 @@ import com.emman.tame.utils.NotificationID;
 import com.emman.tame.R;
 
 import java.lang.Comparable;
+import java.lang.Process;
 import java.lang.StringBuilder;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -50,12 +52,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.http.client.methods.HttpGet;
@@ -126,6 +130,68 @@ public class Utils
 	if(!fileExists(fname)) return value;
 	appendValue(FILE_SET_ON_BOOT, "echo \"" + value + "\" > " + fname);
 	return value;
+    }
+
+    public static String writeProp(String propFile, String propname, String propvalue) {
+	final Properties prop = new Properties();
+	if(fileExists(propFile)){
+		try {
+			FileInputStream in = new FileInputStream(new File(propFile));
+			prop.load(in);
+			in.close();
+		} catch (Exception e) {
+		
+		}
+		
+		prop.setProperty(propname, propvalue);
+
+		try {
+			FileOutputStream out = new FileOutputStream(new File(propFile));
+			prop.store(out, null);
+			out.close();
+
+			File tmpFile = new File(FILE_TMP_BUILD_PROP);
+			FileWriter fw = new FileWriter(tmpFile);
+
+			Reader fr = new FileReader(new File(propFile));
+			BufferedReader br = new BufferedReader(fr);
+			while (br.ready()) {
+				fw.write(br.readLine().replaceAll("\\\\", "") + "\n");
+			}
+		
+			fw.close();
+			br.close();
+			fr.close();
+		} catch (Exception e) {
+				
+		}
+	}
+	
+	Utils.CMD("rm -rf " + FILE_TMP_BUILD_PROP, false);
+	return propvalue;
+    }
+
+    public static boolean updateProp(String prop) {
+	try{
+		Process process = Runtime.getRuntime().exec("su");
+		DataOutputStream os = new DataOutputStream(process.getOutputStream());
+		os.writeBytes("mount -o remount rw /system/\n"); 
+		os.writeBytes("mv -f /system/build.prop " + FILE_BACKUP_BUILD_PROP + "\n"); 
+		os.writeBytes("mv -f " + prop + " /system/build.prop\n"); 
+		os.writeBytes("chmod 644 /system/build.prop\n");
+		os.writeBytes("exit\n");
+		os.flush();
+		process.waitFor();
+	} catch (Exception e) {
+		return false;
+	}
+	return true;
+    }
+
+    public static String readProp(String prop) {
+	CMDProcessor.CommandResult cr = null;
+	cr = new CMDProcessor().sh.runWaitFor("getprop " + prop);
+	return (cr.success()) ? cr.stdout : "";
     }
 
     public static void writeLocalFile(Context context, String filename){
@@ -462,7 +528,7 @@ public static boolean isInteger(String s) {
             AssetManager assetFiles = context.getAssets();
  
             // MyHtmlFiles is the name of folder from inside our assets folder
-            String[] files = assetFiles.list("Tame");
+            String[] files = assetFiles.list(TAG);
  
             // Initialize streams
             InputStream in = null;
@@ -474,16 +540,14 @@ public static boolean isInteger(String s) {
                      // @Folder name is also case sensitive
                      // @MyHtmlFiles is the folder from our assets
                       
-                    in = assetFiles.open("Tame/" + files[i]);
+                    in = assetFiles.open(TAG + "/" + files[i]);
  
                      
                      // Currently we will copy the files to the root directory
                      // but you should create specific directory for your app
-                    Utils.CMD("mkdir /sdcard/Tame", false);
+                    Utils.CMD("mkdir " + PATH_TAME_LOCAL, false);
 
-                    out = new FileOutputStream(
-                            Environment.getExternalStorageDirectory() + "/Tame/"
-                                    + files[i]);
+                    out = new FileOutputStream(PATH_TAME_LOCAL + files[i]);
                     copyAssets(in, out);
             }
  
@@ -492,7 +556,7 @@ public static boolean isInteger(String s) {
             Utils.notification(context, NotificationID.EXTRACT, null, "Failed to extract zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Do you have an sdcard?");
 	    return;
         }
-	Utils.notification(context, NotificationID.EXTRACT, null, "Extracted emergency zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Flash in recovery to disable Tame's next Set on Boot.");
+	Utils.notification(context, NotificationID.EXTRACT, null, "Extracted emergency zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Flash in recovery when you wish to disable Tame's next Set on Boot.");
     }
  
     private static void copyAssets(InputStream in, OutputStream out) {

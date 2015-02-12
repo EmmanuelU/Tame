@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -67,6 +68,8 @@ public class AboutTame extends Fragment
     private TextView mTameLogo;
     private TextView mVersion;
     private TextView mLatVersion;
+    private TextView mSOBNote;
+
     Animation fadein = new AlphaAnimation(0.0f, 1.0f);
     Animation fadeout = new AlphaAnimation(1.0f, 0.0f);
     ProgressDialog mCheckUpdateDialog;
@@ -85,11 +88,14 @@ public class AboutTame extends Fragment
 	mTameLogo = (TextView) mView.findViewById(R.id.tame_logo);
 	mVersion = (TextView) mView.findViewById(R.id.versionheader);
 	mLatVersion = (TextView) mView.findViewById(R.id.latversionheader);
+	mSOBNote = (TextView) mView.findViewById(R.id.sobnote);
         mUpdate.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View view) {
 			CheckUpdate();
 		}
 	});
+
+	mSOBNote.setText("Note: After a reboot, Tame may take a couple minutes to re-apply saved settings. Opening this app before those settings are applied may cause all your settings to be reset to default.\n\n In the event that you screwed up and you want to disable Tame Settings from recovery, there is a flash-able zip on your sdcard.\n\n" + FILE_DISABLE_SET_ON_BOOT_ZIP);
 	
 	TameLogoAnim();
 	mTameLogo.startAnimation(fadeout);
