@@ -102,15 +102,11 @@ public class DensPreference extends DialogPreference
 
     private void setData(){
 	if(!initiateData()) return;
-	Utils.CMD("cp -f /system/build.prop " + FILE_LOCAL_BUILD_PROP , false);
-	if(Utils.fileExists(FILE_LOCAL_BUILD_PROP)){
-		Utils.writeProp(FILE_LOCAL_BUILD_PROP, "ro.sf.lcd_density", mScreenDensity.getText().toString());
-		if(Utils.updateProp(FILE_LOCAL_BUILD_PROP)){
-			Utils.toast(getContext(), "Density changed to " + mScreenDensity.getText().toString() + "dp.");
-			GeneralSettings.updateDens(mScreenDensity.getText().toString());
-		}
-		else Utils.toast(getContext(), "Failed to edit Build.prop");
+	if(Utils.writeProp("ro.sf.lcd_density", mScreenDensity.getText().toString())){
+		Utils.toast(getContext(), "Density changed to " + mScreenDensity.getText().toString() + "dp.");
+		GeneralSettings.updateDens(mScreenDensity.getText().toString());
 	}
+	else Utils.toast(getContext(), "Failed to edit Build.prop");
     }
 
 } 

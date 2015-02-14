@@ -132,56 +132,35 @@ public class Utils
 	return value;
     }
 
-    public static String writeProp(String propFile, String propname, String propvalue) {
-	final Properties prop = new Properties();
-	if(fileExists(propFile)){
-		try {
-			FileInputStream in = new FileInputStream(new File(propFile));
-			prop.load(in);
-			in.close();
-		} catch (Exception e) {
-		
+    public static boolean writeProp(String propname, String propvalue) {
+	try {
+		Utils.CMD("cp -f /system/build.prop " + FILE_TMP_BUILD_PROP , false);
+		String previouspropvalue = readProp(propname);
+		//generate modified build.prop
+		File newfile = new File(FILE_LOCAL_BUILD_PROP);
+		FileWriter fw = new FileWriter(newfile);
+
+		Reader fr = new FileReader(new File(FILE_TMP_BUILD_PROP));
+		BufferedReader br = new BufferedReader(fr);
+		while (br.ready()) {
+			fw.write(br.readLine().replaceAll(propname + "=" + previouspropvalue, propname + "=" + propvalue) + "\n");
 		}
 		
-		prop.setProperty(propname, propvalue);
+		fw.close();
+		br.close();
+		fr.close();
 
-		try {
-			FileOutputStream out = new FileOutputStream(new File(propFile));
-			prop.store(out, null);
-			out.close();
-
-			File tmpFile = new File(FILE_TMP_BUILD_PROP);
-			FileWriter fw = new FileWriter(tmpFile);
-
-			Reader fr = new FileReader(new File(propFile));
-			BufferedReader br = new BufferedReader(fr);
-			while (br.ready()) {
-				fw.write(br.readLine().replaceAll("\\\\", "") + "\n");
-			}
-		
-			fw.close();
-			br.close();
-			fr.close();
-		} catch (Exception e) {
-				
-		}
-	}
-	
-	Utils.CMD("rm -rf " + FILE_TMP_BUILD_PROP, false);
-	return propvalue;
-    }
-
-    public static boolean updateProp(String prop) {
-	try{
+		//replace /system/build.prop
 		Process process = Runtime.getRuntime().exec("su");
 		DataOutputStream os = new DataOutputStream(process.getOutputStream());
 		os.writeBytes("mount -o remount rw /system/\n"); 
 		os.writeBytes("mv -f /system/build.prop " + FILE_BACKUP_BUILD_PROP + "\n"); 
-		os.writeBytes("mv -f " + prop + " /system/build.prop\n"); 
+		os.writeBytes("mv -f " + FILE_LOCAL_BUILD_PROP + " /system/build.prop\n"); 
 		os.writeBytes("chmod 644 /system/build.prop\n");
 		os.writeBytes("exit\n");
 		os.flush();
 		process.waitFor();
+		Utils.CMD("rm -rf " + FILE_TMP_BUILD_PROP, false);
 	} catch (Exception e) {
 		return false;
 	}
