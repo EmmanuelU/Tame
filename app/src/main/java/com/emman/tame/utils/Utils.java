@@ -524,7 +524,8 @@ public static boolean isInteger(String s) {
                      
                      // Currently we will copy the files to the root directory
                      // but you should create specific directory for your app
-                    Utils.CMD("mkdir " + PATH_TAME_LOCAL, false);
+			File directory = new File(Environment.getExternalStorageDirectory()+File.separator+TAG);
+			directory.mkdirs();
 
                     out = new FileOutputStream(PATH_TAME_LOCAL + files[i]);
                     copyAssets(in, out);
