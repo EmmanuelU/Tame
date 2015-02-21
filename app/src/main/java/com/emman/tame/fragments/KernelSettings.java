@@ -75,12 +75,12 @@ public class KernelSettings extends PreferenceFragment
 	if(!initiateData()) return;
 
 	if(!Utils.fileExists(FILE_BLN_TOGGLE)){
-		if(!Utils.fileExists(FILE_EBLN)){
-			mBlnDialog.setEnabled(false);
-			prefSet.removePreference(mEBlnDialog);
-		} else{
-			prefSet.removePreference(mBlnDialog);
-		}
+		mBlnDialog.setEnabled(false);
+	}
+	if(!Utils.fileExists(FILE_EBLN)){
+		prefSet.removePreference(mEBlnDialog);
+	} else{
+		prefSet.removePreference(mBlnDialog);
 	}
 	
 	if(!Utils.fileExists(FILE_S2W_TOGGLE)) mS2WDialog.setEnabled(false);
