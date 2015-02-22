@@ -27,6 +27,42 @@
             android:gravity="center"
             android:textColor="#ff8c1414" />
 
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" >
+
+	    <LinearLayout android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:scrollbars="vertical"
+		    android:scrollbarAlwaysDrawVerticalTrack="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Tame Version:"
+            android:id="@+id/appversionheader"
+            android:gravity="center"
+            android:textColor="#ff8a8586" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text=""
+            android:id="@+id/applatversionheader"
+            android:gravity="center"
+            android:textColor="#ff8a8586"
+            android:textSize="14dp" />
+
+	<Button
+	    android:id="@+id/app_update_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Check for Update"
+            android:layout_gravity="center_horizontal"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -50,7 +86,7 @@
 	    android:id="@+id/update_button"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Check for Updates"
+            android:text="Check for Update"
             android:layout_gravity="center_horizontal"/>
 
         <TextView
@@ -63,5 +99,7 @@
             android:visibility = "gone"
             android:gravity="center"
             android:textSize="14dp" />
+    </LinearLayout>
+    </ScrollView>
  
 </LinearLayout>

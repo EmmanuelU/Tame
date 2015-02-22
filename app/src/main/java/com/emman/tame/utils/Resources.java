@@ -6,7 +6,7 @@ public interface Resources {
 
 	//Global Variables and stored data
 
-	class Wild {
+	class OTA {
 		public String device;
 		public String latestversion;
 		public String latestversiondl;
@@ -24,6 +24,8 @@ public interface Resources {
 	public static final String FILE_SET_ON_BOOT = PATH_TAME_LOCAL + "Tame-SOB.sh";
 	public static final String FILE_SYS_QUEUE = PATH_TAME_LOCAL + "Tame-SYSQueue.sh";
 	public static final String FILE_UPDATE_DATA = PATH_TAME_LOCAL + "updatewild.sh";
+	public static final String FILE_APP_UPDATE_DATA = PATH_TAME_LOCAL + "updatetame.sh";
+	public static final String LINK_APP_UPDATE = "https://raw.githubusercontent.com/EmmanuelU/Tame/master/releases/updatetame.sh";
 	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP = PATH_TAME_LOCAL + "DisableTame_S-O-B.zip";
 	public static final String FILE_DISABLE_SET_ON_BOOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "WildNFree.tame";
 	public static final String SET_ON_BOOT = "set_on_boot";
