@@ -8,4 +8,11 @@
 	android:positiveButtonText="Save"
     />
 
+    <com.emman.tame.dialogs.ScriptPreference
+	android:key="scriptdialog"
+	android:title="Run At Boot"
+	android:summary="Schedule shell commands to be executed every startup."
+	android:positiveButtonText="Save"
+    />
+
 </PreferenceScreen>

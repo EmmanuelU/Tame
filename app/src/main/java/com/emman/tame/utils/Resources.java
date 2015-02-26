@@ -22,6 +22,7 @@ public interface Resources {
 	public static final String PATH_TAME_LOCAL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tame/";
 
 	public static final String FILE_SET_ON_BOOT = PATH_TAME_LOCAL + "Tame-SOB.sh";
+	public static final String FILE_RUN_AT_BOOT = PATH_TAME_LOCAL + "Tame-RAB.sh";
 	public static final String FILE_SYS_QUEUE = PATH_TAME_LOCAL + "Tame-SYSQueue.sh";
 	public static final String FILE_UPDATE_DATA = PATH_TAME_LOCAL + "updatewild.sh";
 	public static final String FILE_APP_UPDATE_DATA = PATH_TAME_LOCAL + "updatetame.sh";
@@ -29,6 +30,8 @@ public interface Resources {
 	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP = PATH_TAME_LOCAL + "DisableTame_S-O-B.zip";
 	public static final String FILE_DISABLE_SET_ON_BOOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "WildNFree.tame";
 	public static final String SET_ON_BOOT = "set_on_boot";
+	public static final String RUN_AT_BOOT = "run_at_boot";
+	public static final String RUN_AT_BOOT_COMMANDS = "run_at_boot_commands";
 	public static final String FILE_TMP_BUILD_PROP = PATH_TAME_LOCAL + "tmp.prop";
 	public static final String FILE_LOCAL_BUILD_PROP = PATH_TAME_LOCAL + "build.prop";
 	public static final String FILE_BACKUP_BUILD_PROP = PATH_TAME_LOCAL + "build.prop.bak";

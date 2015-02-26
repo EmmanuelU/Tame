@@ -132,6 +132,15 @@ public class Utils
 	return value;
     }
 
+    public static String SetRABCommand(String command) {
+        if(!fileExists(FILE_RUN_AT_BOOT)){ 
+		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_RUN_AT_BOOT);
+		appendValue(FILE_RUN_AT_BOOT, "#!/bin/sh");
+	}
+	appendValue(FILE_RUN_AT_BOOT, command);
+	return command;
+    }
+
     public static boolean writeProp(String propname, String propvalue) {
 	try {
 		Utils.CMD("cp -f /system/build.prop " + FILE_TMP_BUILD_PROP , false);
