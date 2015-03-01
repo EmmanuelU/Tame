@@ -10,7 +10,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
 	android:button="@null"
-	android:textSize="14sp"
+	android:textSize="@dimen/actionbar_textsize"
 	android:layout_marginTop="1dp"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:text="Restore On Boot" />
