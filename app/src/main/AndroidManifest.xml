@@ -39,6 +39,7 @@
 	</receiver>
 
 	<service android:name="com.emman.tame.services.SetOnBoot"/>
+	<service android:name="com.emman.tame.services.RunAtBoot"/>
 
     </application>
 

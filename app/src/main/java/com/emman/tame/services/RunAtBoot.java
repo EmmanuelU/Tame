@@ -16,16 +16,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import com.emman.tame.MainActivity;
+import com.emman.tame.dialogs.ScriptPreference;
 
-public class SetOnBoot extends Service {
+public class RunAtBoot extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent == null) {
             stopSelf();
         }
-        new SetTameSettings(this).execute();
+        new SetTameCommands(this).execute();
         return START_STICKY;
     }
 
@@ -34,12 +34,12 @@ public class SetOnBoot extends Service {
         return null;
     }
 
-    class SetTameSettings extends AsyncTask<Void, Void, Void> {
+    class SetTameCommands extends AsyncTask<Void, Void, Void> {
 
         Context context;
 	SharedPreferences mPreferences;
 
-        public SetTameSettings(Context context) {
+        public SetTameCommands(Context context) {
             this.context = context;
             mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         }
@@ -47,7 +47,7 @@ public class SetOnBoot extends Service {
         @SuppressWarnings("deprecation")
         @Override
         protected Void doInBackground(Void... args) {
-            MainActivity.ExecuteBootData(mPreferences);
+            ScriptPreference.ExecuteOnBootCommands(mPreferences);
             return null;
         }
 
@@ -56,7 +56,6 @@ public class SetOnBoot extends Service {
             super.onPostExecute(result);
             stopSelf();
         }
-
     }
 
     @Override

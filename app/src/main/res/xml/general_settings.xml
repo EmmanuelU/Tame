@@ -11,7 +11,7 @@
     <com.emman.tame.dialogs.ScriptPreference
 	android:key="scriptdialog"
 	android:title="Run At Boot"
-	android:summary="Schedule shell commands to be executed every startup."
+	android:summary="Schedule shell commands to be executed every startup. While this is independent of Tame's Set On Boot, this will disable itself if the SOB disabler zip is flashed."
 	android:positiveButtonText="Save"
     />
 

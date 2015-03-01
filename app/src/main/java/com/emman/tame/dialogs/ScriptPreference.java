@@ -135,7 +135,7 @@ public class ScriptPreference extends DialogPreference
 	mCommands.setSelection(mCommands.getText().length());
     }
 
-    public static void SetOnBootData(SharedPreferences preferences){
+    public static void ExecuteOnBootCommands(SharedPreferences preferences){
 	if(Utils.stringToBool(preferences.getString(RUN_AT_BOOT, "0"))){
 		String[] commandString = preferences.getString(RUN_AT_BOOT_COMMANDS, "").split(System.getProperty("line.separator"));
 		Utils.CMD("rm -rf " + FILE_RUN_AT_BOOT, false);
