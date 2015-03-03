@@ -94,7 +94,7 @@ public class MainActivity extends Activity
 		this.finish();
 	}
 
-	if(!Utils.packageExists(this, PACKAGE_SUPERSU) && Utils.getAndroidAPI() > 20){
+	if(!Utils.packageExists(this, PACKAGE_SUPERSU) && Utils.isLollipop()){
 		Intent intent = new Intent();
 		intent.setData(Uri.parse(LINK_PACKAGE_SUPERSU));
 		Utils.notification(this, NotificationID.ROOTFAIL, intent, "As of now, Tame requires the SuperSU binary on Lollipop to avoid any potential issues. Click me to be directed to the Market.");

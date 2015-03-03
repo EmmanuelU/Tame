@@ -66,8 +66,8 @@ public class GeneralSettings extends PreferenceFragment
 	return true;
     }
 
-    public static void updateDens(String newDens){
-	if(mDensDialog.isEnabled()) mDensDialog.setSummary(Utils.readProp("ro.sf.lcd_density") + "dpi. " + newDens + "dpi after reboot.");
+    public static void updateDensSummary(String summary){
+	if(mDensDialog.isEnabled()) mDensDialog.setSummary(summary);
     }
 
     private void updateData(){

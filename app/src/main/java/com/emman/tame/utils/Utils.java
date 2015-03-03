@@ -149,6 +149,11 @@ public class Utils
 	return Build.VERSION.SDK_INT;
     }
 
+    public static boolean isLollipop() {
+        
+	return Build.VERSION.SDK_INT > 20;
+    }
+
     public static boolean writeProp(String propname, String propvalue) {
 	try {
 		Utils.CMD("cp -f /system/build.prop " + FILE_TMP_BUILD_PROP , false);
@@ -178,6 +183,23 @@ public class Utils
 		os.flush();
 		process.waitFor();
 		Utils.CMD("rm -rf " + FILE_TMP_BUILD_PROP, false);
+	} catch (Exception e) {
+		return false;
+	}
+	return true;
+    }
+
+    public static boolean pushProp(String newpropfile) {
+	if(!fileExists(newpropfile)) return false;
+	try {
+		Process process = Runtime.getRuntime().exec("su");
+		DataOutputStream os = new DataOutputStream(process.getOutputStream());
+		os.writeBytes("mount -o remount rw /system/\n"); 
+		os.writeBytes("mv -f " + newpropfile + " /system/build.prop\n"); 
+		os.writeBytes("chmod 644 /system/build.prop\n");
+		os.writeBytes("exit\n");
+		os.flush();
+		process.waitFor();
 	} catch (Exception e) {
 		return false;
 	}
@@ -552,10 +574,6 @@ public static boolean isInteger(String s) {
                      // @MyHtmlFiles is the folder from our assets
                       
                     in = assetFiles.open(TAG + "/" + files[i]);
- 
-                     
-                     // Currently we will copy the files to the root directory
-                     // but you should create specific directory for your app
 			File directory = new File(Environment.getExternalStorageDirectory()+File.separator+TAG);
 			directory.mkdirs();
 

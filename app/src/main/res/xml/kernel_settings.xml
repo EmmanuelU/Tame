@@ -11,7 +11,7 @@
     <com.emman.tame.dialogs.EBLNPreference
 	android:key="eblndialog"
 	android:title="Enhanced Button Light Notifications"
-	android:summary="Pulse button lights when screen is off, and a notification is received."
+	android:summary="Pulse button lights when a notification is received."
 	android:positiveButtonText="Save"
     />
 
