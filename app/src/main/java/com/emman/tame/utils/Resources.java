@@ -21,6 +21,9 @@ public interface Resources {
 
 	public static final String PATH_TAME_LOCAL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tame/";
 
+	public static final String PACKAGE_SUPERSU = "eu.chainfire.supersu";
+	public static final String LINK_PACKAGE_SUPERSU = "market://details?id=eu.chainfire.supersu";
+
 	public static final String FILE_SET_ON_BOOT = PATH_TAME_LOCAL + "Tame-SOB.sh";
 	public static final String FILE_RUN_AT_BOOT = PATH_TAME_LOCAL + "Tame-RAB.sh";
 	public static final String FILE_SYS_QUEUE = PATH_TAME_LOCAL + "Tame-SYSQueue.sh";

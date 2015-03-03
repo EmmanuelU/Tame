@@ -101,7 +101,7 @@ public class CPUSettings extends PreferenceFragment
 
 	if(!Utils.fileIsReadable(FREQ_MIN_FILE) || !Utils.fileIsReadable(FREQ_MAX_FILE)){
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LINK_WK_CPU_PATCH));
-		Utils.notification(getActivity(), NotificationID.CPUPERM, intent, "Your kernel has a bug, please forward this URL link to your kernel developer. You may experience lag using this app.");
+		Utils.notification(getActivity(), NotificationID.CPUPERM, intent, "Your Rom or Kernel has a bug, please forward this URL link to your developer. As result, you may experience lag using this app.");
 	}
 
 

@@ -9,10 +9,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.NetworkOnMainThreadException;
 import android.os.PowerManager;
@@ -141,6 +144,11 @@ public class Utils
 	return command;
     }
 
+    public static int getAndroidAPI() {
+        
+	return Build.VERSION.SDK_INT;
+    }
+
     public static boolean writeProp(String propname, String propvalue) {
 	try {
 		Utils.CMD("cp -f /system/build.prop " + FILE_TMP_BUILD_PROP , false);
@@ -262,27 +270,31 @@ public class Utils
         alertDialog.show();
     }
 
-    public static boolean checkSu() {
-        if (!new File("/system/bin/su").exists()
-                && !new File("/system/xbin/su").exists()) {
-            Log.e(TAG, "su does not exist!!!");
-            return false; // tell caller to bail...
-        }
+    public static void log(String message, boolean error) {
+	if(error) Log.e(TAG, " " + message);
+	else Log.i(TAG, " " + message);
+   }
 
+    public static boolean checkSu() {
+        if (!new File("/system/bin/su").exists() && !new File("/system/xbin/su").exists()) {
+            log("SU does not exist", true);
+            return false;
+        }
         try {
             if ((new CMDProcessor().su.runWaitFor("ls /data/app-private"))
                     .success()) {
-                Log.i(TAG, " SU exists and we have permission");
+                log("SU exists and we have permission", false);
                 return true;
             } else {
-                Log.i(TAG, " SU exists but we dont have permission");
+                log("SU exists but we dont have permission", false);
                 return false;
             }
         } catch (final NullPointerException e) {
-            Log.e(TAG, e.getLocalizedMessage().toString());
+            log(e.getLocalizedMessage().toString(), true);
             return false;
         }
     }
+
 
  /**
      * Read one line from file
@@ -325,6 +337,17 @@ public class Utils
 		return "";
 	}
 	return text.toString();
+    }
+
+    public static boolean packageExists(Context context, String targetPackage){
+        List<ApplicationInfo> packages;
+        PackageManager pm;
+            pm = context.getPackageManager();        
+            packages = pm.getInstalledApplications(0);
+            for (ApplicationInfo packageInfo : packages) {
+        if(packageInfo.packageName.equals(targetPackage)) return true;
+        }        
+        return false;
     }
 
     public static boolean fileIsReadable(String fname) {

@@ -27,6 +27,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -89,6 +90,15 @@ public class MainActivity extends Activity
 	if(!Utils.checkSu()){
 		Intent intent = getIntent();
 		Utils.notification(this, NotificationID.ROOTFAIL, intent, "Please restart me with Superuser access.");
+		Utils.toast(this, "Fatal Error.");
+		this.finish();
+	}
+
+	if(!Utils.packageExists(this, PACKAGE_SUPERSU) && Utils.getAndroidAPI() > 20){
+		Intent intent = new Intent();
+		intent.setData(Uri.parse(LINK_PACKAGE_SUPERSU));
+		Utils.notification(this, NotificationID.ROOTFAIL, intent, "As of now, Tame requires the SuperSU binary on Lollipop to avoid any potential issues. Click me to be directed to the Market.");
+		Utils.toast(this, "Fatal Error.");
 		this.finish();
 	}
 

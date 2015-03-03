@@ -193,9 +193,8 @@ public class EBLNPreference extends DialogPreference
 			mTouchKeyONInterval.setText("300");
 			mTouchKeyOFFInterval.setText("1500");
 		}
-		String[] intervals = (mTouchKeyONInterval.getText().toString() + " " + mTouchKeyOFFInterval.getText().toString()).split("\\s+");
-		mCurTouchKeyBLNBlink.setText(String.valueOf((mTouchKeyBLNTimeout.getProgress() / 1000) / 60) + " minute(s)");
 	}
+	mCurTouchKeyBLNBlink.setText(String.valueOf((mTouchKeyBLNTimeout.getProgress() / 1000) / 60) + " minute(s)");
 
     }
 

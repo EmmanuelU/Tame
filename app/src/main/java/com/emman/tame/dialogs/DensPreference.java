@@ -103,7 +103,7 @@ public class DensPreference extends DialogPreference
     private void setData(){
 	if(!initiateData()) return;
 	if(Utils.writeProp("ro.sf.lcd_density", mScreenDensity.getText().toString())){
-		Utils.toast(getContext(), "Density changed to " + mScreenDensity.getText().toString() + "dp.");
+		Utils.toast(getContext(), "Density changed to " + mScreenDensity.getText().toString() + "dpi.");
 		GeneralSettings.updateDens(mScreenDensity.getText().toString());
 	}
 	else Utils.toast(getContext(), "Failed to edit Build.prop");
