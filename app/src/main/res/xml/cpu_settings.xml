@@ -4,7 +4,7 @@
     <com.emman.tame.dialogs.CPUStatsPreference
         android:key="cur_freq"
 	android:positiveButtonText="Go Back"
-        android:title="Processor Statistics"/>
+        android:title="Statistics"/>
 
     <com.emman.tame.dialogs.CPUPolicyPreference
 	android:title="Processor Policies"
@@ -27,8 +27,8 @@
     />
 
     <com.emman.tame.dialogs.CPUBoostPreference
-	android:title="CPU Input Boost"
-	android:summary="Boost CPU thresholds during input events."
+	android:title="Input Boost"
+	android:summary="Raise CPU minimum speed during input events."
 	android:key="cpu_boost"
     />
 
@@ -53,7 +53,7 @@
     />
 
     <ListPreference
-	android:title="Celox Display Undervoltage"
+	android:title="GSII Display Undervoltage"
 	android:summary="Undervolting the screen saves battery. Colors may appear different, but this feature is safe to use."
 	android:key="celox_uv_panel"
 	android:entries="@array/celox_uv_array_entries"
