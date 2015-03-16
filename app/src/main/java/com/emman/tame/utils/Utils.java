@@ -93,7 +93,7 @@ public class Utils
 	return value;
     }
 
-    public static String appendValue(String filename, String value) {
+    public static String appendFile(String filename, String value) {
         new CMDProcessor().sh.runWaitFor("busybox echo '" + value + "' >> " + filename);
 	return value;
     }
@@ -114,9 +114,9 @@ public class Utils
     public static String queueSYSValue(String fname, String value) {
         if(!fileExists(FILE_SYS_QUEUE)){ 
 		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SYS_QUEUE);
-		appendValue(FILE_SYS_QUEUE, "#!/bin/sh");
+		appendFile(FILE_SYS_QUEUE, "#!/bin/sh");
 	}
-	if(fileExists(fname)) appendValue(FILE_SYS_QUEUE, "echo \"" + value + "\" > " + fname);
+	if(fileExists(fname)) appendFile(FILE_SYS_QUEUE, "echo \"" + value + "\" > " + fname);
 	return value;
     }
 
@@ -128,19 +128,19 @@ public class Utils
     public static String SetSOBValue(String fname, String value) {
         if(!fileExists(FILE_SET_ON_BOOT)){
 		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SET_ON_BOOT);
-		appendValue(FILE_SET_ON_BOOT, "#!/bin/sh");
+		appendFile(FILE_SET_ON_BOOT, "#!/bin/sh");
 	}
 	if(!fileExists(fname)) return value;
-	appendValue(FILE_SET_ON_BOOT, "echo \"" + value + "\" > " + fname);
+	appendFile(FILE_SET_ON_BOOT, "echo \"" + value + "\" > " + fname);
 	return value;
     }
 
     public static String SetRABCommand(String command) {
         if(!fileExists(FILE_RUN_AT_BOOT)){ 
 		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_RUN_AT_BOOT);
-		appendValue(FILE_RUN_AT_BOOT, "#!/bin/sh");
+		appendFile(FILE_RUN_AT_BOOT, "#!/bin/sh");
 	}
-	appendValue(FILE_RUN_AT_BOOT, command);
+	appendFile(FILE_RUN_AT_BOOT, command);
 	return command;
     }
 
@@ -384,7 +384,7 @@ public class Utils
 	return (s.equals("1"));
     }
     public static boolean isStringEmpty(String s) {
-	return (s == null || s.equals(""));
+	return (s == null || s.equals("") || !(s.trim().length() > 0));
     }
 
     public static String boolToString(boolean b) {

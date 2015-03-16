@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -34,6 +35,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -77,6 +79,7 @@ public class SysFSExplorer extends ListFragment
     private File currentDir;
     private String currentPath = "/sys/";
     private FileArrayAdapter adapter;
+    private SharedPreferences mPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,8 @@ public class SysFSExplorer extends ListFragment
 	currentDir = new File(currentPath);
 	fill(currentDir);
 	Utils.toast(getActivity(), "Edit Values with Caution");
+
+	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
 	@Override
@@ -98,7 +103,8 @@ public class SysFSExplorer extends ListFragment
 		else {
 			final Dialog dialog = new Dialog(getActivity());
 			dialog.setContentView(R.layout.syseditdialog);
-			Button mSaveButton = (Button) dialog.findViewById(R.id.positive);
+			final Button mSaveButton = (Button) dialog.findViewById(R.id.positive);
+			final CheckBox mRAB = (CheckBox) dialog.findViewById(R.id.rab);
 			final EditText mEditFile = (EditText) dialog.findViewById(R.id.editfile);
 			final String mEditFilePath = o.getPath();
 			String[] mTitle = mEditFilePath.split("/");
@@ -110,7 +116,10 @@ public class SysFSExplorer extends ListFragment
 				@Override
 				public void onClick(View v) {
 					Utils.writeSYSValue(mEditFilePath, mEditFile.getText().toString());
-					Utils.toast(getActivity(), "Value Saved.");
+					if(mRAB.isChecked()){
+						appendSharedPrefs(mPreferences, RUN_AT_BOOT_COMMANDS, "echo '" + mEditFile.getText().toString() + "' > "+ mEditFilePath);
+						Utils.toast(getActivity(), "Value saved, and queued to Run At Boot.");
+					} else Utils.toast(getActivity(), "Value saved.");
 					dialog.dismiss();
 				}
 			});
@@ -147,5 +156,14 @@ public class SysFSExplorer extends ListFragment
 	this.setListAdapter(adapter);
     }
 
+    private void appendSharedPrefs(SharedPreferences preferences, String var, String value) {
+	updateSharedPrefs(mPreferences, var, preferences.getString(var, "") + "\n" + value);
+    }
+
+    private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
+	final SharedPreferences.Editor editor = preferences.edit();
+	editor.putString(var, value);
+	editor.commit();
+    }
 
 }

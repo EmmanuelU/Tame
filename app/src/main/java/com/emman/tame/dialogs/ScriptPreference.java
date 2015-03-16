@@ -113,6 +113,7 @@ public class ScriptPreference extends DialogPreference
     private void setData(){
 	if(!initiateData()) return;
 	
+	if(mScript.isChecked() && Utils.isStringEmpty(mCommands.getText().toString())) mScript.setChecked(false);
 	updateSharedPrefs(mPreferences, RUN_AT_BOOT_COMMANDS, mCommands.getText().toString());
 	updateSharedPrefs(mPreferences, RUN_AT_BOOT, Utils.boolToString(mScript.isChecked()));
 

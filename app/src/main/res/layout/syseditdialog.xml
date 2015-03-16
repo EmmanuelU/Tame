@@ -9,6 +9,14 @@
     android:layout_centerHorizontal="true"
     android:gravity="center_horizontal">
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add to Run at Boot"
+	android:button="@null"
+	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        android:id="@+id/rab"/>
+
 	<EditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
