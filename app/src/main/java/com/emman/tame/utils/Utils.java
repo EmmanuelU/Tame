@@ -116,7 +116,7 @@ public class Utils
 		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SYS_QUEUE);
 		appendFile(FILE_SYS_QUEUE, "#!/bin/sh");
 	}
-	if(fileExists(fname)) appendFile(FILE_SYS_QUEUE, "echo \"" + value + "\" > " + fname);
+	appendFile(FILE_SYS_QUEUE, "echo \"" + value + "\" > " + fname);
 	return value;
     }
 
