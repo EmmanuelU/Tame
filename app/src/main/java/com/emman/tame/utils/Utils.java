@@ -126,7 +126,7 @@ public class Utils
     }
 
     public static String SetSOBValue(String fname, String value) {
-        if(!fileExists(FILE_SET_ON_BOOT)){ 
+        if(!fileExists(FILE_SET_ON_BOOT)){
 		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SET_ON_BOOT);
 		appendValue(FILE_SET_ON_BOOT, "#!/bin/sh");
 	}
