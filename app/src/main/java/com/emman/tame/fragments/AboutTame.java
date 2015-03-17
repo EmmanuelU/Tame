@@ -124,13 +124,18 @@ public class AboutTame extends Fragment
         return mView;
     }
 
+    public static String getWildOta(String device){
+	if(device.equals("hercules")) return "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-hercules-3.0/flashable/tools/updatewild.sh";
+	if(device.equals("skyrocket")) return "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-skyrocket-3.0/flashable/tools/updatewild.sh";
+	if(device.equals("e98x")) return "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_lge_gproj/android-msm-e98x-3.4/flashable/tools/updatewild.sh";
+	return "";
+    }
+
     public static boolean isWild(){
 	propversion = Utils.CMD("getprop ro.wild.version", false);
 	propversiondate = Utils.CMD("getprop ro.wild.date", false);
 	propdevice = Utils.CMD("getprop ro.wild.device", false);
-	if(propdevice.equals("hercules")) propotalink = "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-hercules-3.0/flashable/tools/updatewild.sh";
-	else if(propdevice.equals("skyrocket")) propotalink = "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-skyrocket-3.0/flashable/tools/updatewild.sh";
-	else propotalink = "";
+	propotalink = getWildOta(propdevice);
 	return (!propversion.isEmpty() || !propversiondate.isEmpty() || !propdevice.isEmpty() || !propotalink.isEmpty());
     }
 
