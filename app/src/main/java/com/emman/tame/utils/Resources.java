@@ -17,7 +17,10 @@ public interface Resources {
 		public boolean fetchedlatestversion = false;
 	}
 
+	public static final String FILE_TEXT_FORMAT = "text/*";
+
 	public static final String TAG = "Tame";
+	public static final String LINE_SPACE = " ";
 
 	public static final String PATH_TAME_LOCAL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tame/";
 
@@ -27,6 +30,8 @@ public interface Resources {
 	public static final String FILE_SET_ON_BOOT = PATH_TAME_LOCAL + "Tame-SOB.sh";
 	public static final String FILE_RUN_AT_BOOT = PATH_TAME_LOCAL + "Tame-RAB.sh";
 	public static final String FILE_SYS_QUEUE = PATH_TAME_LOCAL + "Tame-SYSQueue.sh";
+	public static final String TAME_LAST_KMSG = PATH_TAME_LOCAL + "last_kmsg.txt";
+	public static final String TAME_LOGCAT = PATH_TAME_LOCAL + "logcat.txt";
 	public static final String FILE_UPDATE_DATA = PATH_TAME_LOCAL + "updatewild.sh";
 	public static final String FILE_APP_UPDATE_DATA = PATH_TAME_LOCAL + "updatetame.sh";
 	public static final String LINK_APP_UPDATE = "https://raw.githubusercontent.com/EmmanuelU/Tame/master/releases/updatetame.sh";
@@ -105,6 +110,6 @@ public interface Resources {
 	public static final String GPU_MAX_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/max_gpuclk";
 	public static final String GPU_CUR_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpuclk";
 
-	public static final String BAT_VOLT_PATH = "/sys/class/power_supply/battery/voltage_now";
+	public static final String LAST_KMSG = "/proc/last_kmsg";
 
 }

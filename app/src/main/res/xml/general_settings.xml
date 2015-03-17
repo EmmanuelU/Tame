@@ -15,4 +15,10 @@
 	android:positiveButtonText="Save"
     />
 
+    <com.emman.tame.dialogs.LogPreference
+	android:key="logdialog"
+	android:title="Dump System Logs"
+	android:positiveButtonText="Go Back"
+    />
+
 </PreferenceScreen>

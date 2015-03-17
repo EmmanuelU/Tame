@@ -154,6 +154,16 @@ public class Utils
 	return Build.VERSION.SDK_INT > 20;
     }
 
+    public static void openFile(Context context, String filePath, String type) {
+	Intent intent = new Intent();
+        if(fileExists(filePath)){
+		intent.setAction(android.content.Intent.ACTION_VIEW);
+		File file = new File(filePath);
+		intent.setDataAndType(Uri.fromFile(file), type);
+		context.startActivity(intent); 
+	}
+    }
+
     public static boolean writeProp(String propname, String propvalue) {
 	try {
 		Utils.CMD("cp -f /system/build.prop " + FILE_TMP_BUILD_PROP , false);
