@@ -280,8 +280,14 @@ public class CPUPolicyPreference extends DialogPreference
 
     private void updateDependencies(){
 	if(!initiateData()) return;
-	if(!Utils.fileExists(CPU_GOV_SYNC_FILE)) mCpuGovSync.setVisibility(View.GONE);
-	else mPolicySync.setVisibility(View.GONE);
+	if(!Utils.fileExists(CPU_GOV_SYNC_FILE)){
+		mCpuGovSync.setVisibility(View.GONE);
+		mCpuGovSync.setChecked(false);
+	}
+	else{
+		mPolicySync.setVisibility(View.GONE);
+		mPolicySync.setChecked(false);
+	}
 	if(mCpuGovSync.isChecked() || mPolicySync.isChecked()){
 		mCpu = 0;
 		mCpuCore.setSelection(mCpu);

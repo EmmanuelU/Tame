@@ -102,8 +102,8 @@ public interface Resources {
 	public static final String SAVED_CPU_BOOST_INPUT_DUR = "saved_cpu_boost_input_dur";
 	public static final String CPU_BOOST_INPUT_DUR_FILE = "/sys/module/cpu_input_boost/parameters/input_boost_ms";
 	public static final String SAVED_CPU_GOV_SYNC = "force_cpu_gov_sync";
-	public static final String RETAIN_CPU_GOV_SYNC_FILE = "/sys/kernel/retain_cpu_policy/sync_cores";
-	public static final String CPU_GOV_SYNC_FILE = "/sys/kernel/cpu_gov_sync/force_cpu_gov_sync";
+	public static final String RETAIN_CPU_GOV_SYNC_FILE = "/sys/kernel/retain_cpu_policy/policy_sync";
+	public static final String CPU_GOV_SYNC_FILE = (Utils.fileExists(RETAIN_CPU_GOV_SYNC_FILE) ? RETAIN_CPU_GOV_SYNC_FILE : "/sys/kernel/cpu_gov_sync/force_cpu_gov_sync");
 
 
 	public static final String SAVED_GPU_MAX_FREQ = "saved_gpu_max_freq";
