@@ -20,6 +20,7 @@ public interface Resources {
 	public static final String FILE_TEXT_FORMAT = "text/*";
 
 	public static final String TAG = "Tame";
+	public static final String NEW_LINE = "\n";
 	public static final String LINE_SPACE = " ";
 
 	public static final String PATH_TAME_LOCAL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tame/";

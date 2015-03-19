@@ -75,19 +75,21 @@ public class CPUStatsPreference extends DialogPreference
 			sleep(500);
 			String stats = "";
 			for(int i = 0; i < Utils.getNumOfCpus();){
-				String minfreq, maxfreq, curfreq;
+				String minfreq, maxfreq, curfreq, governor;
 				curfreq = Utils.readOneLine(Utils.toCPU(FREQ_CUR_FILE, i));
 				if(Utils.isStringEmpty(curfreq)){
 					curfreq = "Offline";
 					minfreq = "N/A";
 					maxfreq = "";
+					governor = "";
 				}
 				else {
 					curfreq = String.format("%s", Utils.toMHz(curfreq));
 					minfreq = Utils.toMHz(Utils.readOneLine(Utils.toCPU(FREQ_MIN_FILE, i))).replace("MHz", "-");
 					maxfreq = Utils.toMHz(Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, i)));
+					governor = Utils.readOneLine(Utils.toCPU(GOV_FILE, i)) + NEW_LINE;
 				}
-				stats = stats + "Core " + (i+1) + " (" + minfreq + maxfreq + "): " + curfreq + "\n";
+				stats = stats + "Core " + (i+1) + " (" + minfreq + maxfreq + "): " + curfreq + NEW_LINE + governor;
 				i++;
 			}
 			if (stats != null) mCurCPUHandler.sendMessage(mCurCPUHandler.obtainMessage(0, stats));
