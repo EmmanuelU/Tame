@@ -70,6 +70,11 @@ public interface Resources {
 	public static final String TOUCHKEY_EBLN_BLINK_TIMEOUT = "touchkey_ebln_blink_timeout";
 	public static final String FILE_EBLN_BLINK_TIMEOUT = "/sys/class/misc/enhanced_bln/blink_timeout_ms";
 	public static final String FILE_EBLN_BLINK_OVERRIDE = "/sys/class/misc/enhanced_bln/blink_override_interval_ms";
+
+	public static final String TOUCHKEY_BLN_BLINK_RGB = "touchkey_bln_blink_rgb";
+	public static final String FILE_HBLN_BLINK_OVERRIDE = "/sys/class/leds/R/device/led_blink_interval";
+	public static final String FILE_HBLN_BLINK_RGB = "/sys/class/leds/R/device/led_blink_rgb";
+	
 	public static final String SAVED_CELOX_DISPLAY_UV = "celox_panel_uv";
 	public static final String FILE_CELOX_DISPLAY_UV = "/sys/module/board_msm8x60_celox/parameters/panel_uv";
 

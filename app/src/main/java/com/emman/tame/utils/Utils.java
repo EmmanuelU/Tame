@@ -163,6 +163,20 @@ public class Utils
 		context.startActivity(intent); 
 	}
     }
+    
+ public static int hexToInt(String str){
+   int start = 6;
+   int end = 10;
+   String t = str.substring(start, end);
+
+   char[] ch = t.toCharArray();
+   String res = "";
+   for(int i = 0; i < end-start; i += 2){
+      res += Integer.parseInt(ch[i]+ch[i+1]+"", 16);
+   }
+
+   return Integer.parseInt(res);
+   }
 
     public static boolean writeProp(String propname, String propvalue) {
 	try {

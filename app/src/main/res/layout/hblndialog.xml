@@ -9,61 +9,48 @@
     android:weightSum="1"
     android:layout_centerHorizontal="true"
     android:gravity="center_horizontal">
-
-    <CheckBox
-        android:layout_width="108dp"
-        android:layout_height="wrap_content"
-        android:text="Enable"
-	android:button="@null"
-	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:id="@+id/touchkey_bln"
-
-        android:layout_alignParentTop="true"/>
-
-    <View
-    android:layout_width="fill_parent"
-    android:layout_height="1dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:background="#DBDBDB"/>
+    
+    	    <CheckBox
+		android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Override Color"
+		android:button="@null"
+		android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        	android:id="@+id/touchkey_bln_override_rgb"
+        	android:layout_alignParentTop="true"/>
 
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
-	    android:layout_centerHorizontal="true"
+	    android:focusableInTouchMode="true"
+	    android:focusable="true"
 	    android:gravity="center_horizontal"
-	    android:id="@+id/touchkey_bln_blink_group">
-
-        <TextView
-            android:layout_width="wrap_content"
+	    android:id="@+id/touchkey_bln_rgb_group">>
+    
+	<com.larswerkman.holocolorpicker.ColorPicker
+    android:id="@+id/touchkey_bln_rgb"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+    
+    <com.larswerkman.holocolorpicker.OpacityBar
+    android:id="@+id/touchkey_bln_rgb_alpha"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+    
+           <EditText
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Duration:"
-            android:textColor="#FFFFFF"
-            android:layout_weight="0.08"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:ems="10"
+            android:maxLength="8"
+            android:id="@+id/touchkey_bln_rgb_text"
+            android:inputType="none"
+	    android:textIsSelectable="true"
+	    android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="## minute(s) - ### Blinks"
-            android:textColor="#FFFFFF"
-            android:layout_weight="0.08"
-            android:id="@+id/cur_touchkey_bln_blink"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
-
-	<SeekBar
-            android:layout_width="263dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/touchkey_bln_max_blink"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-
-	</LinearLayout>
+    
+    </LinearLayout>
 
     <View
     android:layout_width="fill_parent"

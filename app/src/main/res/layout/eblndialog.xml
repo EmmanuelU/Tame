@@ -48,7 +48,7 @@
 	    <CheckBox
 		android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:text="Custom Blink Intervals"
+        	android:text="Override Blink Intervals"
 		android:button="@null"
 		android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         	android:id="@+id/touchkey_bln_override_interval"

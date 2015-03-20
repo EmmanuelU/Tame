@@ -45,6 +45,7 @@ import android.widget.TextView;
 
 import com.emman.tame.dialogs.BLNPreference;
 import com.emman.tame.dialogs.EBLNPreference;
+import com.emman.tame.dialogs.HBLNPreference;
 import com.emman.tame.dialogs.CPUBoostPreference;
 import com.emman.tame.dialogs.CPUPolicyPreference;
 import com.emman.tame.dialogs.GPUPreference;
@@ -279,6 +280,7 @@ public class MainActivity extends Activity
 	IOPreference.SetOnBootData(preferences);
 	BLNPreference.SetOnBootData(preferences);
 	EBLNPreference.SetOnBootData(preferences);
+	HBLNPreference.SetOnBootData(preferences);
 	SMPPreference.SetOnBootData(preferences);
 	S2WPreference.SetOnBootData(preferences);
 	GPUPreference.SetOnBootData(preferences);

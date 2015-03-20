@@ -36,8 +36,9 @@ import com.emman.tame.utils.Utils;
 public class KernelSettings extends PreferenceFragment
 		implements Resources {
 
-    private Preference mEBlnDialog;
     private Preference mBlnDialog;
+    private Preference mEBlnDialog;
+    private Preference mHBlnDialog;
     private Preference mS2WDialog;
 
     private SharedPreferences mPreferences;
@@ -64,8 +65,9 @@ public class KernelSettings extends PreferenceFragment
     private boolean initiateData(){
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-	mEBlnDialog = findPreference("eblndialog");
 	mBlnDialog = findPreference("blndialog");
+	mEBlnDialog = findPreference("eblndialog");
+	mHBlnDialog = findPreference("hblndialog");
 	mS2WDialog = findPreference("s2wdialog");
 
 	return true;
@@ -77,11 +79,12 @@ public class KernelSettings extends PreferenceFragment
 	if(!Utils.fileExists(FILE_BLN_TOGGLE)){
 		mBlnDialog.setEnabled(false);
 	}
+	if(!Utils.fileExists(FILE_HBLN_BLINK_OVERRIDE)){
+		prefSet.removePreference(mHBlnDialog);
+	} else prefSet.removePreference(mBlnDialog);
 	if(!Utils.fileExists(FILE_EBLN)){
 		prefSet.removePreference(mEBlnDialog);
-	} else{
-		prefSet.removePreference(mBlnDialog);
-	}
+	} else prefSet.removePreference(mBlnDialog);
 	
 	if(!Utils.fileExists(FILE_S2W_TOGGLE)) mS2WDialog.setEnabled(false);
     }

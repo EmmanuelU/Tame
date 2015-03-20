@@ -14,6 +14,13 @@
 	android:summary="Pulse button lights when a notification is received."
 	android:positiveButtonText="Save"
     />
+    
+        <com.emman.tame.dialogs.HBLNPreference
+	android:key="hblndialog"
+	android:title="Home Button Light Notifications"
+	android:summary="Pulse home button when a notification is received."
+	android:positiveButtonText="Save"
+    />
 
     <com.emman.tame.dialogs.S2WPreference
 	android:key="s2wdialog"
