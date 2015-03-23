@@ -191,7 +191,6 @@ public class CPUSettings extends PreferenceFragment
 	mVDD = (ListPreference) prefSet.findPreference("vdd");
 	mSMPDialog = findPreference("smpdialog");
 
-	mCurFreq.setSummary("Core 1: " + Utils.toMHz(Utils.readOneLine(FREQ_CUR_FILE)));
 	mCurCPUThread.start();
 
 	mSchedMC.setValue(Utils.readOneLine(SCHED_MC_FILE));
