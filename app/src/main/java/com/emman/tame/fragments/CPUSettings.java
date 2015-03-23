@@ -50,6 +50,7 @@ public class CPUSettings extends PreferenceFragment
 		implements Resources, Preference.OnPreferenceChangeListener {
 
     private Preference mCpuBoost;
+    private Preference mCpuBoostV2;
     private Preference mCurFreq;
     private ListPreference mSchedMC;
     private ListPreference mCeloxUVPanel;
@@ -169,7 +170,13 @@ public class CPUSettings extends PreferenceFragment
     private void updateDependencies(){
 	if(!initiateData()) return;
 
-	if(!(Utils.fileExists(CPU_BOOST_INPUT_FREQ_FILE) && Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE))) mCpuBoost.setEnabled(false);
+	if(!Utils.fileExists(CPU_BOOST_INPUT_FREQ_FILE)){
+		mCpuBoost.setEnabled(false);
+	}
+	if(!Utils.fileExists(CPU_BOOST_INPUT_TOGGLE)){
+		prefSet.removePreference(mCpuBoostV2);
+	} else prefSet.removePreference(mCpuBoost);
+	
 	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
 	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)){
 		mCeloxUVPanel.setEnabled(false);
@@ -187,6 +194,7 @@ public class CPUSettings extends PreferenceFragment
     private boolean initiateData(){
 
 	mCpuBoost = (DialogPreference) prefSet.findPreference("cpu_boost");
+	mCpuBoostV2 = (DialogPreference) prefSet.findPreference("cpu_boostv2");
 	mCurFreq = (Preference) prefSet.findPreference("cur_freq");
 	mSchedMC = (ListPreference) prefSet.findPreference("sched_mc");
 	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");

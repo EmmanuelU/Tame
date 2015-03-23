@@ -103,9 +103,12 @@ public interface Resources {
 	public static final String SCHED_MC_FILE = "/sys/devices/system/cpu/sched_mc_power_savings";
 	public static final String SAVED_CPU_BOOST_INPUT_BOOST = "saved_cpu_boost_input_boost";
 	public static final String SAVED_CPU_BOOST_INPUT_FREQ = "saved_cpu_boost_input_freq";
-	public static final String CPU_BOOST_INPUT_FREQ_FILE = "/sys/module/cpu_input_boost/parameters/input_boost_freq";
 	public static final String SAVED_CPU_BOOST_INPUT_DUR = "saved_cpu_boost_input_dur";
+	public static final String SAVED_CPU_BOOST_INPUT_UP_THRESHOLD = "saved_cpu_boost_input_up_threshold";
+	public static final String CPU_BOOST_INPUT_FREQ_FILE = "/sys/module/cpu_input_boost/parameters/input_boost_freq";
 	public static final String CPU_BOOST_INPUT_DUR_FILE = "/sys/module/cpu_input_boost/parameters/input_boost_ms";
+	public static final String CPU_BOOST_INPUT_TOGGLE = "/sys/module/cpu_input_boost/parameters/enabled";
+	public static final String CPU_BOOST_INPUT_UP_THRESHOLD_FILE = "/sys/module/cpu_input_boost/parameters/up_threshold";
 	public static final String SAVED_CPU_GOV_SYNC = "force_cpu_gov_sync";
 	public static final String RETAIN_CPU_GOV_SYNC_FILE = "/sys/kernel/retain_cpu_policy/policy_sync";
 	public static final String CPU_GOV_SYNC_FILE = (Utils.fileExists(RETAIN_CPU_GOV_SYNC_FILE) ? RETAIN_CPU_GOV_SYNC_FILE : "/sys/kernel/cpu_gov_sync/force_cpu_gov_sync");

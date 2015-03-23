@@ -50,7 +50,7 @@ import com.emman.tame.fragments.CPUSettings;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
-public class CPUBoostPreference extends DialogPreference
+public class CPUInputBoostPreference extends DialogPreference
 		implements Resources {
 
     private View mView;
@@ -63,10 +63,10 @@ public class CPUBoostPreference extends DialogPreference
 
     private SharedPreferences mPreferences;
 
-    public CPUBoostPreference(Context context, AttributeSet attrs) {
+    public CPUInputBoostPreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
 	setPersistent(false);
-	setDialogLayoutResource(R.layout.cpuboostdialog);
+	setDialogLayoutResource(R.layout.cpuinputboostdialog);
     }
 
     @Override

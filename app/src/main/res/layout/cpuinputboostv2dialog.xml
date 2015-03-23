@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="15dp"
+    android:weightSum="1"
+    android:layout_centerHorizontal="true"
+    android:gravity="center_horizontal">
+
+
+	<CheckBox
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="Input Boost"
+	    android:button="@null"
+	    android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+	    android:id="@+id/boost_input_enable"
+	    android:layout_alignParentTop="true"/>
+        	
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:layout_centerHorizontal="true"
+		    android:gravity="center_horizontal"
+		    android:id="@+id/boost_input_group">
+			
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Threshold: N/A"
+		    android:id="@+id/boost_input_threshold_text"/>
+
+		<SeekBar
+		    android:layout_width="263dp"
+		    android:layout_height="wrap_content"
+		    android:id="@+id/boost_input_threshold"
+		    android:layout_alignParentTop="true"
+		    android:layout_centerHorizontal="true" />
+		    
+		<TextView
+    		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Utilizes an algorithm to determine when to boost cores. Higher the threshold, the more likely an event will trigger a boost."
+		    android:gravity="center_horizontal"
+		    android:textStyle="italic"
+		    android:textSize="11sp"/>
+            
+        </LinearLayout>
+
+</LinearLayout>

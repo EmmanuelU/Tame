@@ -26,10 +26,16 @@
 	android:positiveButtonText="Save"
     />
 
-    <com.emman.tame.dialogs.CPUBoostPreference
+    <com.emman.tame.dialogs.CPUInputBoostPreference
 	android:title="Input Boost"
-	android:summary="Raise CPU minimum speed during input events."
+	android:summary="Adjust CPU minimum speed during input events."
 	android:key="cpu_boost"
+    />
+    
+    <com.emman.tame.dialogs.CPUInputBoostV2Preference
+	android:title="Input Boost"
+	android:summary="Adjust CPU minimum speed during input events."
+	android:key="cpu_boostv2"
     />
 
     <com.emman.tame.dialogs.IOPreference
