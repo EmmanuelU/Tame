@@ -171,12 +171,15 @@ public class CPUSettings extends PreferenceFragment
 
 	if(!(Utils.fileExists(CPU_BOOST_INPUT_FREQ_FILE) && Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE))) mCpuBoost.setEnabled(false);
 	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
-	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)) mCeloxUVPanel.setEnabled(false);
+	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)){
+		mCeloxUVPanel.setEnabled(false);
+		mCeloxUVPanel.setSummary("Only supported by certain Galaxy SII Kernels.");
+	}
 	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
 	if(!Utils.fileExists(VDD_LEVELS_FILE)) mVDD.setEnabled(false);
 	if(!Utils.fileExists(FILE_MPDEC_TOGGLE)){
 		mSMPDialog.setEnabled(false);
-		mSMPDialog.setSummary("Your's is most likely not kernel-based, therfore not customizable.");
+		mSMPDialog.setSummary("You most likely have a non-kernel based plug manager.");
 	}
 	
     }

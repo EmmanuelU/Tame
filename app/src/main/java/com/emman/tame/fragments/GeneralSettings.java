@@ -36,6 +36,7 @@ public class GeneralSettings extends PreferenceFragment
 		implements Resources {
 
     private static Preference mDensDialog;
+    private static Preference mScriptDialog;
 
     private SharedPreferences mPreferences;
 
@@ -61,6 +62,7 @@ public class GeneralSettings extends PreferenceFragment
     private boolean initiateData(){
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+	mScriptDialog = findPreference("scriptdialog");
 	mDensDialog = findPreference("densdialog");
 
 	return true;
@@ -72,6 +74,8 @@ public class GeneralSettings extends PreferenceFragment
 
     private void updateData(){
 	if(!initiateData()) return;
+	if(Utils.stringToBool(mPreferences.getString(RUN_AT_BOOT, ""))) mScriptDialog.setSummary("Commands queued for next device boot.");
+		
 	mDensDialog.setSummary(Utils.readProp("ro.sf.lcd_density") + "dpi");
     }
 

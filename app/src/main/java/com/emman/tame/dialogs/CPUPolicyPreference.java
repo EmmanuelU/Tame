@@ -315,7 +315,7 @@ public class CPUPolicyPreference extends DialogPreference
 	String[] maxfreqs = preferences.getString(SAVED_MAX_FREQ, "0 0").split("\\s+");
 	List<String> lenght = Arrays.asList(governors);
 	for(int i = 0; i < lenght.size();){
-		if(governors[i] == null || minfreqs[i] == null || maxfreqs[i] == null){
+		if(Utils.isStringEmpty(governors[i]) || Utils.isStringEmpty(minfreqs[i]) || Utils.isStringEmpty(maxfreqs[i])){
 			i++;
 			continue;
 		}

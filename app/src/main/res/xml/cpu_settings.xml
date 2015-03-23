@@ -21,8 +21,8 @@
 
     <com.emman.tame.dialogs.SMPPreference
 	android:key="smpdialog"
-	android:title="SMP Plug Management"
-	android:summary="Disable cores when not in use to save battery."
+	android:title="Core Plug Management"
+	android:summary="Enable/Disable secondary cores based off cpu load."
 	android:positiveButtonText="Save"
     />
 
@@ -53,7 +53,7 @@
     />
 
     <ListPreference
-	android:title="GSII Display Undervoltage"
+	android:title="Celox Display Undervoltage"
 	android:summary="Undervolting the screen saves battery. Colors may appear different, but this feature is safe to use."
 	android:key="celox_uv_panel"
 	android:entries="@array/celox_uv_array_entries"

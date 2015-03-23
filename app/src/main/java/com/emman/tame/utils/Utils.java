@@ -534,11 +534,13 @@ public static boolean isInteger(String s) {
     }
 
     public static String toMHz(String mhzString) {
+    	if(!isNumeric(mhzString)) return "";
         return new StringBuilder().append(Integer.valueOf(mhzString) / 1000).append("MHz")
                 .toString();
     }
 
     public static String toGPUMHz(String mhzString) {
+    	if(!isNumeric(mhzString)) return "";
         return new StringBuilder().append(Integer.valueOf(mhzString) / 1000000).append("MHz")
                 .toString();
     }
