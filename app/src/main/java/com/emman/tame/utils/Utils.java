@@ -477,16 +477,23 @@ public static boolean isInteger(String s) {
 	NotificationManager mNotifyMgr;
 	PendingIntent pIntent;
 	Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+	
+	
+	final Bundle extras = new Bundle();
+	extras.putBoolean(EXTRA_FORCE_SHOW_LIGHTS, true);
 
 	Notif = new Notification.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher)
 		.setContentTitle(TAG)
-		.setLights(0xff8c1414, 300, 2000)
+		.setLights(0xFF0000, 300, 1500)
 		.setSmallIcon(R.drawable.ic_notification)
 		.setLargeIcon(icon)
 		.setStyle(new Notification.BigTextStyle()
 		.bigText(message))
 		.setContentText(message);
+		
+		
+	Notif.setExtras(extras);
 
 	//All these flags, and you still dont auto cancel.
 	Notif.setAutoCancel(true);
@@ -504,13 +511,16 @@ public static boolean isInteger(String s) {
 	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
     }
     
-    public static void testNotification(Context context, NotificationID id, Intent intent, String message, int on, int off, int color, Bundle extras) {
+    public static void testNotification(Context context, NotificationID id, Intent intent, String message, int on, int off, int color) {
 	Notification.Builder Notif;
 	NotificationManager mNotifyMgr;
 	PendingIntent pIntent;
 	Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
 	
-	if(color == 0) color = 0xff8c1414;
+	final Bundle extras = new Bundle();
+	extras.putBoolean(EXTRA_FORCE_SHOW_LIGHTS, true);
+	
+	if(color == 0) color = 0xFF0000;
 
 	Notif = new Notification.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher)
@@ -521,7 +531,6 @@ public static boolean isInteger(String s) {
 		.setStyle(new Notification.BigTextStyle()
 		.bigText(message))
 		.setContentText(message);
-		
 		
 	Notif.setExtras(extras);
 
