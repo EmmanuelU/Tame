@@ -156,7 +156,7 @@ public class CPUInputBoostV2Preference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.SetSOBValue(SAVED_CPU_BOOST_INPUT_BOOST, preferences.getString(CPU_BOOST_INPUT_TOGGLE, "0"));
+	Utils.SetSOBValue(CPU_BOOST_INPUT_TOGGLE, preferences.getString(SAVED_CPU_BOOST_INPUT_BOOST, "0"));
 	Utils.SetSOBValue(CPU_BOOST_INPUT_UP_THRESHOLD_FILE, preferences.getString(SAVED_CPU_BOOST_INPUT_UP_THRESHOLD, "30"));
     }
 
