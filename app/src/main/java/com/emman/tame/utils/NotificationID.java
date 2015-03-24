@@ -5,4 +5,5 @@ public enum NotificationID {
 	BLN_TEST,
 	ROOTFAIL,
 	CPUPERM,
+	UID,
 }

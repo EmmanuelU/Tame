@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings.Secure;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -95,13 +96,20 @@ public class MainActivity extends Activity
 		Utils.toast(this, "Fatal Error.");
 		this.finish();
 	}
+	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-	if(!Utils.packageExists(this, PACKAGE_SUPERSU) && Utils.isLollipop()){
+        if(!Utils.packageExists(this, PACKAGE_SUPERSU) && Utils.isLollipop()){
 		Intent intent = new Intent();
 		intent.setData(Uri.parse(LINK_PACKAGE_SUPERSU));
 		Utils.notification(this, NotificationID.ROOTFAIL, intent, "As of now, Tame requires the SuperSU binary on Lollipop to avoid any potential issues. Click me to be directed to the Market.");
 		Utils.toast(this, "Fatal Error.");
 		this.finish();
+	}
+	
+	if(Utils.isStringEmpty(mPreferences.getString(TAME_UID, ""))) updateSharedPrefs(mPreferences, TAME_UID, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID));
+	else if(!mPreferences.getString(TAME_UID, "").equals(Secure.getString(this.getContentResolver(), Secure.ANDROID_ID))){
+		Utils.notification(this, NotificationID.UID, null, "You previously used Tame from a different device. While you shouldn't run into any problems, you may consider resetting my data.");
+		updateSharedPrefs(mPreferences, TAME_UID, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID));
 	}
 
         setContentView(R.layout.activity_main);
@@ -116,9 +124,6 @@ public class MainActivity extends Activity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 	
 	if(AboutTame.isWild()) Utils.toast(this, "WildKernel Detected");
-
-	mPreferences = PreferenceManager
-                    .getDefaultSharedPreferences(this);
 
     }
 
