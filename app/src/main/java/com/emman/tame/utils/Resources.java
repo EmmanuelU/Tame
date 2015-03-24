@@ -22,6 +22,9 @@ public interface Resources {
 	public static final String TAG = "Tame";
 	public static final String NEW_LINE = "\n";
 	public static final String LINE_SPACE = " ";
+	
+	//supported by most custom ROMs
+	public static final String EXTRA_FORCE_SHOW_LIGHTS = "android.forceShowLights";
 
 	public static final String PATH_TAME_LOCAL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tame/";
 

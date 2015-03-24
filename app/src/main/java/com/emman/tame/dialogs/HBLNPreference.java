@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -94,9 +95,11 @@ public class HBLNPreference extends DialogPreference
 	mBLNTest.setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
+		    final Bundle b = new Bundle();
+		    b.putBoolean(EXTRA_FORCE_SHOW_LIGHTS, true);
 		    String[] intervals = Utils.readOneLine(FILE_HBLN_BLINK_OVERRIDE).split("\\s+");
 		    if (!intervals[0].equals("0"))
-		        Utils.notification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using custom light intervals (" + intervals[0] + "/" + intervals[1] + "msecs).");
+		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using custom light intervals (" + intervals[0] + "/" + intervals[1] + "msecs).", Integer.parseInt(intervals[0]), Integer.parseInt(intervals[1]), mTouchKeyRGB.getColor(), b);
 		    else
 		        Utils.notification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using default light intervals (300/1500msecs).");
 		}
@@ -126,6 +129,7 @@ public class HBLNPreference extends DialogPreference
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
+	Utils.clearNotification(getContext(), NotificationID.BLN_TEST);
     }
 
     private boolean initiateData(){

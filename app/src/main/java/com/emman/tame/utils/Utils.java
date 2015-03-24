@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import android.app.AlertDialog;
 import android.app.Notification;
+import android.app.Notification.Builder;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,14 +14,15 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.NetworkOnMainThreadException;
 import android.os.PowerManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.Builder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -471,16 +473,18 @@ public static boolean isInteger(String s) {
     }
 
     public static void notification(Context context, NotificationID id, Intent intent, String message) {
-	NotificationCompat.Builder Notif;
+	Notification.Builder Notif;
 	NotificationManager mNotifyMgr;
 	PendingIntent pIntent;
+	Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
 
-	Notif = new NotificationCompat.Builder(context)
+	Notif = new Notification.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher)
 		.setContentTitle(TAG)
 		.setLights(0xff8c1414, 300, 2000)
 		.setSmallIcon(R.drawable.ic_notification)
-		.setStyle(new NotificationCompat.BigTextStyle()
+		.setLargeIcon(icon)
+		.setStyle(new Notification.BigTextStyle()
 		.bigText(message))
 		.setContentText(message);
 
@@ -498,6 +502,48 @@ public static boolean isInteger(String s) {
 	Notif.setContentIntent(pIntent);
 	mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
+    }
+    
+    public static void testNotification(Context context, NotificationID id, Intent intent, String message, int on, int off, int color, Bundle extras) {
+	Notification.Builder Notif;
+	NotificationManager mNotifyMgr;
+	PendingIntent pIntent;
+	Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+	
+	if(color == 0) color = 0xff8c1414;
+
+	Notif = new Notification.Builder(context)
+		.setSmallIcon(R.drawable.ic_launcher)
+		.setContentTitle(TAG)
+		.setLights(color, on, off)
+		.setSmallIcon(R.drawable.ic_notification)
+		.setLargeIcon(icon)
+		.setStyle(new Notification.BigTextStyle()
+		.bigText(message))
+		.setContentText(message);
+		
+		
+	Notif.setExtras(extras);
+
+	//All these flags, and you still dont auto cancel.
+	Notif.setAutoCancel(true);
+	Notif.build().flags |= Notification.FLAG_SHOW_LIGHTS;
+
+	if(intent != null){
+		pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+	}
+	else{
+		//but this'll do it #logicispower
+		pIntent = PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+	Notif.setContentIntent(pIntent);
+	mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
+    }
+    
+    public static void clearNotification(Context context, NotificationID id){
+	NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+	notificationManager.cancel(Utils.getNotificationID(id));
     }
 
     public static void layoutDisable(ViewGroup layout) {
