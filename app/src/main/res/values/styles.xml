@@ -22,6 +22,7 @@
     <style name="AppTheme" parent="android:Theme.Holo">
 	<item name="android:actionBarStyle">@style/ActionBarTheme</item>
 	<item name="android:windowBackground">@color/black</item>
+	<item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector</item>
     </style>
 
     <style name="ActionBarTheme" parent="@android:style/Widget.Holo.ActionBar">

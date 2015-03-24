@@ -478,7 +478,8 @@ public static boolean isInteger(String s) {
 	Notif = new NotificationCompat.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher)
 		.setContentTitle(TAG)
-		.setLights(0xff00ff00, 300, 1500)
+		.setLights(0xff8c1414, 300, 2000)
+		.setSmallIcon(R.drawable.ic_notification)
 		.setStyle(new NotificationCompat.BigTextStyle()
 		.bigText(message))
 		.setContentText(message);

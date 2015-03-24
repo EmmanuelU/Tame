@@ -97,6 +97,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
+                
             }
         });
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
