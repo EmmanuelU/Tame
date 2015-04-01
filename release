@@ -1,0 +1,30 @@
+#!/bin/bash
+
+appversion=$(xmllint app/src/main/AndroidManifest.xml --shell  <<<'cat /manifest/@tameVersionName')
+#trim output to just version
+appversion=${appversion:62}
+appversion=$(echo $appversion | cut -f1 -d"/")
+appversion=$(echo $appversion | sed -e 's/^"//'  -e 's/"$//')
+
+appversioncode=$(xmllint app/src/main/AndroidManifest.xml --shell  <<<'cat /manifest/@tameVersionCode')
+#trim output to just version
+appversioncode=${appversioncode:62}
+appversioncode=$(echo $appversioncode | cut -f1 -d"/")
+appversioncode=$(echo $appversioncode | sed -e 's/^"//'  -e 's/"$//')
+
+OTALink="https://raw.githubusercontent.com/EmmanuelU/Tame/master/releases/Tame.apk"
+outdateliteral=$(date "+%B %d %Y")
+outdateliteral="'${outdateliteral}'"
+rm -rf releases/updatetame.sh
+cp releases/template.sh releases/updatetame.sh
+{
+sed -i '1i' releases/updatetame.sh
+sed -i "1ilatestDL=$OTALink" releases/updatetame.sh
+sed -i "1ilatestdateliteral=$outdateliteral" releases/updatetame.sh
+sed -i "1ilatestversioncode=$appversioncode" releases/updatetame.sh
+sed -i "1ilatestversion=$appversion" releases/updatetame.sh
+sed -i "1i#DO NOT EDIT FILE - AUTO GENERATED" releases/updatetame.sh
+sed -i '1i#!/bin/sh' releases/updatetame.sh
+} &> /dev/null
+
+mv -f app/app-release.apk releases/Tame.apk
