@@ -45,6 +45,7 @@ public interface Resources {
 	public static final String FILE_DISABLE_SET_ON_BOOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "WildNFree.tame";
 	public static final String SET_ON_BOOT = "set_on_boot";
 	public static final String RUN_AT_BOOT = "run_at_boot";
+	public static final String CHECK_UPDATE_AT_BOOT = "check_update_at_boot";
 	public static final String RUN_AT_BOOT_COMMANDS = "run_at_boot_commands";
 	public static final String FILE_TMP_BUILD_PROP = PATH_TAME_LOCAL + "tmp.prop";
 	public static final String FILE_LOCAL_BUILD_PROP = PATH_TAME_LOCAL + "build.prop";

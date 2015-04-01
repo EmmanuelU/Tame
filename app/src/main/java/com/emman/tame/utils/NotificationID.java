@@ -6,4 +6,6 @@ public enum NotificationID {
 	ROOTFAIL,
 	CPUPERM,
 	UID,
+	APPUPDATE,
+	WKUPDATE,
 }

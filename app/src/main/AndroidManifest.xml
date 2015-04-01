@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.emman.tame"
-    tameVersionCode="8"
-    tameVersionName="1.7"
-    android:versionCode="8"
-    android:versionName="1.7">
+    tameVersionCode="9"
+    tameVersionName="1.8"
+    android:versionCode="9"
+    android:versionName="1.8">
 
 <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
@@ -36,6 +37,7 @@
 	    </intent-filter>
 	</receiver>
 
+	<service android:name="com.emman.tame.services.CheckUpdateAtBoot"/>
 	<service android:name="com.emman.tame.services.SetOnBoot"/>
 	<service android:name="com.emman.tame.services.RunAtBoot"/>
 

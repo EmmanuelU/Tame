@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -30,6 +31,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.lang.StringBuilder;
@@ -66,8 +68,10 @@ public class AboutTame extends Fragment
     private View mView;
     public static String propversion, propversiondate, propotalink, propdevice;
     private String currentAppVersion;
-    private Button mUpdate;
     private Button mAppUpdate;
+    private Button mTamePreferences;
+    private Button mUpdate;
+    private SharedPreferences mPreferences;
     private TextView mTameLogo;
     private TextView mVersion;
     private TextView mAppVersion;
@@ -75,10 +79,13 @@ public class AboutTame extends Fragment
     private TextView mAppLatVersion;
     private TextView mSOBNote;
 
+
     Animation fadein = new AlphaAnimation(0.0f, 1.0f);
     Animation fadeout = new AlphaAnimation(1.0f, 0.0f);
     ProgressDialog mCheckUpdateDialog;
     ProgressDialog mAppCheckUpdateDialog;
+
+    Context mContext;
     private OTA WildData;
     private OTA TameData;
 
@@ -92,22 +99,61 @@ public class AboutTame extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	mView = inflater.inflate(R.layout.about_tame, container, false);
-	mUpdate = (Button) mView.findViewById(R.id.update_button);
 	mAppUpdate = (Button) mView.findViewById(R.id.app_update_button);
+	mContext = getActivity();
+	mTamePreferences = (Button) mView.findViewById(R.id.preferences);
+	mUpdate = (Button) mView.findViewById(R.id.update_button);
 	mTameLogo = (TextView) mView.findViewById(R.id.tame_logo);
 	mVersion = (TextView) mView.findViewById(R.id.versionheader);
 	mAppVersion = (TextView) mView.findViewById(R.id.appversionheader);
 	mLatVersion = (TextView) mView.findViewById(R.id.latversionheader);
 	mAppLatVersion = (TextView) mView.findViewById(R.id.applatversionheader);
 	mSOBNote = (TextView) mView.findViewById(R.id.sobnote);
-        mUpdate.setOnClickListener(new View.OnClickListener() {
-		public void onClick(View view) {
-			CheckUpdate();
-		}
-	});
+
         mAppUpdate.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View view) {
 			CheckAppUpdate();
+		}
+	});
+
+	
+        mTamePreferences.setOnClickListener(new View.OnClickListener() {
+		public void onClick(View view) {
+			final Dialog mTamePreferenceDialog = new Dialog(mContext);
+
+			mTamePreferenceDialog.setContentView(R.layout.tamedialog);
+			mTamePreferenceDialog.setTitle("Preferences");
+
+			final CheckBox mCheckUpdate = (CheckBox) mTamePreferenceDialog.findViewById(R.id.check_update);
+			final Button mDismiss = (Button) mTamePreferenceDialog.findViewById(R.id.dismiss);
+			final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+			mCheckUpdate.setChecked(Utils.stringToBool(mPreferences.getString(CHECK_UPDATE_AT_BOOT, "1")));
+
+			mDismiss.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					mTamePreferenceDialog.dismiss();
+				}
+			});
+
+			mTamePreferenceDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+				@Override
+				public void onDismiss(DialogInterface dialog) {
+					final SharedPreferences.Editor editor = mPreferences.edit();
+					editor.putString(CHECK_UPDATE_AT_BOOT, Utils.boolToString(mCheckUpdate.isChecked()));
+					editor.commit();
+				}
+			});
+			
+			mTamePreferenceDialog.show();
+
+		}
+	});
+
+        mUpdate.setOnClickListener(new View.OnClickListener() {
+		public void onClick(View view) {
+			CheckUpdate();
 		}
 	});
 
