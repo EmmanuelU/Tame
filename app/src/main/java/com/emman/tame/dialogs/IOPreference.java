@@ -101,6 +101,7 @@ public class IOPreference extends DialogPreference
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
+	CPUSettings.IOupdate();
     }
 
     private boolean initiateData(){

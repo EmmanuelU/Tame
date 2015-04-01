@@ -49,16 +49,22 @@ import com.emman.tame.utils.Utils;
 public class CPUSettings extends PreferenceFragment 
 		implements Resources, Preference.OnPreferenceChangeListener {
 
+    private ListPreference mCeloxUVPanel;
     private Preference mCpuBoost;
     private Preference mCpuBoostV2;
     private Preference mCurFreq;
-    private ListPreference mSchedMC;
-    private ListPreference mCeloxUVPanel;
-    private ListPreference mVDD;
     public static DialogPreference mGPUDialog;
+    public static DialogPreference mIODialog;
+    private ListPreference mSchedMC;
+    private ListPreference mVDD;
     private Preference mSMPDialog;
 
     String mVDDLevel;
+
+   public static String[] availableIOSchedulers;
+   public static String availableIOSchedulersLine;
+   public static int bropen, brclose;
+   public static String currentIOScheduler;
 
     PreferenceScreen prefSet;
 
@@ -193,12 +199,13 @@ public class CPUSettings extends PreferenceFragment
 
     private boolean initiateData(){
 
+	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");
 	mCpuBoost = (DialogPreference) prefSet.findPreference("cpu_boost");
 	mCpuBoostV2 = (DialogPreference) prefSet.findPreference("cpu_boostv2");
 	mCurFreq = (Preference) prefSet.findPreference("cur_freq");
 	mSchedMC = (ListPreference) prefSet.findPreference("sched_mc");
-	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");
 	mGPUDialog = (DialogPreference) prefSet.findPreference("gpu_dialog");
+	mIODialog = (DialogPreference) findPreference("iosched");
 	mVDD = (ListPreference) prefSet.findPreference("vdd");
 	mSMPDialog = findPreference("smpdialog");
 
@@ -208,9 +215,17 @@ public class CPUSettings extends PreferenceFragment
 
 	mCeloxUVPanel.setValue(Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
 
-	if(mGPUDialog.isEnabled()) mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
+	mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
 
 	mVDDLevel = mPreferences.getString(SAVED_VDD_LEVELS, "0");
+
+	availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
+	availableIOSchedulers = availableIOSchedulersLine.replace("[", "").replace("]", "").split(" ");
+	bropen = availableIOSchedulersLine.indexOf("[");
+	brclose = availableIOSchedulersLine.lastIndexOf("]");
+	if (bropen >= 0 && brclose >= 0) currentIOScheduler = availableIOSchedulersLine.substring(bropen + 1, brclose);
+
+	mIODialog.setSummary(currentIOScheduler);
 
 	mVDD.setValue(mVDDLevel);
 	if(mVDDLevel.equals("0")) mVDD.setSummary("Default Voltage");
@@ -223,11 +238,24 @@ public class CPUSettings extends PreferenceFragment
     private void CPUupdate(){
 	if(mVDDLevel.equals("0")) mVDD.setSummary("Default Voltage");
 	else mVDD.setSummary("Voltage: " + (mVDDLevel.substring(0, 1)) + (Integer.parseInt(mVDDLevel.substring(1)) / 1000) + "mV");
+
 	GPUupdate();
+	IOupdate();
+
+	mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
+    }
+
+    public static void IOupdate(){
+	availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
+	availableIOSchedulers = availableIOSchedulersLine.replace("[", "").replace("]", "").split(" ");
+	bropen = availableIOSchedulersLine.indexOf("[");
+	brclose = availableIOSchedulersLine.lastIndexOf("]");
+	if (bropen >= 0 && brclose >= 0) currentIOScheduler = availableIOSchedulersLine.substring(bropen + 1, brclose);
+	mIODialog.setSummary(currentIOScheduler);
     }
 
     public static void GPUupdate(){
-	if(mGPUDialog.isEnabled()) mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
+	mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
     }
 
     private void setData(){
