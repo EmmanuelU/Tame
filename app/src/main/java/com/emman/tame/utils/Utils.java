@@ -114,6 +114,7 @@ public class Utils
     }
 
     public static String queueSYSValue(String fname, String value) {
+	if(!fileExists(fname)) return value;
         if(!fileExists(FILE_SYS_QUEUE)){ 
 		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SYS_QUEUE);
 		appendFile(FILE_SYS_QUEUE, "#!/bin/sh");
@@ -128,11 +129,11 @@ public class Utils
     }
 
     public static String SetSOBValue(String fname, String value) {
+	if(!fileExists(fname)) return value;
         if(!fileExists(FILE_SET_ON_BOOT)){
 		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SET_ON_BOOT);
 		appendFile(FILE_SET_ON_BOOT, "#!/bin/sh");
 	}
-	if(!fileExists(fname)) return value;
 	appendFile(FILE_SET_ON_BOOT, "echo \"" + value + "\" > " + fname);
 	return value;
     }
@@ -147,12 +148,10 @@ public class Utils
     }
 
     public static int getAndroidAPI() {
-        
 	return Build.VERSION.SDK_INT;
     }
 
     public static boolean isLollipop() {
-        
 	return Build.VERSION.SDK_INT > 20;
     }
 

@@ -13,7 +13,7 @@
 	android:textSize="12pt"
 	android:gravity="center"
 	android:textColor="#AA0114"
-	android:text="CPU Input Boosting must be disabled while changing policies, as it may interfere with CPU Policy records."
+	android:text="CPU Input Boosting must be disabled while changing policies, as it may interfere with CPU parameters."
         android:id="@+id/IBdisclaimer"/>
 
     <CheckBox

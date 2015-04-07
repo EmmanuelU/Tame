@@ -190,7 +190,7 @@ public class CPUSettings extends PreferenceFragment
 	}
 	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
 	if(!Utils.fileExists(VDD_LEVELS_FILE)) mVDD.setEnabled(false);
-	if(!Utils.fileExists(FILE_MPDEC_TOGGLE)){
+	if(!Utils.fileExists(FILE_MPDEC_TOGGLE) && !Utils.fileExists(CPU_TOGGLE)){
 		mSMPDialog.setEnabled(false);
 		mSMPDialog.setSummary("You most likely have a non-kernel based plug manager.");
 	}

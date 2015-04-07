@@ -91,7 +91,7 @@ public class EBLNPreference extends DialogPreference
 		@Override
 		public void onClick(View v) {
 		    String[] intervals = Utils.readOneLine(FILE_EBLN_BLINK_OVERRIDE).split("\\s+");
-		    if (!intervals[0].equals("0"))
+		    if (!Utils.isStringEmpty(intervals[0]) && !intervals[0].equals("0"))
 		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using preset light intervals (" + intervals[0] + "/" + intervals[1] + "msecs).", Integer.parseInt(intervals[0]), Integer.parseInt(intervals[1]), 0);
 		    else if (Utils.isInteger(mTouchKeyONInterval.getText().toString()) && Utils.isInteger(mTouchKeyOFFInterval.getText().toString()) && Integer.parseInt(mTouchKeyONInterval.getText().toString()) > 0 && Integer.parseInt(mTouchKeyOFFInterval.getText().toString()) > 0)
 		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using custom light intervals (" + mTouchKeyONInterval.getText().toString() + "/" + mTouchKeyOFFInterval.getText().toString() + "msecs).", Integer.parseInt(mTouchKeyONInterval.getText().toString()), Integer.parseInt(mTouchKeyOFFInterval.getText().toString()), 0);

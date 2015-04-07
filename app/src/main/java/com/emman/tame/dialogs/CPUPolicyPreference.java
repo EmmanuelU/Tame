@@ -117,7 +117,7 @@ public class CPUPolicyPreference extends DialogPreference
 	
 	for(int i = 0; i < Utils.getNumOfCpus();){
 		Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
-		CpuNames.add("Core:    " + (i+1));
+		CpuNames.add("Core   " + (i+1));
 		i++;
 	}
 	dataAdapter = new ArrayAdapter<String>(getContext(),
@@ -127,14 +127,11 @@ public class CPUPolicyPreference extends DialogPreference
 	if(Utils.stringToBool(Utils.readOneLine(CPU_BOOST_INPUT_TOGGLE)) || (Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE) && !Utils.readOneLine(CPU_BOOST_INPUT_DUR_FILE).equals("0"))){
 		IBDisclaimer.setVisibility(View.VISIBLE);
 
-		for(int i = 0; i < Utils.getNumOfCpus();){
-			Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
+			int i = 0;
 			mCore[i] = new CpuPolicy();
 			mCore[i].governor = Utils.readOneLine(Utils.toCPU(GOV_FILE, i));
 			mCore[i].min = "N/A";
 			mCore[i].max = Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, i));
-			i++;
-		}
 
 		list = new ArrayList<String>(Arrays.asList("N/A"));
 		dataAdapter = new ArrayAdapter<String>(getContext(),

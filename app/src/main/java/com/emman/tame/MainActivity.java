@@ -283,12 +283,12 @@ public class MainActivity extends Activity
 	CPUPolicyPreference.SetOnBootData(preferences);
 	CPUInputBoostPreference.SetOnBootData(preferences);
 	CPUInputBoostV2Preference.SetOnBootData(preferences);
+	SMPPreference.SetOnBootData(preferences);
 	CPUSettings.SetOnBootData(preferences);
 	IOPreference.SetOnBootData(preferences);
 	BLNPreference.SetOnBootData(preferences);
 	EBLNPreference.SetOnBootData(preferences);
 	HBLNPreference.SetOnBootData(preferences);
-	SMPPreference.SetOnBootData(preferences);
 	S2WPreference.SetOnBootData(preferences);
 	GPUPreference.SetOnBootData(preferences);
 	Utils.CMD("sh " + FILE_SET_ON_BOOT, true);

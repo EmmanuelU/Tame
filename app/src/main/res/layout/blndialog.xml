@@ -20,14 +20,14 @@
 
         android:layout_alignParentTop="true"/>
 
-    <View
-    android:layout_width="fill_parent"
-    android:layout_height="1dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:background="#DBDBDB"/>
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_marginTop="8dp"
+	    android:layout_marginBottom="8dp"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    android:background="#DBDBDB"/>
 
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -65,14 +65,14 @@
 
 	</LinearLayout>
 
-    <View
-    android:layout_width="fill_parent"
-    android:layout_height="1dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:background="#DBDBDB"/>
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_marginTop="8dp"
+	    android:layout_marginBottom="8dp"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    android:background="#DBDBDB"/>
 
 	    <CheckBox
 		android:layout_width="wrap_content"
@@ -142,14 +142,14 @@
             android:layout_gravity="center_horizontal" />
 	</TableRow>
 
-    <View
-    android:layout_width="fill_parent"
-    android:layout_height="1dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:background="#DBDBDB"/>
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_marginTop="8dp"
+	    android:layout_marginBottom="8dp"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    android:background="#DBDBDB"/>
 
     </LinearLayout>
 

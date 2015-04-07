@@ -93,6 +93,8 @@ public interface Resources {
 	public static final String GOV_LIST_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors";
 	public static final String SAVED_VDD_LEVELS = "vdd_levels";
 	public static final String VDD_LEVELS_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/vdd_levels";
+	public static final String CPU_TOGGLE = "/sys/devices/system/cpu/cpu0/enabled";
+	public static final String SAVED_CPU_TOGGLE = "saved_cpu_enabled";
 	public static final String CPU_ONLINE = "/sys/devices/system/cpu/cpu0/online";
 	public static final String FREQ_CUR_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq";
 	public static final String FREQINFO_CUR_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq";

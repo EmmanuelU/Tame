@@ -22,7 +22,7 @@
     <com.emman.tame.dialogs.SMPPreference
 	android:key="smpdialog"
 	android:title="Core Plug Management"
-	android:summary="Enable/Disable secondary cores based off cpu load."
+	android:summary="Control secondary cores."
 	android:positiveButtonText="Save"
     />
 

@@ -32,6 +32,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TableRow;
 import android.widget.Toast;
@@ -39,6 +40,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.emman.tame.R;
 import com.emman.tame.utils.Resources;
@@ -52,9 +57,20 @@ public class SMPPreference extends DialogPreference
     private CheckBox mMPDec;
     private CheckBox mMPDecScroff;
 
+    private LayoutInflater inflater;
+
+    private LinearLayout mCpuToggleGroup;
     private LinearLayout mMPDecGroup;
+    private LinearLayout mMPDecSubGroup;
 
     private SharedPreferences mPreferences;
+
+    class CpuToggle {
+	View view;
+	Switch toggle;
+    }
+
+    private CpuToggle mCore[] = new CpuToggle[Utils.getNumOfCpus()];
 
     public SMPPreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
@@ -66,6 +82,25 @@ public class SMPPreference extends DialogPreference
     protected void onBindDialogView(final View view) {
 	super.onBindDialogView(view);
 	mView = view;
+	initiateData();
+
+	for(int i = 1; i < Utils.getNumOfCpus();){
+		mCore[i] = new CpuToggle();
+		mCore[i].view = inflater.inflate(R.layout.cputoggle, null);
+		mCore[i].toggle = (Switch) mCore[i].view.findViewById(R.id.core_toggle);
+		mCore[i].toggle.setText("Core "+ (i+1));
+		if(Utils.fileExists(CPU_TOGGLE)) mCore[i].toggle.setChecked(Utils.stringToBool(Utils.readOneLine(Utils.toCPU(CPU_TOGGLE, i))));
+		else mCore[i].toggle.setChecked(true);
+		mCpuToggleGroup.addView(mCore[i].view);
+		mCore[i].toggle.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				updateDependencies();
+			}
+		});
+		i++;
+	}
+
 	updateData();
 
 	mMPDec.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +109,6 @@ public class SMPPreference extends DialogPreference
 			updateDependencies();
 		}
 	});
-
     }
 
     @Override
@@ -82,29 +116,41 @@ public class SMPPreference extends DialogPreference
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
-	else updateData();
 
     }
 
     private boolean initiateData(){
-	if(!Utils.fileExists(FILE_MPDEC_TOGGLE)) return false;
 
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());
 
 	mMPDec = (CheckBox) mView.findViewById(R.id.mpdec);
 	mMPDecScroff = (CheckBox) mView.findViewById(R.id.mpdec_scroff);
-
 	mMPDecGroup = (LinearLayout) mView.findViewById(R.id.mpdec_group);
+	mMPDecSubGroup = (LinearLayout) mView.findViewById(R.id.mpdec_subgroup);
+
+	mCpuToggleGroup = (LinearLayout) mView.findViewById(R.id.core_toggle_group);
+	inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 	return true;
     }
 
     private void setData(){
+	
 	if(!initiateData()) return;
 
 	updateSharedPrefs(mPreferences, MPDEC, Utils.writeSYSValue(FILE_MPDEC_TOGGLE, mMPDec.isChecked() ? "1" : "0"));
 	updateSharedPrefs(mPreferences, MPDEC_SCROFF, Utils.writeSYSValue(FILE_MPDEC_SCROFF, mMPDecScroff.isChecked() ? "1" : "0"));
+
+	String enabled = "1";
+	for(int i = 1; i < Utils.getNumOfCpus();){
+		Utils.queueSYSValue(Utils.toCPU(CPU_TOGGLE, i), Utils.boolToString(mCore[i].toggle.isChecked()));
+		enabled = enabled + LINE_SPACE + Utils.boolToString(mCore[i].toggle.isChecked());
+		i++;
+	}
+
+	Utils.launchSYSQueue();
+	updateSharedPrefs(mPreferences, SAVED_CPU_TOGGLE, enabled);
 
     }
 
@@ -121,15 +167,26 @@ public class SMPPreference extends DialogPreference
     private void updateDependencies(){
 	if(!initiateData()) return;
 	
-	if(mMPDec.isChecked()){
-		Utils.layoutEnable(mMPDecGroup);
+	if(!Utils.fileExists(FILE_MPDEC_TOGGLE)) Utils.layoutDisable(mMPDecGroup);
+	else if(mMPDec.isChecked()){
+		Utils.layoutEnable(mMPDecSubGroup);
 	} else {
-		Utils.layoutDisable(mMPDecGroup);
+		Utils.layoutDisable(mMPDecSubGroup);
 	}
+
+	if(!Utils.fileExists(CPU_TOGGLE)) Utils.layoutDisable(mCpuToggleGroup);
 
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
+	String[] enabled = preferences.getString(SAVED_CPU_TOGGLE, "1 1").split("\\s+");
+
+	for(int i = 0; i < Arrays.asList(enabled).size();){
+		if(!Utils.isStringEmpty(enabled[i]))
+			Utils.SetSOBValue(Utils.toCPU(CPU_TOGGLE, i), enabled[i]);
+		i++;
+	}
+
 	Utils.SetSOBValue(FILE_MPDEC_TOGGLE, preferences.getString(MPDEC, "1"));
 	Utils.SetSOBValue(FILE_MPDEC_SCROFF, preferences.getString(MPDEC_SCROFF, "1"));
     }
