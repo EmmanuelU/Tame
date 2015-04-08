@@ -49,7 +49,6 @@ import com.emman.tame.utils.Utils;
 public class CPUSettings extends PreferenceFragment 
 		implements Resources, Preference.OnPreferenceChangeListener {
 
-    private ListPreference mCeloxUVPanel;
     private Preference mCpuBoost;
     private Preference mCpuBoostV2;
     private Preference mCurFreq;
@@ -121,7 +120,6 @@ public class CPUSettings extends PreferenceFragment
 	updateDependencies();
 
 	mSchedMC.setOnPreferenceChangeListener(this);
-	mCeloxUVPanel.setOnPreferenceChangeListener(this);
 	mVDD.setOnPreferenceChangeListener(this);
     }
 
@@ -133,8 +131,7 @@ public class CPUSettings extends PreferenceFragment
 
 	if (newValue != null) {
 		
-		if (preference == mCeloxUVPanel) fname = FILE_CELOX_DISPLAY_UV;
-		else if (preference == mSchedMC){
+		if (preference == mSchedMC){
 			fname = SCHED_MC_FILE;
 			Utils.toast(getActivity(), "Reboot is recommended.");
 		}
@@ -184,10 +181,6 @@ public class CPUSettings extends PreferenceFragment
 	} else prefSet.removePreference(mCpuBoost);
 	
 	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
-	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)){
-		mCeloxUVPanel.setEnabled(false);
-		mCeloxUVPanel.setSummary("Only supported by certain Galaxy SII Kernels.");
-	}
 	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
 	if(!Utils.fileExists(VDD_LEVELS_FILE)) mVDD.setEnabled(false);
 	if(!Utils.fileExists(FILE_MPDEC_TOGGLE) && !Utils.fileExists(CPU_TOGGLE)){
@@ -199,7 +192,6 @@ public class CPUSettings extends PreferenceFragment
 
     private boolean initiateData(){
 
-	mCeloxUVPanel = (ListPreference) prefSet.findPreference("celox_uv_panel");
 	mCpuBoost = (DialogPreference) prefSet.findPreference("cpu_boost");
 	mCpuBoostV2 = (DialogPreference) prefSet.findPreference("cpu_boostv2");
 	mCurFreq = (Preference) prefSet.findPreference("cur_freq");
@@ -212,8 +204,6 @@ public class CPUSettings extends PreferenceFragment
 	mCurCPUThread.start();
 
 	mSchedMC.setValue(Utils.readOneLine(SCHED_MC_FILE));
-
-	mCeloxUVPanel.setValue(Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
 
 	mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
 
@@ -260,7 +250,6 @@ public class CPUSettings extends PreferenceFragment
 
     private void setData(){
 	updateSharedPrefs(mPreferences, SAVED_SCHED_MC, Utils.readOneLine(SCHED_MC_FILE));
-	updateSharedPrefs(mPreferences, SAVED_CELOX_DISPLAY_UV, Utils.readOneLine(FILE_CELOX_DISPLAY_UV));
 	updateSharedPrefs(mPreferences, SAVED_VDD_LEVELS, mVDDLevel);
 	
 	CPUupdate();
@@ -268,7 +257,6 @@ public class CPUSettings extends PreferenceFragment
 
     public static void SetOnBootData(SharedPreferences preferences){
 	Utils.SetSOBValue(SCHED_MC_FILE, preferences.getString(SAVED_SCHED_MC, "0"));
-	Utils.SetSOBValue(FILE_CELOX_DISPLAY_UV, preferences.getString(SAVED_CELOX_DISPLAY_UV, "0"));
 	Utils.SetSOBValue(VDD_LEVELS_FILE, preferences.getString(SAVED_VDD_LEVELS, "0"));
     }
 

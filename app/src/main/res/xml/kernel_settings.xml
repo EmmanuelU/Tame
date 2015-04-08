@@ -29,4 +29,11 @@
 	android:positiveButtonText="Save"
     />
 
+    <com.emman.tame.dialogs.PanelUVPreference
+	android:title="Display Voltage"
+	android:summary="Reducing the screen's power consumption can improve battery life."
+	android:key="panel_uv_dialog"
+	android:positiveButtonText="Save"
+    />
+
 </PreferenceScreen>

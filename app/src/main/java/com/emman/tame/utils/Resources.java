@@ -81,7 +81,7 @@ public interface Resources {
 	public static final String FILE_HBLN_BLINK_OVERRIDE = "/sys/class/leds/R/device/led_blink_interval";
 	public static final String FILE_HBLN_BLINK_RGB = "/sys/class/leds/R/device/led_blink_rgb";
 	
-	public static final String SAVED_CELOX_DISPLAY_UV = "celox_panel_uv";
+	public static final String SAVED_DISPLAY_UV = "saved_panel_uv";
 	public static final String FILE_CELOX_DISPLAY_UV = "/sys/module/board_msm8x60_celox/parameters/panel_uv";
 
 	public static final String SAVED_MIN_FREQ = "saved_min_freq";

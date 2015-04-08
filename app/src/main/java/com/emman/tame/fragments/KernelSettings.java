@@ -29,6 +29,7 @@ import android.widget.Toast;
 import android.util.Log;
 
 import com.emman.tame.dialogs.BLNPreference;
+import com.emman.tame.dialogs.PanelUVPreference;
 import com.emman.tame.R;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
@@ -39,6 +40,7 @@ public class KernelSettings extends PreferenceFragment
     private Preference mBlnDialog;
     private Preference mEBlnDialog;
     private Preference mHBlnDialog;
+    public static Preference mPanelUVDialog;
     private Preference mS2WDialog;
 
     private SharedPreferences mPreferences;
@@ -68,6 +70,7 @@ public class KernelSettings extends PreferenceFragment
 	mBlnDialog = findPreference("blndialog");
 	mEBlnDialog = findPreference("eblndialog");
 	mHBlnDialog = findPreference("hblndialog");
+	mPanelUVDialog = findPreference("panel_uv_dialog");
 	mS2WDialog = findPreference("s2wdialog");
 
 	return true;
@@ -87,11 +90,24 @@ public class KernelSettings extends PreferenceFragment
 	} else prefSet.removePreference(mBlnDialog);
 	
 	if(!Utils.fileExists(FILE_S2W_TOGGLE)) mS2WDialog.setEnabled(false);
+
+	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)){
+		mPanelUVDialog.setEnabled(false);
+		mPanelUVDialog.setSummary("Default Voltage");
+	}
+	else panelUpdate();
     }
 
     private void setData(){
 	if(!initiateData()) return;
 
+    }
+
+    public static void panelUpdate(){
+	
+	if(Integer.parseInt(Utils.readOneLine(PanelUVPreference.mPanelUVFile)) > 0)
+		mPanelUVDialog.setSummary("Undervolt: -" + Utils.readOneLine(PanelUVPreference.mPanelUVFile) + "mV");
+	else mPanelUVDialog.setSummary("Default Voltage");
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
