@@ -36,4 +36,11 @@
 	android:positiveButtonText="Save"
     />
 
+    <com.emman.tame.dialogs.FastChargePreference
+	android:title="USB Fast Charge"
+	android:summary="Disable throttling of mA current when not plugged into an outlet."
+	android:key="fast_charge_dialog"
+	android:positiveButtonText="Save"
+    />
+
 </PreferenceScreen>

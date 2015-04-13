@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TableRow;
 import android.widget.Toast;
@@ -46,61 +47,45 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.emman.tame.R;
-import com.emman.tame.fragments.KernelSettings;
+import com.emman.tame.fragments.CPUSettings;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
-public class PanelUVPreference extends DialogPreference
+public class FastChargePreference extends DialogPreference
 		implements Resources {
-
-    //support for multiple in future
-    public static String mPanelUVFile = FILE_CELOX_DISPLAY_UV;
-
-    private SeekBar mPanelUVSeekBar;
-    private TextView mPanelUVSeekBarText;
-
-    private SharedPreferences mPreferences;
 
     private View mView;
 
-    public PanelUVPreference(Context context, AttributeSet attrs) {
+    private Spinner mFastCharge;
+    private Switch mFastChargeToggle;
+    private String[] mFastChargeMAList;
+
+    private SharedPreferences mPreferences;
+
+    public FastChargePreference(Context context, AttributeSet attrs) {
 	super(context, attrs);
 	setPersistent(false);
-	setDialogLayoutResource(R.layout.panel_uv_dialog);
+	setDialogLayoutResource(R.layout.fastchargedialog);
     }
 
     @Override
     protected void onBindDialogView(final View view) {
 	super.onBindDialogView(view);
 	mView = view;
-	updateDependencies();
+	initiateData();
 
-	mPanelUVSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+	List<String> list = new ArrayList<String>(Arrays.asList(Utils.getFilemA(AVAILABLE_FAST_CHARGE_LIST)));
+	
+	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
+		android.R.layout.simple_spinner_item, list);
+	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	mFastCharge.setAdapter(dataAdapter);
 
-	    @Override
-	    public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-			String prefix;
-			float uvPrefixfloat = (float) mPanelUVSeekBar.getProgress() / mPanelUVSeekBar.getMax();
-			if(mPanelUVSeekBar.getProgress() > 0){
-				if(uvPrefixfloat < 0.2) prefix = "Miniscule";
-				else if(uvPrefixfloat < 0.4) prefix = "Small";
-				else if(uvPrefixfloat < 0.6) prefix = "Moderate";
-				else if(uvPrefixfloat < 0.8) prefix = "High";
-				else prefix = "Excessive";
-				mPanelUVSeekBarText.setText(prefix + " Undervolt: -" + String.valueOf(mPanelUVSeekBar.getProgress()) + "mV");
-			} else mPanelUVSeekBarText.setText("Default Voltage");
-	    }
-
-	    @Override
-	    public void onStartTrackingTouch(SeekBar seekBar) {
-
-	    }
-
-	    @Override
-	    public void onStopTrackingTouch(SeekBar seekBar) {
-		
-	    }
-
+	mFastChargeToggle.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			updateDependencies();
+		}
 	});
 	
 	updateData();
@@ -112,7 +97,6 @@ public class PanelUVPreference extends DialogPreference
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
 
-	KernelSettings.panelUpdate();
     }
 
     private boolean initiateData(){
@@ -120,9 +104,10 @@ public class PanelUVPreference extends DialogPreference
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());
 
-	mPanelUVSeekBar = (SeekBar) mView.findViewById(R.id.panel_uv_slider);
-	mPanelUVSeekBarText = (TextView) mView.findViewById(R.id.panel_uv_slider_text);
+	mFastCharge = (Spinner) mView.findViewById(R.id.fast_charge);
+	mFastChargeToggle = (Switch) mView.findViewById(R.id.fast_charge_toggle);
 	
+	mFastChargeMAList = Utils.readOneLine(AVAILABLE_FAST_CHARGE_LIST).split("\\s+");
 
 	return true;
     }
@@ -130,26 +115,35 @@ public class PanelUVPreference extends DialogPreference
     private void setData(){
 	if(!initiateData()) return;
 	
-	updateSharedPrefs(mPreferences, SAVED_DISPLAY_UV, Utils.writeSYSValue(mPanelUVFile, String.valueOf(mPanelUVSeekBar.getProgress())));
+	if(mFastCharge.getSelectedItemId() > 0){
+		updateSharedPrefs(mPreferences, SAVED_FORCE_FAST_CHARGE, Utils.writeSYSValue(FORCE_FAST_CHARGE_FILE, mFastChargeToggle.isChecked() ? "2" : "0"));
+		updateSharedPrefs(mPreferences, SAVED_FORCE_FAST_CHARGE_LEVEL, Utils.writeSYSValue(FORCE_FAST_CHARGE_LEVEL_FILE, mFastChargeMAList[(int) mFastCharge.getSelectedItemId() - 1]));
+	} else updateSharedPrefs(mPreferences, SAVED_FORCE_FAST_CHARGE, Utils.writeSYSValue(FORCE_FAST_CHARGE_FILE, "0"));
 	
     }
 
     private void updateData(){
 	if(!initiateData()) return;
 
-	mPanelUVSeekBar.setProgress(Integer.parseInt(Utils.readOneLine(mPanelUVFile)));
+	mFastChargeToggle.setChecked(Utils.readOneLine(FORCE_FAST_CHARGE_FILE).equals("2") ? true : false);
+	mFastCharge.setSelection(Utils.getArrayIndex(mFastChargeMAList, Utils.readOneLine(FORCE_FAST_CHARGE_LEVEL_FILE)) + 1);
 
+	updateDependencies();
     }
 
     private void updateDependencies(){
 	if(!initiateData()) return;
 
-	if(mPanelUVFile.equals(FILE_CELOX_DISPLAY_UV)) mPanelUVSeekBar.setMax(500);
-
+	if(mFastChargeToggle.isChecked()){
+		mFastCharge.setEnabled(true);
+	} else {
+		mFastCharge.setEnabled(false);
+	}
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.SetSOBValue(FILE_CELOX_DISPLAY_UV, preferences.getString(SAVED_DISPLAY_UV, ""));
+	Utils.SetSOBValue(FORCE_FAST_CHARGE_FILE, preferences.getString(SAVED_FORCE_FAST_CHARGE, "0"));
+	Utils.SetSOBValue(FORCE_FAST_CHARGE_LEVEL_FILE, preferences.getString(SAVED_FORCE_FAST_CHARGE_LEVEL, ""));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

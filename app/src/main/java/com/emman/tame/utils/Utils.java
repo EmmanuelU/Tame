@@ -256,6 +256,7 @@ public class Utils
     }
 
     public static boolean isNumeric(String str){
+	if(isStringEmpty(str)) return false;
 	try{
 		double d = Double.parseDouble(str);
 	}
@@ -633,6 +634,44 @@ public static boolean isInteger(String s) {
             }
             String[] toMhz = new String[names.size()];
             return names.toArray(toMhz);
+        }
+        return null;
+    }
+
+    public static String[] getFilemA(String file) {
+        if(fileExists(file)) {
+            ArrayList<String> names = new ArrayList<String>();
+            names.add("Default");
+            //setPermissions(file);
+            File freqfile = new File(file);
+            FileInputStream fin1 = null;
+            byte fileContent[] = null;
+            try {
+                fin1 = new FileInputStream(freqfile);
+                fileContent = new byte[(int)freqfile.length()];
+                fin1.read(fileContent);
+            }
+            catch (FileNotFoundException e1) {
+                //System.out.println("File not found" + e1);
+            }
+            catch (IOException ioe1) {
+                //System.out.println("Exception while reading file " + ioe1);
+            }
+            finally {
+                try {
+                    if (fin1 != null) {
+                        fin1.close();
+                    }
+                }
+                catch (IOException ioe1) {
+                    //System.out.println("Error while closing stream: " + ioe1);
+                }
+            }
+            for(String s : new String(fileContent).trim().split(" ")) {
+                names.add(Integer.parseInt(s) + "mA");
+            }
+            String[] toMa = new String[names.size()];
+            return names.toArray(toMa);
         }
         return null;
     }

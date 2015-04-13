@@ -121,6 +121,11 @@ public interface Resources {
 	public static final String RETAIN_CPU_GOV_SYNC_FILE = "/sys/kernel/retain_cpu_policy/policy_sync";
 	public static final String CPU_GOV_SYNC_FILE = (Utils.fileExists(RETAIN_CPU_GOV_SYNC_FILE) ? RETAIN_CPU_GOV_SYNC_FILE : "/sys/kernel/cpu_gov_sync/force_cpu_gov_sync");
 
+	public static final String SAVED_FORCE_FAST_CHARGE = "force_fast_charge";
+	public static final String SAVED_FORCE_FAST_CHARGE_LEVEL = "fast_charge_level";
+	public static final String FORCE_FAST_CHARGE_FILE = "/sys/kernel/fast_charge/force_fast_charge";
+	public static final String FORCE_FAST_CHARGE_LEVEL_FILE = "/sys/kernel/fast_charge/fast_charge_level";
+	public static final String AVAILABLE_FAST_CHARGE_LIST = "/sys/kernel/fast_charge/available_charge_levels";
 
 	public static final String SAVED_GPU_MAX_FREQ = "saved_gpu_max_freq";
 	public static final String GPU_FREQ_FILE = "/sys/class/kgsl/kgsl-3d0/gpu_available_frequencies";

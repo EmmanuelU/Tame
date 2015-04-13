@@ -45,6 +45,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.emman.tame.dialogs.BLNPreference;
+import com.emman.tame.dialogs.FastChargePreference;
 import com.emman.tame.dialogs.EBLNPreference;
 import com.emman.tame.dialogs.HBLNPreference;
 import com.emman.tame.dialogs.CPUInputBoostPreference;
@@ -285,6 +286,7 @@ public class MainActivity extends Activity
 	CPUInputBoostPreference.SetOnBootData(preferences);
 	CPUInputBoostV2Preference.SetOnBootData(preferences);
 	SMPPreference.SetOnBootData(preferences);
+	PanelUVPreference.SetOnBootData(preferences);
 	CPUSettings.SetOnBootData(preferences);
 	IOPreference.SetOnBootData(preferences);
 	BLNPreference.SetOnBootData(preferences);
@@ -292,7 +294,7 @@ public class MainActivity extends Activity
 	HBLNPreference.SetOnBootData(preferences);
 	S2WPreference.SetOnBootData(preferences);
 	GPUPreference.SetOnBootData(preferences);
-	PanelUVPreference.SetOnBootData(preferences);
+	FastChargePreference.SetOnBootData(preferences);
 	Utils.CMD("sh " + FILE_SET_ON_BOOT, true);
     }
 

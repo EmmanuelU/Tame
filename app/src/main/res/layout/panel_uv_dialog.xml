@@ -21,7 +21,7 @@
 	    <TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Colors may appear, but this is safe to use."
+		android:text="Colors may appear slightly distorted, but this is safe to use."
 		android:gravity="center_horizontal"
 		android:textStyle="italic"
 		android:textSize="11sp"/>
