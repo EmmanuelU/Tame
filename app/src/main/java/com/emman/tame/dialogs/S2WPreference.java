@@ -32,6 +32,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TableRow;
 import android.widget.Toast;
@@ -49,8 +50,8 @@ public class S2WPreference extends DialogPreference
 
     private View mView;
 
-    private CheckBox mS2W;
-    private CheckBox mS2S;
+    private Switch mS2W;
+    private Switch mS2S;
     private CheckBox mS2WSensitive;
 
     private SharedPreferences mPreferences;
@@ -91,8 +92,8 @@ public class S2WPreference extends DialogPreference
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());
 
-	mS2W = (CheckBox) mView.findViewById(R.id.s2w);
-	mS2S = (CheckBox) mView.findViewById(R.id.s2s);
+	mS2W = (Switch) mView.findViewById(R.id.s2w);
+	mS2S = (Switch) mView.findViewById(R.id.s2s);
 	mS2WSensitive = (CheckBox) mView.findViewById(R.id.s2w_sensitive);
 
 	return true;

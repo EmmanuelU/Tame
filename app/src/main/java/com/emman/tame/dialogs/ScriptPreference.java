@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Scroller;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TableRow;
@@ -61,7 +62,7 @@ public class ScriptPreference extends DialogPreference
     private View mView;
 
     private EditText mCommands;
-    private CheckBox mScript;
+    private Switch mScript;
 
     private SharedPreferences mPreferences;
 
@@ -105,7 +106,7 @@ public class ScriptPreference extends DialogPreference
                     .getDefaultSharedPreferences(getContext());
 
 	mCommands = (EditText) mView.findViewById(R.id.commands);
-	mScript = (CheckBox) mView.findViewById(R.id.scripttoggle);
+	mScript = (Switch) mView.findViewById(R.id.scripttoggle);
 
 	return true;
     }

@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TableRow;
 import android.widget.Toast;
@@ -55,7 +56,7 @@ public class CPUInputBoostPreference extends DialogPreference
 
     private View mView;
 
-    private CheckBox mCpuBoostTouch;
+    private Switch mCpuBoostTouch;
     private EditText mCpuBoostTouchDur;
     private Spinner mCpuBoostTouchFreq;
 
@@ -103,7 +104,7 @@ public class CPUInputBoostPreference extends DialogPreference
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());
 
-	mCpuBoostTouch = (CheckBox) mView.findViewById(R.id.boost_input_enable);
+	mCpuBoostTouch = (Switch) mView.findViewById(R.id.boost_input_enable);
 	mCpuBoostTouchFreq = (Spinner) mView.findViewById(R.id.boost_input_freq);
 	mCpuBoostTouchDur = (EditText) mView.findViewById(R.id.boost_input_dur);
 

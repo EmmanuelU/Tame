@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TableRow;
 import android.widget.Toast;
@@ -55,7 +56,7 @@ public class CPUInputBoostV2Preference extends DialogPreference
 
     private View mView;
 
-    private CheckBox mCpuBoostTouch;
+    private Switch mCpuBoostTouch;
     private TextView mCpuBoostThresholdText;
     private SeekBar mCpuBoostThreshold;
     private LinearLayout mCpuBoostGroup;
@@ -118,7 +119,7 @@ public class CPUInputBoostV2Preference extends DialogPreference
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());
 
-	mCpuBoostTouch = (CheckBox) mView.findViewById(R.id.boost_input_enable);
+	mCpuBoostTouch = (Switch) mView.findViewById(R.id.boost_input_enable);
 	mCpuBoostThreshold = (SeekBar) mView.findViewById(R.id.boost_input_threshold);
 	mCpuBoostThresholdText = (TextView) mView.findViewById(R.id.boost_input_threshold_text);
 	mCpuBoostGroup = (LinearLayout) mView.findViewById(R.id.boost_input_group);

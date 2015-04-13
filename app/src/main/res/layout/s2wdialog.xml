@@ -9,22 +9,18 @@
     android:layout_centerHorizontal="true"
     android:gravity="center_horizontal">
 
-    <CheckBox
+    <Switch
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:text="Sweep2Wake"
-	android:button="@null"
-	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/s2w"
 
         android:layout_alignParentTop="true"/>
 
-    <CheckBox
+    <Switch
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:text="Sweep2Sleep"
-	android:button="@null"
-	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/s2s"
 
         android:layout_alignParentTop="true"/>

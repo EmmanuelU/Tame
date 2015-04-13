@@ -54,7 +54,7 @@ public class SMPPreference extends DialogPreference
 
     private View mView;
 
-    private CheckBox mMPDec;
+    private Switch mMPDec;
     private CheckBox mMPDecScroff;
 
     private LayoutInflater inflater;
@@ -124,7 +124,7 @@ public class SMPPreference extends DialogPreference
 	mPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getContext());
 
-	mMPDec = (CheckBox) mView.findViewById(R.id.mpdec);
+	mMPDec = (Switch) mView.findViewById(R.id.mpdec);
 	mMPDecScroff = (CheckBox) mView.findViewById(R.id.mpdec_scroff);
 	mMPDecGroup = (LinearLayout) mView.findViewById(R.id.mpdec_group);
 	mMPDecSubGroup = (LinearLayout) mView.findViewById(R.id.mpdec_subgroup);

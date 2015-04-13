@@ -11,12 +11,9 @@
     android:gravity="center_horizontal">
 
 
-	    <CheckBox
+	    <Switch
 		android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:text="Input Boost"
-		android:button="@null"
-		android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         	android:id="@+id/boost_input_enable"
         	android:layout_alignParentTop="true"/>
 	<TableRow
