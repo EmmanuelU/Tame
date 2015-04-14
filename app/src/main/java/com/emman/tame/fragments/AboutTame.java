@@ -32,6 +32,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.lang.StringBuilder;
@@ -124,7 +125,7 @@ public class AboutTame extends Fragment
 			mTamePreferenceDialog.setContentView(R.layout.tamedialog);
 			mTamePreferenceDialog.setTitle("Preferences");
 
-			final CheckBox mCheckUpdate = (CheckBox) mTamePreferenceDialog.findViewById(R.id.check_update);
+			final Switch mCheckUpdate = (Switch) mTamePreferenceDialog.findViewById(R.id.check_update);
 			final Button mDismiss = (Button) mTamePreferenceDialog.findViewById(R.id.dismiss);
 			final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
