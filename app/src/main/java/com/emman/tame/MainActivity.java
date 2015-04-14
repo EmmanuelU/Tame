@@ -126,7 +126,6 @@ public class MainActivity extends Activity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 	
 	if(AboutTame.isWild()) Utils.toast(this, "WildKernel Detected");
-
     }
 
     @Override
