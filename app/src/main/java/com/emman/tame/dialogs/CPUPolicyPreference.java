@@ -51,6 +51,7 @@ import java.util.Set;
 
 import com.emman.tame.R;
 import com.emman.tame.fragments.CPUSettings;
+import com.emman.tame.utils.BackgroundTask;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 

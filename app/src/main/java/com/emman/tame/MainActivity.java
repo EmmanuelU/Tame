@@ -88,10 +88,12 @@ public class MainActivity extends Activity
 
     private SharedPreferences mPreferences;
 
+    private static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+	context = this;
 	if(!Utils.checkSu()){
 		Intent intent = getIntent();
 		Utils.notification(this, NotificationID.ROOTFAIL, intent, "Please restart me with Superuser access.");
@@ -296,5 +298,10 @@ public class MainActivity extends Activity
 	FastChargePreference.SetOnBootData(preferences);
 	Utils.CMD("sh " + FILE_SET_ON_BOOT, true);
     }
+
+    public static Context getContext(){
+	return context;
+    }
+
 
 }

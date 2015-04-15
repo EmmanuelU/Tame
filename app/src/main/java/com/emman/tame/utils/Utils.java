@@ -32,10 +32,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
 
-import com.emman.tame.utils.NotificationID;
-
-import com.emman.tame.R;
-
 import java.lang.Comparable;
 import java.lang.Process;
 import java.lang.StringBuilder;
@@ -73,6 +69,12 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.emman.tame.MainActivity;
+
+import com.emman.tame.R;
+import com.emman.tame.utils.BackgroundTask;
+import com.emman.tame.utils.NotificationID;
+
 public class Utils 
 		implements Resources {
 
@@ -100,16 +102,30 @@ public class Utils
 	return value;
     }
 
-    public static String writeSYSValue(String fname, String value) {
+    public static String writeSYSValue(final String fname, final String value) {
+	Context context = MainActivity.getContext();
         if(!fileExists(fname)) return value;
-        try {
-            FileOutputStream fos = new FileOutputStream(new File(fname));
-            fos.write(value.getBytes());
-            fos.flush();
-            fos.close();
-        } catch (Exception e) {
-		new CMDProcessor().su.runWaitFor("busybox echo " + value + " > " + fname);
-        }
+	final BackgroundTask mCMDTask = new BackgroundTask(context);
+	mCMDTask.queueTask(new BackgroundTask.task() {
+		@Override
+		public void doInBackground() {
+			try {
+				final FileOutputStream fos = new FileOutputStream(new File(fname));
+				fos.write(value.getBytes());
+				fos.flush();
+				fos.close();
+			} catch (Exception e) {
+				new CMDProcessor().su.runWaitFor("busybox echo " + value + " > " + fname);
+			}
+	
+		}
+
+		@Override
+		public void onCompleted() {
+
+		}
+	});
+	mCMDTask.execute();
 	return value;
     }
 
@@ -124,8 +140,22 @@ public class Utils
     }
 
     public static void launchSYSQueue() {
-	Utils.CMD("sh " + FILE_SYS_QUEUE, true);
-	Utils.CMD("rm -rf " + FILE_SYS_QUEUE, false);
+	Context context = MainActivity.getContext();
+	final BackgroundTask mCMDTask = new BackgroundTask(context);
+	mCMDTask.queueTask(new BackgroundTask.task() {
+		@Override
+		public void doInBackground() {
+			Utils.CMD("sh " + FILE_SYS_QUEUE, true);
+			Utils.CMD("rm -rf " + FILE_SYS_QUEUE, false);
+		}
+
+		@Override
+		public void onCompleted() {
+
+		}
+
+	});
+	mCMDTask.execute();
     }
 
     public static String SetSOBValue(String fname, String value) {
@@ -362,7 +392,6 @@ public class Utils
                 br.close();
             }
         } catch (Exception e) {
-            Log.e(TAG, "IO Exception when reading sys file", e);
             // attempt to do magic!
             return (readFileViaShell(fname, false) == null) ? readFileViaShell(fname, true) : readFileViaShell(fname, false);
         }

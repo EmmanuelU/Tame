@@ -43,19 +43,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class BackgroundTask extends AsyncTask<String, Integer, String> {
 
-    public static interface tasks {
+    public static interface task {
 	void doInBackground();
-    }
-
-    public static interface onTaskCompleted {
 	void onCompleted();
     }
 
     private Context context;
     private PowerManager.WakeLock mWakeLock;
 
-    private ArrayList<onTaskCompleted> onTaskCompletedObservers = new ArrayList<onTaskCompleted>();
-    private ArrayList<tasks> backgroundTaskObservers = new ArrayList<tasks>();
+    private ArrayList<task> backgroundTaskObservers = new ArrayList<task>();
     private boolean taskCompleted = false;
 
 
@@ -85,18 +81,14 @@ public class BackgroundTask extends AsyncTask<String, Integer, String> {
 	return taskCompleted;
     }
 
-    public void setBackgroundTask(tasks observer) {
+    public void queueTask(task observer) {
 	backgroundTaskObservers.add(observer);
-    }
-
-    public void setOnTaskCompletedListener(onTaskCompleted observer) {
-	onTaskCompletedObservers.add(observer);
     }
 
     @Override
     protected void onPostExecute(String result) {
 	taskCompleted = true;
-	for(onTaskCompleted observer : onTaskCompletedObservers){
+	for(task observer : backgroundTaskObservers){
 		observer.onCompleted();
 	}
 	mWakeLock.release();
@@ -104,7 +96,7 @@ public class BackgroundTask extends AsyncTask<String, Integer, String> {
 
     @Override
     protected String doInBackground(String... stub) {
-	for(tasks observer : backgroundTaskObservers){
+	for(task observer : backgroundTaskObservers){
 		observer.doInBackground();
 	}
         return null;
