@@ -175,6 +175,7 @@ public class AboutTame extends Fragment
 	if(device.equals("hercules")) return "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-hercules-3.0/flashable/tools/updatewild.sh";
 	if(device.equals("skyrocket")) return "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_samsung_msm8660/android-msm-skyrocket-3.0/flashable/tools/updatewild.sh";
 	if(device.equals("e98x")) return "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_lge_gproj/android-msm-e98x-3.4/flashable/tools/updatewild.sh";
+	if(device.equals("f240x")) return "https://raw.githubusercontent.com/EmmanuelU/wild_kernel_lge_gproj/android-msm-f240x-3.4/flashable/tools/updatewild.sh";
 	return "";
     }
 

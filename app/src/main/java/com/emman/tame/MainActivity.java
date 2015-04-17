@@ -97,7 +97,7 @@ public class MainActivity extends Activity
 	if(!Utils.checkSu()){
 		Intent intent = getIntent();
 		Utils.notification(this, NotificationID.ROOTFAIL, intent, "Please restart me with Superuser access.");
-		Utils.toast(this, "Fatal Error.");
+		Utils.toast(this, "Fatal Error, see notification drawer.");
 		this.finish();
 	}
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -105,7 +105,7 @@ public class MainActivity extends Activity
         if(!Utils.packageExists(this, PACKAGE_SUPERSU) && Utils.isLollipop()){
 		Intent intent = new Intent();
 		intent.setData(Uri.parse(LINK_PACKAGE_SUPERSU));
-		Utils.notification(this, NotificationID.ROOTFAIL, intent, "As of now, Tame requires the SuperSU binary on Lollipop to avoid any potential issues. Click me to be directed to the Market.");
+		Utils.notification(this, NotificationID.ROOTFAIL, intent, "As of now, Tame requires the SuperSU binary on Lollipop to avoid any potential issues. Click me to be directed to the Market. Blame CyanogenMod's Privacy Guard.");
 		Utils.toast(this, "Fatal Error.");
 		this.finish();
 	}
