@@ -82,8 +82,6 @@ public class MainActivity extends Activity
 
     private Menu mMenu;
 
-    private CheckBox mSetOnBoot;
-
     private TextView mSetOnBootNote;
 
     private SharedPreferences mPreferences;
@@ -143,26 +141,26 @@ public class MainActivity extends Activity
 	Fragment fragment = null;
         switch (number) {
 	    case 1:
-		mTitle = getString(R.string.app_name);
+		mTitle = getString(R.string.page_main);
 		fragment = new AboutTame();
 		 break;
 	    case 2:
-		mTitle = getString(R.string.title_generalsettings);
-		fragment = new GeneralSettings();
-		break;
-
-	    case 3:
-		mTitle = getString(R.string.title_kernelsettings);
+		mTitle = getString(R.string.page_kernelsettings);
 		fragment = new KernelSettings();
 		break;
 
-	    case 4:
-		mTitle = getString(R.string.title_cpusettings);
+	    case 3:
+		mTitle = getString(R.string.page_cpusettings);
 		fragment = new CPUSettings();
 		break;
 
+	    case 4:
+		mTitle = getString(R.string.page_generalsettings);
+		fragment = new GeneralSettings();
+		break;
+
 	    case 5:
-		mTitle = getString(R.string.title_sysfs);
+		mTitle = getString(R.string.page_sysfs);
 		fragment = new SysFSExplorer();
 		break;
         }
@@ -178,30 +176,13 @@ public class MainActivity extends Activity
         ActionBar actionBar = getActionBar();
 
 	mSetOnBootNote = (TextView) findViewById(R.id.sobnote);
-
-	actionBar.setDisplayShowCustomEnabled(true);
-	actionBar.setCustomView(R.layout.action_bar);
-	
-	mSetOnBoot = (CheckBox) getActionBar().getCustomView().findViewById(R.id.set_on_boot);
-
-	mSetOnBoot.setChecked(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0")));
-
 	if(mSetOnBootNote != null){
-		if(mSetOnBoot.isChecked()) mSetOnBootNote.setVisibility(View.VISIBLE);
+		if(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0"))) mSetOnBootNote.setVisibility(View.VISIBLE);
 		else mSetOnBootNote.setVisibility(View.GONE);
 	}
 
-	mSetOnBoot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-	    @Override
-	    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-		updateSharedPrefs(mPreferences, SET_ON_BOOT, Utils.boolToString(isChecked));
-		if(mSetOnBootNote != null){
-			if(isChecked) mSetOnBootNote.setVisibility(View.VISIBLE);
-			else mSetOnBootNote.setVisibility(View.GONE);
-		}
-	    }
-	});
+	actionBar.setDisplayShowCustomEnabled(true);
+	actionBar.setCustomView(R.layout.action_bar);
 
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
@@ -228,10 +209,19 @@ public class MainActivity extends Activity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
-        //if (id == R.id.set_on_boot) {
-        //    return true;
-       // }
+        if (id == R.id.settings) {
+		//Intent intent = new Intent(MainActivity.this, Settings.class);
+		//startActivity(intent);
+		mTitle = getString(R.string.action_settings);
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+		        .replace(R.id.container, new Settings())
+		        .commit();
+		restoreActionBar();
+		return true;
+       }
         return super.onOptionsItemSelected(item);
     }
 

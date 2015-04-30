@@ -158,7 +158,7 @@ public class AboutTame extends Fragment
 		}
 	});
 
-	mSOBNote.setText("Note: After a reboot, Tame may take a couple minutes to re-apply saved settings. Opening this app before those settings are applied may cause all your settings to be reset to default.\n\n In the event that you screwed up and you want to disable Tame Settings from recovery, there is a flash-able zip on your sdcard.\n\n" + FILE_DISABLE_SET_ON_BOOT_ZIP);
+	mSOBNote.setText(getString(R.string.ui_sobnote) + FILE_DISABLE_SET_ON_BOOT_ZIP);
 	
 	TameLogoAnim();
 	mTameLogo.startAnimation(fadeout);

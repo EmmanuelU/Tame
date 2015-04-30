@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.emman.tame.dialogs.SOBPreference
+	android:key="SOBdialog"
+	android:title="Restore Settings on Boot"
+	android:summary="Android naturally reverts settings to default after a reboot. Enabling this will keep your custom settings."
+	android:positiveButtonText="Save"
+    />
+
+</PreferenceScreen>
