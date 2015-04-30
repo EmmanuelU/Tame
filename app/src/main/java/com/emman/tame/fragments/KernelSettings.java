@@ -39,6 +39,7 @@ public class KernelSettings extends PreferenceFragment
 
     private Preference mBlnDialog;
     private Preference mEBlnDialog;
+    private Preference mFastChargeDialog;
     private Preference mHBlnDialog;
     public static Preference mPanelUVDialog;
     private Preference mS2WDialog;
@@ -69,10 +70,10 @@ public class KernelSettings extends PreferenceFragment
 
 	mBlnDialog = findPreference("blndialog");
 	mEBlnDialog = findPreference("eblndialog");
+	mFastChargeDialog = findPreference("fast_charge_dialog");
 	mHBlnDialog = findPreference("hblndialog");
 	mPanelUVDialog = findPreference("panel_uv_dialog");
 	mS2WDialog = findPreference("s2wdialog");
-
 	return true;
     }
 
@@ -90,6 +91,8 @@ public class KernelSettings extends PreferenceFragment
 	} else prefSet.removePreference(mBlnDialog);
 	
 	if(!Utils.fileExists(FILE_S2W_TOGGLE)) mS2WDialog.setEnabled(false);
+
+	if(!Utils.fileExists(FORCE_FAST_CHARGE_FILE)) mFastChargeDialog.setEnabled(false);
 
 	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)){
 		mPanelUVDialog.setEnabled(false);
