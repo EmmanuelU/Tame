@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <SwitchPreference
+	android:key="check_updates"
+	android:title="@string/item_check_updates"
+	android:summary="@string/item_sum_check_updates"
+    />
+
     <com.emman.tame.dialogs.SOBPreference
 	android:key="SOBdialog"
 	android:title="Restore Settings on Boot"

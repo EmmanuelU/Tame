@@ -70,7 +70,6 @@ public class AboutTame extends Fragment
     public static String propversion, propversiondate, propotalink, propdevice;
     private String currentAppVersion;
     private Button mAppUpdate;
-    private Button mTamePreferences;
     private Button mUpdate;
     private SharedPreferences mPreferences;
     private TextView mTameLogo;
@@ -95,14 +94,14 @@ public class AboutTame extends Fragment
 	super.onCreate(savedInstanceState);
 	WildData = new OTA();
 	TameData = new OTA();
+	
+	mContext = getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	mView = inflater.inflate(R.layout.about_tame, container, false);
 	mAppUpdate = (Button) mView.findViewById(R.id.app_update_button);
-	mContext = getActivity();
-	mTamePreferences = (Button) mView.findViewById(R.id.preferences);
 	mUpdate = (Button) mView.findViewById(R.id.update_button);
 	mTameLogo = (TextView) mView.findViewById(R.id.tame_logo);
 	mVersion = (TextView) mView.findViewById(R.id.versionheader);
@@ -114,41 +113,6 @@ public class AboutTame extends Fragment
         mAppUpdate.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View view) {
 			CheckAppUpdate();
-		}
-	});
-
-	
-        mTamePreferences.setOnClickListener(new View.OnClickListener() {
-		public void onClick(View view) {
-			final Dialog mTamePreferenceDialog = new Dialog(mContext);
-
-			mTamePreferenceDialog.setContentView(R.layout.tamedialog);
-			mTamePreferenceDialog.setTitle("Preferences");
-
-			final Switch mCheckUpdate = (Switch) mTamePreferenceDialog.findViewById(R.id.check_update);
-			final Button mDismiss = (Button) mTamePreferenceDialog.findViewById(R.id.dismiss);
-			final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-
-			mCheckUpdate.setChecked(Utils.stringToBool(mPreferences.getString(CHECK_UPDATE_AT_BOOT, "1")));
-
-			mDismiss.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					mTamePreferenceDialog.dismiss();
-				}
-			});
-
-			mTamePreferenceDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-				@Override
-				public void onDismiss(DialogInterface dialog) {
-					final SharedPreferences.Editor editor = mPreferences.edit();
-					editor.putString(CHECK_UPDATE_AT_BOOT, Utils.boolToString(mCheckUpdate.isChecked()));
-					editor.commit();
-				}
-			});
-			
-			mTamePreferenceDialog.show();
-
 		}
 	});
 

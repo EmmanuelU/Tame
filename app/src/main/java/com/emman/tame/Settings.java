@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.SwitchPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -37,9 +38,10 @@ import com.emman.tame.utils.Utils;
 public class Settings extends PreferenceFragment
 		implements Resources {
 
+    private PreferenceScreen mPref;
     private SharedPreferences mPreferences;
 
-    private PreferenceScreen prefSet;
+    private SwitchPreference mCheckUpdate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,26 +49,33 @@ public class Settings extends PreferenceFragment
 
         addPreferencesFromResource(R.xml.tame_settings);
 
-        prefSet = getPreferenceScreen();
-
-	updateDependencies();
+	updateData();
     }
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+	if(!initiateData()) return false;
+
+	if (preference == mCheckUpdate){
+		updateSharedPrefs(mPreferences, CHECK_UPDATE_AT_BOOT, Utils.boolToString(mCheckUpdate.isChecked()));
+	}
 
         return true;
     }
 
     private boolean initiateData(){
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+	mPref = getPreferenceScreen();
+
+	mCheckUpdate = (SwitchPreference) mPref.findPreference("check_updates");
 
 	return true;
     }
 
-    private void updateDependencies(){
+    private void updateData(){
 	if(!initiateData()) return;
-
+	
+	mCheckUpdate.setChecked(Utils.stringToBool(mPreferences.getString(CHECK_UPDATE_AT_BOOT, "1")));
     }
 
     private void setData(){
