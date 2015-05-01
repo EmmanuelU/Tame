@@ -43,4 +43,16 @@
 	android:positiveButtonText="Save"
     />
 
+    <com.emman.tame.dialogs.IOPreference
+	android:key="iosched"
+	android:title="I/O Control"
+	android:positiveButtonText="Save"
+    />
+
+    <com.emman.tame.dialogs.GPUPreference
+	android:key="gpu_dialog"
+	android:title="GPU Control"
+	android:positiveButtonText="Save"
+    />
+
 </PreferenceScreen>

@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.emman.tame.R;
-import com.emman.tame.fragments.CPUSettings;
+import com.emman.tame.fragments.KernelSettings;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
@@ -88,7 +88,7 @@ public class GPUPreference extends DialogPreference
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
 
-	CPUSettings.GPUupdate();
+	KernelSettings.GPUupdate();
     }
 
     private boolean initiateData(){

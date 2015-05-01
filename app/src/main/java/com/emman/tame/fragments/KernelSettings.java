@@ -37,10 +37,13 @@ import com.emman.tame.utils.Utils;
 public class KernelSettings extends PreferenceFragment
 		implements Resources {
 
+
     private Preference mBlnDialog;
     private Preference mEBlnDialog;
     private Preference mFastChargeDialog;
+    public static Preference mGPUDialog;
     private Preference mHBlnDialog;
+    public static Preference mIODialog;
     public static Preference mPanelUVDialog;
     private Preference mS2WDialog;
 
@@ -48,15 +51,21 @@ public class KernelSettings extends PreferenceFragment
 
     private PreferenceScreen prefSet;
 
+   public static String[] availableIOSchedulers;
+   public static String availableIOSchedulersLine;
+   public static int bropen, brclose;
+   public static String currentIOScheduler;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+	
+	availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
         addPreferencesFromResource(R.xml.kernel_settings);
 
         prefSet = getPreferenceScreen();
 
-	updateDependencies();
+	updateData();
     }
 
     @Override
@@ -71,9 +80,12 @@ public class KernelSettings extends PreferenceFragment
 	mBlnDialog = findPreference("blndialog");
 	mEBlnDialog = findPreference("eblndialog");
 	mFastChargeDialog = findPreference("fast_charge_dialog");
+	mGPUDialog = findPreference("gpu_dialog");
 	mHBlnDialog = findPreference("hblndialog");
+	mIODialog = findPreference("iosched");
 	mPanelUVDialog = findPreference("panel_uv_dialog");
 	mS2WDialog = findPreference("s2wdialog");
+
 	return true;
     }
 
@@ -92,13 +104,14 @@ public class KernelSettings extends PreferenceFragment
 	
 	if(!Utils.fileExists(FILE_S2W_TOGGLE)) mS2WDialog.setEnabled(false);
 
+	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
+
 	if(!Utils.fileExists(FORCE_FAST_CHARGE_FILE)) mFastChargeDialog.setEnabled(false);
 
 	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)){
 		mPanelUVDialog.setEnabled(false);
 		mPanelUVDialog.setSummary("Default Voltage");
 	}
-	else panelUpdate();
     }
 
     private void setData(){
@@ -106,11 +119,35 @@ public class KernelSettings extends PreferenceFragment
 
     }
 
+    private void updateData(){
+	if(!initiateData()) return;
+	updateDependencies();
+
+	GPUupdate();
+	IOupdate(availableIOSchedulersLine);
+	panelUpdate();
+
+    }
+
     public static void panelUpdate(){
 	
-	if(Integer.parseInt(Utils.readOneLine(PanelUVPreference.mPanelUVFile)) > 0)
-		mPanelUVDialog.setSummary("Undervolt: -" + Utils.readOneLine(PanelUVPreference.mPanelUVFile) + "mV");
-	else mPanelUVDialog.setSummary("Default Voltage");
+	if(Utils.fileExists(PanelUVPreference.mPanelUVFile)){
+		if(Integer.parseInt(Utils.readOneLine(PanelUVPreference.mPanelUVFile)) > 0)
+			mPanelUVDialog.setSummary("Undervolt: -" + Utils.readOneLine(PanelUVPreference.mPanelUVFile) + "mV");
+		else mPanelUVDialog.setSummary("Default Voltage");
+	}
+    }
+
+    public static void GPUupdate(){
+	if(Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
+    }
+
+    public static void IOupdate(String schedulers){
+	availableIOSchedulers = schedulers.replace("[", "").replace("]", "").split(" ");
+	bropen = availableIOSchedulersLine.indexOf("[");
+	brclose = availableIOSchedulersLine.lastIndexOf("]");
+	if (bropen >= 0 && brclose >= 0) currentIOScheduler = availableIOSchedulersLine.substring(bropen + 1, brclose);
+	mIODialog.setSummary(currentIOScheduler);
     }
 
     public static void SetOnBootData(SharedPreferences preferences){

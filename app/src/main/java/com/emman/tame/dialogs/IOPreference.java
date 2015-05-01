@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.emman.tame.R;
-import com.emman.tame.fragments.CPUSettings;
+import com.emman.tame.fragments.KernelSettings;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
@@ -75,6 +75,7 @@ public class IOPreference extends DialogPreference
     protected void onBindDialogView(final View view) {
 	super.onBindDialogView(view);
 	mView = view;
+	availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
 	if(!initiateData()) return;
 	List<String> list;
 	ArrayAdapter<String> dataAdapter;
@@ -101,7 +102,6 @@ public class IOPreference extends DialogPreference
 	super.onDialogClosed(positiveResult);
 		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
 	if(positiveResult) setData();
-	CPUSettings.IOupdate();
     }
 
     private boolean initiateData(){
@@ -112,7 +112,6 @@ public class IOPreference extends DialogPreference
 	mIOSched = (Spinner) mView.findViewById(R.id.iosched);
 	mReadAhead = (Spinner) mView.findViewById(R.id.readahead);
 
-	availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
 	availableIOSchedulers = availableIOSchedulersLine.replace("[", "").replace("]", "").split(" ");
 	bropen = availableIOSchedulersLine.indexOf("[");
 	brclose = availableIOSchedulersLine.lastIndexOf("]");
@@ -131,6 +130,7 @@ public class IOPreference extends DialogPreference
 	updateSharedPrefs(mPreferences, SAVED_IOSCHED, availableIOSchedulers[(int) mIOSched.getSelectedItemId()]);
 	updateSharedPrefs(mPreferences, SAVED_READAHEAD, Utils.getReadAhead(true)[(int) mReadAhead.getSelectedItemId()]);
 	Utils.launchSYSQueue();
+	KernelSettings.IOupdate(availableIOSchedulersLine);
     }
 
     private void updateData(){
