@@ -110,7 +110,7 @@ public class KernelSettings extends PreferenceFragment
 
 	if(!Utils.fileExists(FILE_CELOX_DISPLAY_UV)){
 		mPanelUVDialog.setEnabled(false);
-		mPanelUVDialog.setSummary("Default Voltage");
+		mPanelUVDialog.setSummary(getString(R.string.msg_default_volt));
 	}
     }
 
@@ -147,6 +147,7 @@ public class KernelSettings extends PreferenceFragment
 	bropen = availableIOSchedulersLine.indexOf("[");
 	brclose = availableIOSchedulersLine.lastIndexOf("]");
 	if (bropen >= 0 && brclose >= 0) currentIOScheduler = availableIOSchedulersLine.substring(bropen + 1, brclose);
+
 	mIODialog.setSummary(currentIOScheduler);
     }
 

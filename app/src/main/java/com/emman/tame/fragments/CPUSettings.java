@@ -89,7 +89,7 @@ public class CPUSettings extends PreferenceFragment
     private Handler mCurCPUHandler = new Handler() {
         public void handleMessage(Message msg) {
 		String freq = ((String) msg.obj);
-		mCurFreq.setSummary("Primary Core: " + freq);
+		mCurFreq.setSummary(getString(R.string.msg_primary) + LINE_SPACE + getString(R.string.msg_core) + ": " + freq);
         }
     };
 
@@ -100,7 +100,7 @@ public class CPUSettings extends PreferenceFragment
 
 	if(!Utils.fileIsReadable(FREQ_MIN_FILE) || !Utils.fileIsReadable(FREQ_MAX_FILE)){
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LINK_WK_CPU_PATCH));
-		Utils.notification(getActivity(), NotificationID.CPUPERM, intent, "Your Rom or Kernel has a bug, please forward this URL link to your developer. As result, you may experience lag using this app.");
+		Utils.notification(getActivity(), NotificationID.CPUPERM, intent, getString(R.string.msg_kernelbug1));
 	}
 
 
@@ -126,7 +126,7 @@ public class CPUSettings extends PreferenceFragment
 		
 		if (preference == mSchedMC){
 			fname = SCHED_MC_FILE;
-			Utils.toast(getActivity(), "Reboot is recommended.");
+			Utils.toast(getActivity(), getString(R.string.msg_reboot));
 		}
 		else if (preference == mVDD){
 			String undovdd = mVDDLevel;
@@ -177,7 +177,7 @@ public class CPUSettings extends PreferenceFragment
 	if(!Utils.fileExists(VDD_LEVELS_FILE)) mVDD.setEnabled(false);
 	if(!Utils.fileExists(FILE_MPDEC_TOGGLE) && !Utils.fileExists(CPU_TOGGLE)){
 		mSMPDialog.setEnabled(false);
-		mSMPDialog.setSummary("You most likely have a non-kernel based plug manager.");
+		mSMPDialog.setSummary(getString(R.string.msg_no_smp));
 	}
 	
     }
@@ -198,16 +198,16 @@ public class CPUSettings extends PreferenceFragment
 	mVDDLevel = mPreferences.getString(SAVED_VDD_LEVELS, "0");
 
 	mVDD.setValue(mVDDLevel);
-	if(mVDDLevel.equals("0")) mVDD.setSummary("Default Voltage");
-	else mVDD.setSummary("Voltage: " + (mVDDLevel.substring(0, 1)) + (Integer.parseInt(mVDDLevel.substring(1)) / 1000) + "mV");
+	if(mVDDLevel.equals("0")) mVDD.setSummary(getString(R.string.msg_default_volt));
+	else mVDD.setSummary(getString(R.string.msg_volt) + ": " + (mVDDLevel.substring(0, 1)) + (Integer.parseInt(mVDDLevel.substring(1)) / 1000) + "mV");
 
 	return true;
 
     }
 
     private void CPUupdate(){
-	if(mVDDLevel.equals("0")) mVDD.setSummary("Default Voltage");
-	else mVDD.setSummary("Voltage: " + (mVDDLevel.substring(0, 1)) + (Integer.parseInt(mVDDLevel.substring(1)) / 1000) + "mV");
+	if(mVDDLevel.equals("0")) mVDD.setSummary(getString(R.string.msg_default_volt));
+	else mVDD.setSummary(getString(R.string.msg_volt) + ": " + (mVDDLevel.substring(0, 1)) + (Integer.parseInt(mVDDLevel.substring(1)) / 1000) + "mV");
     }
 
     private void setData(){

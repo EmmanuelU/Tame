@@ -214,7 +214,7 @@ public class MainActivity extends Activity
         if (id == R.id.settings) {
 		//Intent intent = new Intent(MainActivity.this, Settings.class);
 		//startActivity(intent);
-		mTitle = getString(R.string.action_settings);
+		mTitle = getString(R.string.page_settings);
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
 		        .replace(R.id.container, new Settings())

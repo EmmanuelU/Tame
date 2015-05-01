@@ -1,20 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="item_enable">Enable</string>
+    <string name="item_save">Save</string>
+    <string name="item_return">Go Back</string>
+    <string name="item_on">On</string>
+    <string name="item_off">Off</string>
+    <string name="item_msecs">(msecs)</string>
+
+    <string name="msg_no_net">No Internet Access Detected</string>
+    <string name="msg_reboot">Reboot is recommended.</string>
+    <string name="msg_kernelbug1">Your Rom or Kernel has a bug, please forward this URL link to your developer. As result, you may experience lag using this app.</string>
+    <string name="msg_no_smp">You most likely have a non-kernel based plug manager.</string>
+    <string name="msg_primary">Primary</string>
+    <string name="msg_core">Core</string>
+
     <string name="page_main">Tame</string>
     <string name="page_cpusettings">Processor</string>
     <string name="page_generalsettings">Other</string>
     <string name="page_kernelsettings">Kernel</string>
     <string name="page_sysfs">SysFS</string>
-
-    <string name="action_settings">Settings</string>
+    <string name="page_settings">Settings</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="ui_sobnote">Note: After a reboot, Tame may take a minute or two to restore settings.\n\n In the event that you screwed up and you want to disable Tame Settings from recovery, there is a flash-able zip on your sdcard.\n\n</string>
+    <string name="item_sob">Restore Settings on Boot</string>
+    <string name="item_sum_sob">Android naturally reverts settings to default after a reboot. Enabling this will keep your custom settings.</string>
+    <string name="msg_sobnote">Note: After a reboot, Tame may take a minute or two to restore settings.\n\n In the event that you screwed up and you want to disable Tame Settings from recovery, there is a flash-able zip on your sdcard.\n\n</string>
 
     <string name="item_check_updates">Check for Updates</string>
     <string name="item_sum_check_updates">Check for an update to Tame or WildKernel at every boot.</string>
+    <string name="msg_checking_update">Checking for Updates ...</string>
+    <string name="msg_latest_update">Latest Version</string>
+    <string name="msg_update_available">Click to Update</string>
+
+    <string name="item_bln">Button Light Notifications</string>
+    <string name="item_sum_bln">Pulse button lights when a notification is received.</string>
+    <string name="item_ebln">Enhanced Button Light Notifications</string>
+    <string name="item_hbln">Home Button Light Notifications</string>
+
+    <string name="item_s2w">Sweep2Wake</string>
+    <string name="item_sum_s2w">Sweep finger across button pad to wake device.</string>
+
+    <string name="item_panel_uv">Display Voltage</string>
+    <string name="item_sum_panel_uv">Reducing the screen\'s power consumption can improve battery life.</string>
+    <string name="msg_default_volt">Default Voltage</string>
+    <string name="msg_volt">Voltage</string>
+
+    <string name="item_fast_charge">USB Fast Charge</string>
+    <string name="item_sum_fast_charge">Increase mA current during charging. Only affects non-wall chargers.</string>
+
+    <string name="item_input_boost">Input Boost</string>
+    <string name="item_sum_input_boost">Adjust CPU minimum speed during input events.</string>
+
+    <string name="item_io">Memory</string>
+    <string name="item_iosched">I/O Scheduler</string>
+
+    <string name="item_gpu">GPU</string>
+
+    <string name="item_stat">Statistics</string>
+
+    <string name="item_polices">Policies</string>
+    <string name="item_core_manage">Multi-Core Management</string>
+    <string name="item_core_util">Multi-Core Utilization</string>
+    <string name="item_sum_core_util">Group more processes onto primary core.</string>
+
+    <string name="item_screendens">Screen Density</string>
+    
+    <string name="item_runatboot">Run At Boot</string>
+    <string name="item_sum_runatboot">Schedule shell commands to be executed every startup. While this is independent of Tame\'s Set On Boot, this will disable itself if the SOB disabler zip is flashed.</string>
+
+    <string name="item_log">Dump System Logs</string>
+
+    <string name="item_duration">Duration:</string>
+    <string name="item_bln_override_interval">Override Blink Intervals</string>
+    <string name="item_bln_test">Test Notification</string>
+    <string name="item_bln_override_color">Override Blink Intervals</string>
 
 </resources>

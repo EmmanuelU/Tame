@@ -3,17 +3,17 @@
 
     <com.emman.tame.dialogs.CPUStatsPreference
         android:key="cur_freq"
-	android:positiveButtonText="Go Back"
-        android:title="Statistics"/>
+	android:positiveButtonText="@string/item_return"
+        android:title="@string/item_stat"/>
 
     <com.emman.tame.dialogs.CPUPolicyPreference
-	android:title="Processor Policies"
+	android:title="@string/item_polices"
 	android:key="cpupolicy_dialog"
-	android:positiveButtonText="Save"
+	android:positiveButtonText="@string/item_save"
     />
 
     <ListPreference
-	android:title="Processor Voltage"
+	android:title="@string/msg_volt"
 	android:key="vdd"
 	android:entries="@array/vdd_array_entries"
 	android:entryValues="@array/vdd_array_values"
@@ -21,29 +21,28 @@
 
     <com.emman.tame.dialogs.SMPPreference
 	android:key="smpdialog"
-	android:title="Core Plug Management"
-	android:summary="Control secondary cores."
-	android:positiveButtonText="Save"
+	android:title="@string/item_core_manage"
+	android:positiveButtonText="@string/item_save"
+    />
+
+    <ListPreference
+	android:title="@string/item_core_util"
+	android:summary="@string/item_sum_core_util"
+	android:key="sched_mc"
+	android:entries="@array/mc_array_entries"
+	android:entryValues="@array/mc_array_values"
     />
 
     <com.emman.tame.dialogs.CPUInputBoostPreference
-	android:title="Input Boost"
-	android:summary="Adjust CPU minimum speed during input events."
+	android:title="@string/item_input_boost"
+	android:summary="@string/item_sum_input_boost"
 	android:key="cpu_boost"
     />
     
     <com.emman.tame.dialogs.CPUInputBoostV2Preference
-	android:title="Input Boost"
-	android:summary="Adjust CPU minimum speed during input events."
+	android:title="@string/item_input_boost"
+	android:summary="@string/item_sum_input_boost"
 	android:key="cpu_boostv2"
-    />
-
-    <ListPreference
-	android:title="Multi-Core Power Saving"
-	android:summary="Group more processes onto primary core."
-	android:key="sched_mc"
-	android:entries="@array/mc_array_entries"
-	android:entryValues="@array/mc_array_values"
     />
 
 </PreferenceScreen>

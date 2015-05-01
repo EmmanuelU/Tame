@@ -13,7 +13,7 @@
     <CheckBox
         android:layout_width="108dp"
         android:layout_height="wrap_content"
-        android:text="Enable"
+        android:text="@string/item_enable"
 	android:button="@null"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/touchkey_bln"
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Duration:"
+            android:text="@string/item_duration"
             android:textColor="#FFFFFF"
             android:layout_weight="0.08"
             android:layout_alignParentTop="true"
@@ -49,7 +49,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="## minute(s) - ### Blinks"
             android:textColor="#FFFFFF"
             android:layout_weight="0.08"
             android:id="@+id/cur_touchkey_bln_blink"
@@ -77,7 +76,7 @@
 	    <CheckBox
 		android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:text="Override Blink Intervals"
+        	android:text="@string/item_bln_override_interval"
 		android:button="@null"
 		android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         	android:id="@+id/touchkey_bln_override_interval"
@@ -100,19 +99,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="On"
+            android:text="@string/item_on"
             android:layout_marginRight="40dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(msecs)"
+            android:text="@string/item_msecs"
             android:layout_marginRight="40dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Off"/>
+            android:text="@string/item_off"/>
 
 	</TableRow>
 
@@ -157,7 +156,7 @@
 	    android:id="@+id/blntest"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Test Notification"
+            android:text="@string/item_bln_test"
             android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

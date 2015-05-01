@@ -8,7 +8,7 @@
 	    <Switch
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Set on Boot"
+		android:text="@string/item_enable"
 		android:id="@+id/sob"/>
 
 </LinearLayout>

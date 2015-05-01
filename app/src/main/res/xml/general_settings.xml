@@ -3,22 +3,21 @@
 
     <com.emman.tame.dialogs.DensPreference
 	android:key="densdialog"
-	android:title="Screen Density"
-	android:summary=""
-	android:positiveButtonText="Save"
+	android:title="@string/item_screendens"
+	android:positiveButtonText="@string/item_save"
     />
 
     <com.emman.tame.dialogs.ScriptPreference
 	android:key="scriptdialog"
-	android:title="Run At Boot"
-	android:summary="Schedule shell commands to be executed every startup. While this is independent of Tame's Set On Boot, this will disable itself if the SOB disabler zip is flashed."
-	android:positiveButtonText="Save"
+	android:title="@string/item_runatboot"
+	android:summary="@string/item_sum_runatboot"
+	android:positiveButtonText="@string/item_save"
     />
 
     <com.emman.tame.dialogs.LogPreference
 	android:key="logdialog"
-	android:title="Dump System Logs"
-	android:positiveButtonText="Go Back"
+	android:title="@string/item_log"
+	android:positiveButtonText="@string/item_return"
     />
 
 </PreferenceScreen>

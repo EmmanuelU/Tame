@@ -33,7 +33,7 @@
 
         <activity
             android:name=".Settings"
-            android:label="@string/action_settings">
+            android:label="@string/page_settings">
         </activity>
 
 	<receiver android:name=".BootCompletedReceiver" >

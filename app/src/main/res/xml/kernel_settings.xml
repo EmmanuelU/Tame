@@ -3,56 +3,56 @@
 
     <com.emman.tame.dialogs.BLNPreference
 	android:key="blndialog"
-	android:title="Button Light Notifications"
-	android:summary="Pulse button lights when screen is off, and a notification is received."
-	android:positiveButtonText="Save"
+	android:title="@string/item_bln"
+	android:summary="@string/item_sum_bln"
+	android:positiveButtonText="@string/item_save"
     />
 
     <com.emman.tame.dialogs.EBLNPreference
 	android:key="eblndialog"
-	android:title="Enhanced Button Light Notifications"
-	android:summary="Pulse button lights when a notification is received."
-	android:positiveButtonText="Save"
+	android:title="@string/item_ebln"
+	android:summary="@string/item_sum_bln"
+	android:positiveButtonText="@string/item_save"
     />
     
         <com.emman.tame.dialogs.HBLNPreference
 	android:key="hblndialog"
-	android:title="Home Button Light Notifications"
-	android:summary="Pulse home button when a notification is received."
-	android:positiveButtonText="Save"
+	android:title="@string/item_hbln"
+	android:summary="@string/item_sum_bln"
+	android:positiveButtonText="@string/item_save"
     />
 
     <com.emman.tame.dialogs.S2WPreference
 	android:key="s2wdialog"
-	android:title="Sweep2Wake"
-	android:summary="Sweep finger across button pad to wake device."
-	android:positiveButtonText="Save"
+	android:title="@string/item_s2w"
+	android:summary="@string/item_sum_s2w"
+	android:positiveButtonText="@string/item_save"
     />
 
     <com.emman.tame.dialogs.PanelUVPreference
-	android:title="Display Voltage"
-	android:summary="Reducing the screen's power consumption can improve battery life."
+	android:title="@string/item_panel_uv"
+	android:summary="@string/item_sum_panel_uv"
 	android:key="panel_uv_dialog"
-	android:positiveButtonText="Save"
+	android:positiveButtonText="@string/item_save"
     />
 
     <com.emman.tame.dialogs.FastChargePreference
-	android:title="USB Fast Charge"
-	android:summary="Disable throttling of mA current when not plugged into an outlet."
+	android:title="@string/item_fast_charge"
+	android:summary="@string/item_sum_fast_charge"
 	android:key="fast_charge_dialog"
-	android:positiveButtonText="Save"
+	android:positiveButtonText="@string/item_save"
     />
 
     <com.emman.tame.dialogs.IOPreference
 	android:key="iosched"
-	android:title="I/O Control"
-	android:positiveButtonText="Save"
+	android:title="@string/item_io"
+	android:positiveButtonText="@string/item_save"
     />
 
     <com.emman.tame.dialogs.GPUPreference
 	android:key="gpu_dialog"
-	android:title="GPU Control"
-	android:positiveButtonText="Save"
+	android:title="@string/item_gpu"
+	android:positiveButtonText="@string/item_save"
     />
 
 </PreferenceScreen>

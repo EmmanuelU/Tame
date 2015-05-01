@@ -122,7 +122,7 @@ public class AboutTame extends Fragment
 		}
 	});
 
-	mSOBNote.setText(getString(R.string.ui_sobnote) + FILE_DISABLE_SET_ON_BOOT_ZIP);
+	mSOBNote.setText(getString(R.string.msg_sobnote) + FILE_DISABLE_SET_ON_BOOT_ZIP);
 	
 	TameLogoAnim();
 	mTameLogo.startAnimation(fadeout);
@@ -174,7 +174,7 @@ public class AboutTame extends Fragment
 
     private boolean CheckUpdate(){
 	if(!DownloadTask.isNetworkOnline(getActivity())){
-		Utils.toast(getActivity(), "No Internet Access Detected");
+		Utils.toast(getActivity(), getString(R.string.msg_no_net));
 	} else if(WildData.fetchedlatestversion && !WildData.islatestversion){
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WildData.latestversiondl));
 		startActivity(browserIntent);
@@ -182,7 +182,7 @@ public class AboutTame extends Fragment
 	else if(WildData.fetchedlatestversion) return false;
 	else {
 		mCheckUpdateDialog = new ProgressDialog(getActivity());
-		mCheckUpdateDialog.setMessage("Checking for updates ...");
+		mCheckUpdateDialog.setMessage(getString(R.string.msg_checking_update));
 		mCheckUpdateDialog.setIndeterminate(true);
 		mCheckUpdateDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		mCheckUpdateDialog.setCancelable(true);
@@ -202,10 +202,10 @@ public class AboutTame extends Fragment
 				if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(propversion)) WildData.islatestversion = false;
 				else WildData.islatestversion = true;
 				if(WildData.islatestversion){
-					mUpdate.setText("Latest Version");
+					mUpdate.setText(getString(R.string.msg_latest_update));
 					mUpdate.setEnabled(false);
 				} else {
-					mUpdate.setText("Click to Update");
+					mUpdate.setText(getString(R.string.msg_update_available));
 					mLatVersion.setText(WildData.latestversion + " - " + WildData.latestversionreldate);
 					mLatVersion.setVisibility(View.VISIBLE);
 				}
@@ -219,7 +219,7 @@ public class AboutTame extends Fragment
 
     private boolean CheckAppUpdate(){
 	if(!DownloadTask.isNetworkOnline(getActivity())){
-		Utils.toast(getActivity(), "No Internet Access Detected");
+		Utils.toast(getActivity(), getString(R.string.msg_no_net));
 	} else if(TameData.fetchedlatestversion && !TameData.islatestversion){
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TameData.latestversiondl));
 		startActivity(browserIntent);
@@ -227,7 +227,7 @@ public class AboutTame extends Fragment
 	else if(TameData.fetchedlatestversion) return false;
 	else {
 		mAppCheckUpdateDialog = new ProgressDialog(getActivity());
-		mAppCheckUpdateDialog.setMessage("Checking for updates ...");
+		mAppCheckUpdateDialog.setMessage(getString(R.string.msg_checking_update));
 		mAppCheckUpdateDialog.setIndeterminate(true);
 		mAppCheckUpdateDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		mAppCheckUpdateDialog.setCancelable(true);
@@ -247,16 +247,15 @@ public class AboutTame extends Fragment
 				if(TameData.latestversionstamp > TameData.versionstamp) TameData.islatestversion = false;
 				else TameData.islatestversion = true;
 				if(TameData.islatestversion){
-					mAppUpdate.setText("Latest Version");
+					mAppUpdate.setText(getString(R.string.msg_latest_update));
 					mAppUpdate.setEnabled(false);
 				} else {
-					mAppUpdate.setText("Click to Update");
+					mAppUpdate.setText(getString(R.string.msg_update_available));
 					mAppLatVersion.setText(TameData.latestversion + " - " + TameData.latestversionreldate);
 					mAppLatVersion.setVisibility(View.VISIBLE);
 				}
 				TameData.fetchedlatestversion = true;
 			}
-			else Utils.toast(getActivity(), "test");
 		    }
 		});
 	}

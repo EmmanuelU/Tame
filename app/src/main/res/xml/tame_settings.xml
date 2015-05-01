@@ -9,9 +9,9 @@
 
     <com.emman.tame.dialogs.SOBPreference
 	android:key="SOBdialog"
-	android:title="Restore Settings on Boot"
-	android:summary="Android naturally reverts settings to default after a reboot. Enabling this will keep your custom settings."
-	android:positiveButtonText="Save"
+	android:title="@string/item_sob"
+	android:summary="@string/item_sum_sob"
+	android:positiveButtonText="@string/item_save"
     />
 
 </PreferenceScreen>
