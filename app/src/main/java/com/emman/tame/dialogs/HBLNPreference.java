@@ -95,13 +95,15 @@ public class HBLNPreference extends DialogPreference
 	mBLNTest.setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
+		    try{
 		    String[] intervals = Utils.readOneLine(FILE_HBLN_BLINK_OVERRIDE).split("\\s+");
 		    if (!intervals[0].equals("0"))
-		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using preset light intervals (" + intervals[0] + "/" + intervals[1] + "msecs).", Integer.parseInt(intervals[0]), Integer.parseInt(intervals[1]), mTouchKeyRGB.getColor());
+		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: " + getContext().getString(R.string.msg_bln_preset) + " (" + intervals[0] + "/" + intervals[1] + getContext().getString(R.string.item_msecs2) + ").", Integer.parseInt(intervals[0]), Integer.parseInt(intervals[1]), mTouchKeyRGB.getColor());
 		    else if (Utils.isInteger(mTouchKeyONInterval.getText().toString()) && Utils.isInteger(mTouchKeyOFFInterval.getText().toString()) && Integer.parseInt(mTouchKeyONInterval.getText().toString()) > 0 && Integer.parseInt(mTouchKeyOFFInterval.getText().toString()) > 0)
-		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using custom light intervals (" + mTouchKeyONInterval.getText().toString() + "/" + mTouchKeyOFFInterval.getText().toString() + "msecs).", Integer.parseInt(mTouchKeyONInterval.getText().toString()), Integer.parseInt(mTouchKeyOFFInterval.getText().toString()), mTouchKeyRGB.getColor());
+		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: " + getContext().getString(R.string.msg_bln_preset) + " (" + mTouchKeyONInterval.getText().toString() + "/" + mTouchKeyOFFInterval.getText().toString() + getContext().getString(R.string.item_msecs2) + ").", Integer.parseInt(mTouchKeyONInterval.getText().toString()), Integer.parseInt(mTouchKeyOFFInterval.getText().toString()), mTouchKeyRGB.getColor());
 		    else
-		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using default light intervals (300/1500msecs).", 300, 1500, mTouchKeyRGB.getColor());
+		        Utils.notification(getContext(), NotificationID.BLN_TEST, null, getContext().getString(R.string.msg_bln_preset2));
+		    } catch (Exception e) {}
 		}
 	});
 	
@@ -109,7 +111,7 @@ public class HBLNPreference extends DialogPreference
 		@Override
 		public void onClick(View v) {
 		    if(mTouchKeyOverrideRGB.isChecked()) mTouchKeyRGBText.setText(Integer.toHexString(mTouchKeyRGB.getColor()));
-		    else mTouchKeyRGBText.setText("disabled");
+		    else mTouchKeyRGBText.setText(getContext().getString(R.string.item_disabled));
 		    updateDependencies();
 		}
 	});
@@ -190,7 +192,7 @@ public class HBLNPreference extends DialogPreference
 	mTouchKeyRGB.addOpacityBar(mTouchKeyRGBOpacity);
 	
 	if(mTouchKeyOverrideRGB.isChecked()) mTouchKeyRGBText.setText(Integer.toHexString(mTouchKeyRGB.getColor()));
-	else mTouchKeyRGBText.setText("disabled");
+	else mTouchKeyRGBText.setText(getContext().getString(R.string.item_disabled));
 
 	 updateDependencies();
 

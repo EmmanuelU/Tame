@@ -78,8 +78,8 @@ public class LogPreference extends DialogPreference
 		public void onClick(View v) {
 			if(!mLogcatDumped){
 				Utils.CMD("logcat -d  > "+ TAME_LOGCAT, true);
-				Utils.toast(getContext(), "Logcat saved to " + TAME_LOGCAT);
-				mLogcat.setText("View " + TAME_LOGCAT);
+				Utils.toast(getContext(), getContext().getString(R.string.msg_logcat) + LINE_SPACE + TAME_LOGCAT);
+				mLogcat.setText(getContext().getString(R.string.item_view) + LINE_SPACE + TAME_LOGCAT);
 				mLogcatDumped = true;
 			} else {
 				Utils.openFile(getContext(), TAME_LOGCAT, FILE_TEXT_FORMAT);
@@ -93,8 +93,8 @@ public class LogPreference extends DialogPreference
 		public void onClick(View v) {
 			if(!mLastKmsgDumped){
 				Utils.CMD("cp -f " + LAST_KMSG + LINE_SPACE + TAME_LAST_KMSG, true);
-				Utils.toast(getContext(), "KMSG saved to " + TAME_LAST_KMSG);
-				mLastKmsg.setText("View " + TAME_LAST_KMSG);
+				Utils.toast(getContext(), getContext().getString(R.string.msg_lkmsg) + LINE_SPACE + TAME_LAST_KMSG);
+				mLastKmsg.setText(getContext().getString(R.string.item_view) + LINE_SPACE + TAME_LAST_KMSG);
 				mLastKmsgDumped = true;
 			} else {
 				Utils.openFile(getContext(), TAME_LAST_KMSG, FILE_TEXT_FORMAT);
@@ -105,7 +105,6 @@ public class LogPreference extends DialogPreference
     }
 
     private boolean initiateData(){
-
 	mLogcat = (Button) mView.findViewById(R.id.logcat);
 	mLastKmsg = (Button) mView.findViewById(R.id.last_kmsg);
 

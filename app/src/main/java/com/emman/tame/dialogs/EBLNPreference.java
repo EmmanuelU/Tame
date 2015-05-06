@@ -90,13 +90,15 @@ public class EBLNPreference extends DialogPreference
 	mBLNTest.setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-		    String[] intervals = Utils.readOneLine(FILE_EBLN_BLINK_OVERRIDE).split("\\s+");
-		    if (!Utils.isStringEmpty(intervals[0]) && !intervals[0].equals("0"))
-		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using preset light intervals (" + intervals[0] + "/" + intervals[1] + "msecs).", Integer.parseInt(intervals[0]), Integer.parseInt(intervals[1]), 0);
+		    try{
+		    String[] intervals = Utils.readOneLine(FILE_BLN_BLINK_OVERRIDE).split("\\s+");
+		    if (!intervals[0].equals("0"))
+		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: " + getContext().getString(R.string.msg_bln_preset) + " (" + intervals[0] + "/" + intervals[1] + getContext().getString(R.string.item_msecs2) + ").", Integer.parseInt(intervals[0]), Integer.parseInt(intervals[1]), 0);
 		    else if (Utils.isInteger(mTouchKeyONInterval.getText().toString()) && Utils.isInteger(mTouchKeyOFFInterval.getText().toString()) && Integer.parseInt(mTouchKeyONInterval.getText().toString()) > 0 && Integer.parseInt(mTouchKeyOFFInterval.getText().toString()) > 0)
-		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using custom light intervals (" + mTouchKeyONInterval.getText().toString() + "/" + mTouchKeyOFFInterval.getText().toString() + "msecs).", Integer.parseInt(mTouchKeyONInterval.getText().toString()), Integer.parseInt(mTouchKeyOFFInterval.getText().toString()), 0);
+		        Utils.testNotification(getContext(), NotificationID.BLN_TEST, null, "BLN: " + getContext().getString(R.string.msg_bln_preset) + " (" + mTouchKeyONInterval.getText().toString() + "/" + mTouchKeyOFFInterval.getText().toString() + getContext().getString(R.string.item_msecs2) + ").", Integer.parseInt(mTouchKeyONInterval.getText().toString()), Integer.parseInt(mTouchKeyOFFInterval.getText().toString()), 0);
 		    else
-		        Utils.notification(getContext(), NotificationID.BLN_TEST, null, "BLN: Using default light intervals (300/1500msecs).");
+		        Utils.notification(getContext(), NotificationID.BLN_TEST, null, getContext().getString(R.string.msg_bln_preset2));
+		    } catch (Exception e) {}
 		}
 	});
 
@@ -104,7 +106,7 @@ public class EBLNPreference extends DialogPreference
 
 	    @Override
 	    public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-		mCurTouchKeyBLNBlink.setText(String.valueOf((mTouchKeyBLNTimeout.getProgress() / 1000) / 60) + " minute(s)");
+		updateText();
 	    }
 
 	    @Override
@@ -182,6 +184,12 @@ public class EBLNPreference extends DialogPreference
 
     }
 
+    private void updateText(){
+	if(!initiateData()) return;
+
+	mCurTouchKeyBLNBlink.setText(String.valueOf((mTouchKeyBLNTimeout.getProgress() / 1000) / 60) + LINE_SPACE + getContext().getString(R.string.msg_minutes));
+    }
+
     private void updateDependencies(){
 	if(!initiateData()) return;
 
@@ -199,8 +207,7 @@ public class EBLNPreference extends DialogPreference
 			mTouchKeyOFFInterval.setText("1500");
 		}
 	}
-	mCurTouchKeyBLNBlink.setText(String.valueOf((mTouchKeyBLNTimeout.getProgress() / 1000) / 60) + " minute(s)");
-
+	updateText();
     }
 
     public static void SetOnBootData(SharedPreferences preferences){

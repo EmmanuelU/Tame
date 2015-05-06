@@ -86,7 +86,7 @@ public class SysFSExplorer extends ListFragment
 	super.onCreate(savedInstanceState);
 	currentDir = new File(currentPath);
 	fill(currentDir);
-	Utils.toast(getActivity(), "Edit Values with Caution");
+	Utils.toast(getActivity(), getActivity().getString(R.string.msg_edit_caution));
 
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
@@ -108,7 +108,7 @@ public class SysFSExplorer extends ListFragment
 			final EditText mEditFile = (EditText) dialog.findViewById(R.id.editfile);
 			final String mEditFilePath = o.getPath();
 			String[] mTitle = mEditFilePath.split("/");
-			dialog.setTitle("File: " + mTitle[mTitle.length - 1]);
+			dialog.setTitle(getActivity().getString(R.string.item_file) + ": " + mTitle[mTitle.length - 1]);
 			mEditFile.setText(Utils.readOneLine(o.getPath()));
 			if(Utils.isNumeric(mEditFile.getText().toString())) mEditFile.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 			mEditFile.setSelection(mEditFile.getText().length());
@@ -118,8 +118,8 @@ public class SysFSExplorer extends ListFragment
 					Utils.writeSYSValue(mEditFilePath, mEditFile.getText().toString());
 					if(mRAB.isChecked()){
 						appendSharedPrefs(mPreferences, RUN_AT_BOOT_COMMANDS, "echo '" + mEditFile.getText().toString() + "' > "+ mEditFilePath);
-						Utils.toast(getActivity(), "Value saved, and queued to Run At Boot.");
-					} else Utils.toast(getActivity(), "Value saved.");
+						Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved_rab));
+					} else Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved));
 					dialog.dismiss();
 				}
 			});

@@ -13,14 +13,14 @@
 	    android:id="@+id/logcat"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Logcat"
+            android:text="@string/item_logcat"
             android:layout_gravity="center_horizontal"/>
 
 	<Button
 	    android:id="@+id/last_kmsg"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Last Kmsg"
+            android:text="@string/item_lkmsg"
             android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

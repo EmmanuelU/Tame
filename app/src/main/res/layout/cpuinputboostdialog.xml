@@ -24,14 +24,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Duration (msecs)"
+            android:text="@string/item_duration_msecs"
             android:layout_marginRight="80dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
-            android:text="Frequency"/>
+            android:text="@string/item_frequency"/>
 
 	</TableRow>
 

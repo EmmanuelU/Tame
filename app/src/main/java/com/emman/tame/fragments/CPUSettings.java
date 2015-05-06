@@ -88,8 +88,10 @@ public class CPUSettings extends PreferenceFragment
 
     private Handler mCurCPUHandler = new Handler() {
         public void handleMessage(Message msg) {
-		String freq = ((String) msg.obj);
-		mCurFreq.setSummary(getString(R.string.msg_primary) + LINE_SPACE + getString(R.string.msg_core) + ": " + freq);
+		try {
+			String freq = ((String) msg.obj);
+			mCurFreq.setSummary(getString(R.string.msg_primary) + LINE_SPACE + getString(R.string.msg_core) + ": " + freq);
+            } catch (Exception e) {}
         }
     };
 

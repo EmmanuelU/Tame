@@ -74,7 +74,7 @@ public class GeneralSettings extends PreferenceFragment
 
     private void updateData(){
 	if(!initiateData()) return;
-	if(Utils.stringToBool(mPreferences.getString(RUN_AT_BOOT, ""))) mScriptDialog.setSummary("Commands queued for next device boot.");
+	if(Utils.stringToBool(mPreferences.getString(RUN_AT_BOOT, ""))) mScriptDialog.setSummary(getActivity().getString(R.string.item_sum_runatboot_queued));
 		
 	mDensDialog.setSummary(Utils.readProp("ro.sf.lcd_density") + "dpi");
     }

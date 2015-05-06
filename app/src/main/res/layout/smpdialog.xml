@@ -21,7 +21,7 @@
 		   <TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Mpdecision automatically turns plugs/unplugs cores based off workload."
+			android:text="@string/item_note_mpdec"
 			android:gravity="center_horizontal"
 			android:textStyle="italic"
 			android:textSize="11sp"/>
@@ -29,7 +29,7 @@
 	    <Switch
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="MPDecision"
+		android:text="@string/item_mpdec"
 		android:id="@+id/mpdec"
 
 		android:layout_alignParentTop="true"/>
@@ -45,7 +45,7 @@
 		    <CheckBox
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Unplug secondary cores while screen off."
+			android:text="@string/item_sum_mpdec"
 			android:textSize="13sp"
 			android:button="@null"
 			android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
@@ -77,7 +77,7 @@
 		   <TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Unplugging a core here will disable it indefinitely, as oppose to allowing mpdecision to automatically disable. I recommend unplugging from bottom to top, to avoid issues."
+			android:text="@string/item_note_core_toggle"
 			android:gravity="center_horizontal"
 			android:textStyle="italic"
 			android:textSize="11sp"/>

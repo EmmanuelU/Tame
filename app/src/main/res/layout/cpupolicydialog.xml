@@ -13,13 +13,13 @@
 	android:textSize="12pt"
 	android:gravity="center"
 	android:textColor="#AA0114"
-	android:text="CPU Input Boosting must be disabled while changing policies, as it may interfere with CPU parameters."
+	android:text="@string/msg_boost_disclaimer"
         android:id="@+id/IBdisclaimer"/>
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Synchronize Policies"
+        android:text="@string/item_sync"
 	android:button="@null"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/cpu_gov_sync"
@@ -29,7 +29,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Synchronize Policies"
+        android:text="@string/item_sync"
 	android:button="@null"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/tame_policy_sync"
@@ -41,13 +41,13 @@
 	android:layout_height="wrap_content"
 	android:textSize="20dp"
 	android:id="@+id/cpu_core"
-	android:text="Core"
+	android:text="@string/msg_core"
 	android:layout_marginBottom="5dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Governor"/>
+        android:text="@string/item_gov"/>
 
     <Spinner
         android:layout_width="wrap_content"
@@ -63,13 +63,13 @@
 	    <TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Minimum Frequency"
+		android:text="@string/item_min_frequency"
 		android:layout_marginRight="5dp"/>
 
 	    <TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Maximum Frequency"
+		android:text="@string/item_max_frequency"
 		android:layout_marginLeft="5dp"/>
 
 	</TableRow>

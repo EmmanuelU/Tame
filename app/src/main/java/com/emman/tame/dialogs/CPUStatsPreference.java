@@ -78,8 +78,8 @@ public class CPUStatsPreference extends DialogPreference
 				String minfreq, maxfreq, curfreq, governor;
 				curfreq = Utils.readOneLine(Utils.toCPU(FREQ_CUR_FILE, i));
 				if(Utils.isStringEmpty(curfreq)){
-					curfreq = "Offline";
-					minfreq = "N/A";
+					curfreq = getContext().getString(R.string.item_offline);
+					minfreq = getContext().getString(R.string.item_na);
 					maxfreq = "";
 					governor = "";
 				}
@@ -89,14 +89,14 @@ public class CPUStatsPreference extends DialogPreference
 					maxfreq = Utils.toMHz(Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, i)));
 					governor = Utils.readOneLine(Utils.toCPU(GOV_FILE, i)) + NEW_LINE;
 				}
-				stats = stats + "Core " + (i+1) + " (" + minfreq + maxfreq + "): " + curfreq + NEW_LINE + governor;
+				stats = stats + getContext().getString(R.string.msg_core) + LINE_SPACE + (i+1) + " (" + minfreq + maxfreq + "): " + curfreq + NEW_LINE + governor;
 				i++;
 			}
 			if (stats != null) mCurCPUHandler.sendMessage(mCurCPUHandler.obtainMessage(0, stats));
 			stats = Utils.toGPUMHz(Utils.readOneLine(GPU_CUR_FREQ_FILE));
 			if (stats != null) mCurGPUHandler.sendMessage(mCurGPUHandler.obtainMessage(0, stats));
 		}
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
             }
         }
     };
@@ -113,7 +113,7 @@ public class CPUStatsPreference extends DialogPreference
     private Handler mCurGPUHandler = new Handler() {
         public void handleMessage(Message msg) {
 		String freq = ((String) msg.obj);
-		mGpuFreq.setText("GPU 3D: " + freq);
+		mGpuFreq.setText("3D GPU: " + freq);
         }
     };
 

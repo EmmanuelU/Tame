@@ -28,7 +28,6 @@
 		<TextView
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="Threshold: N/A"
 		    android:id="@+id/boost_input_threshold_text"/>
 
 		<SeekBar
@@ -41,7 +40,7 @@
 		<TextView
     		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="Utilizes an algorithm to determine when to boost cores. Higher the threshold, the more likely an event will trigger a boost."
+		    android:text="@string/item_boost_sum"
 		    android:gravity="center_horizontal"
 		    android:textStyle="italic"
 		    android:textSize="11sp"/>

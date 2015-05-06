@@ -21,7 +21,7 @@
 	    <TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Colors may appear slightly distorted, but this is safe to use."
+		android:text="@string/item_note_panel_uv"
 		android:gravity="center_horizontal"
 		android:textStyle="italic"
 		android:textSize="11sp"/>
@@ -29,7 +29,7 @@
 	    <TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Default Voltage"
+		android:text="@string/msg_default_volt"
 		android:textColor="#FFFFFF"
 		android:layout_weight="0.08"
 		android:id="@+id/panel_uv_slider_text"

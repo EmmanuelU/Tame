@@ -2,15 +2,34 @@
 <resources>
 
     <string name="item_enable">Enable</string>
+    <string name="item_disabled">Disabled</string>
     <string name="item_save">Save</string>
     <string name="item_return">Go Back</string>
     <string name="item_on">On</string>
     <string name="item_off">Off</string>
+    <string name="item_error">Error</string>
+    <string name="item_offline">Offline</string>
     <string name="item_msecs">(msecs)</string>
+    <string name="item_msecs2">msecs</string>
+    <string name="item_na">N/A</string>
+    <string name="item_view">View</string>
+    <string name="item_folder">Folder</string>
+    <string name="item_file">File</string>
+    <string name="item_pdir">Parent Directory</string>
 
     <string name="msg_no_net">No Internet Access Detected</string>
     <string name="msg_reboot">Reboot is recommended.</string>
     <string name="msg_kernelbug1">Your Rom or Kernel has a bug, please forward this URL link to your developer. As result, you may experience lag using this app.</string>
+    <string name="msg_fatal_error">Fatal Error, please see notification drawer.</string>
+    <string name="msg_no_su">Please restart me with root permissions.</string>
+    <string name="msg_lp_no_su">As of now, Tame requires SuperSU on Lollipop to avoid issues. Click me to be directed to the Market. Blame CyanogenMod\'s Privacy Guard.</string>
+    <string name="msg_uid_change">You previously used Tame from a different device. While you shouldn\'t run into any problems, you may consider resetting my data.</string>
+    <string name="msg_wk_detect">WildKernel Detected</string>
+    <string name="msg_changes_reboot">Reboot your device for the changes to take effect.</string>
+    <string name="msg_edit_caution">Edit Values with Caution</string>
+    <string name="msg_value_saved">Value saved.</string>
+    <string name="msg_value_saved_rab">Value saved, and queued to Run At Boot.</string>
+
     <string name="msg_no_smp">You most likely have a non-kernel based plug manager.</string>
     <string name="msg_primary">Primary</string>
     <string name="msg_core">Core</string>
@@ -39,43 +58,93 @@
     <string name="item_sum_bln">Pulse button lights when a notification is received.</string>
     <string name="item_ebln">Enhanced Button Light Notifications</string>
     <string name="item_hbln">Home Button Light Notifications</string>
+    <string name="item_duration">Duration:</string>
+    <string name="item_timeout">Timeout:</string>
+    <string name="item_bln_override_interval">Override Blink Intervals</string>
+    <string name="item_bln_test">Test Notification</string>
+    <string name="item_bln_override_color">Override Color</string>
+    <string name="msg_blinks">Blinks</string>
+    <string name="msg_bln_preset">Using preset light intervals</string>
+    <string name="msg_bln_preset2">BLN: Using default light intervals (300/1500msecs).</string>
+    <string name="msg_minutes">minute(s)</string>
 
     <string name="item_s2w">Sweep2Wake</string>
+    <string name="item_s2s">Sweep2Sleep</string>
     <string name="item_sum_s2w">Sweep finger across button pad to wake device.</string>
+    <string name="item_s2w_sens">Sensitive Detection</string>
 
     <string name="item_panel_uv">Display Voltage</string>
     <string name="item_sum_panel_uv">Reducing the screen\'s power consumption can improve battery life.</string>
+    <string name="item_note_panel_uv">Colors may appear slightly distorted, but this is safe to use.</string>
     <string name="msg_default_volt">Default Voltage</string>
+    <string name="msg_undervolt">Undervolt:</string>
     <string name="msg_volt">Voltage</string>
+    <string name="msg_miniscule">Miniscule</string>
+    <string name="msg_small">small</string>
+    <string name="msg_moderate">Moderate</string>
+    <string name="msg_high">High</string>
+    <string name="msg_excessive">Excessive</string>
 
     <string name="item_fast_charge">USB Fast Charge</string>
     <string name="item_sum_fast_charge">Increase mA current during charging. Only affects non-wall chargers.</string>
 
     <string name="item_input_boost">Input Boost</string>
     <string name="item_sum_input_boost">Adjust CPU minimum speed during input events.</string>
+    <string name="item_threshold">Threshold:</string>
 
     <string name="item_io">Memory</string>
     <string name="item_iosched">I/O Scheduler</string>
+    <string name="item_readahead">Read-Ahead Buffer</string>
 
     <string name="item_gpu">GPU</string>
 
     <string name="item_stat">Statistics</string>
 
     <string name="item_polices">Policies</string>
-    <string name="item_core_manage">Multi-Core Management</string>
-    <string name="item_core_util">Multi-Core Utilization</string>
+    <string name="item_core_manage">Plug Management</string>
+    <string name="item_core_util">Primary Core Utilization</string>
     <string name="item_sum_core_util">Group more processes onto primary core.</string>
 
     <string name="item_screendens">Screen Density</string>
     
     <string name="item_runatboot">Run At Boot</string>
+    <string name="item_add_runatboot">Add to Run At Boot</string>
     <string name="item_sum_runatboot">Schedule shell commands to be executed every startup. While this is independent of Tame\'s Set On Boot, this will disable itself if the SOB disabler zip is flashed.</string>
+    <string name="item_note_runatboot">Commands will be executed using root permissions, so no need to request.</string>
+    <string name="item_hint_runatboot">Type your shell commands here.</string>
+    <string name="item_sum_runatboot_queued">Commands queued for next device boot.</string>
 
     <string name="item_log">Dump System Logs</string>
+    <string name="item_logcat">Logcat</string>
+    <string name="item_lkmsg">Last Kmsg</string>
+    <string name="msg_logcat">Logcat saved to</string>
+    <string name="msg_lkmsg">Last KMSG saved to</string>
 
-    <string name="item_duration">Duration:</string>
-    <string name="item_bln_override_interval">Override Blink Intervals</string>
-    <string name="item_bln_test">Test Notification</string>
-    <string name="item_bln_override_color">Override Blink Intervals</string>
+    <string name="item_duration_msecs">Duration (msecs)</string>
+    <string name="item_frequency">Frequency</string>
+    <string name="item_boost_sum">Utilizes an algorithm to determine when to boost cores. Higher the threshold, the more likely an event will trigger a boost.</string>
+    <string name="msg_boost_disclaimer">Input Boosting must be disabled while changing policies, as it may interfere with CPU parameters.</string>
+
+    <string name="item_sync">Synchronize</string>
+    <string name="item_gov">Governor</string>
+    <string name="item_min_frequency">Minimum Frequency</string>
+    <string name="item_max_frequency">Maximum Frequency</string>
+
+    <string name="msg_loading">Loading ...</string>
+
+    <string name="msg_rbackup">Restore Backup</string>
+    <string name="msg_nobackup">No Backup Found</string>
+    <string name="note_rbackup">Rename and replace your /system/build.prop with " + FILE_BACKUP_BUILD_PROP + " or click below to restore, incase of problems.\n</string>
+    <string name="msg_backedup">Backup build.prop restored, please reboot your device.</string>
+    <string name="msg_dens_change">Density will be</string>
+    <string name="msg_dens_change2">dpi after reboot.</string>
+
+    <string name="item_sum_fcharge">Note: Higher the current, faster the charge. All these settings are safe to use.</string>
+
+    <string name="item_mpdec">Mpdecision</string>
+    <string name="item_sum_mpdec">Unplug secondary cores while screen off.</string>
+    <string name="item_note_mpdec">Mpdecision automatically turns plugs/unplugs cores based off workload.</string>
+
+    <string name="item_note_core_toggle">Unplugging a core here will disable it indefinitely, as oppose to allowing mpdecision to automatically disable. I recommend unplugging from bottom to top, to avoid issues.</string>
 
 </resources>

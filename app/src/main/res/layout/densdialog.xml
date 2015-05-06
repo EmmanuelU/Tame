@@ -13,14 +13,13 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:gravity="center"
-	    android:text=""
 	    android:id="@+id/backup"/>
 
 	<Button
 	    android:id="@+id/backup_button"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Restore Backup"
+            android:text="@string/msg_rbackup"
             android:layout_gravity="center_horizontal"/>
 
 	<TableRow

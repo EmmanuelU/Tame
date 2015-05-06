@@ -82,13 +82,13 @@ public class PanelUVPreference extends DialogPreference
 			String prefix;
 			float uvPrefixfloat = (float) mPanelUVSeekBar.getProgress() / mPanelUVSeekBar.getMax();
 			if(mPanelUVSeekBar.getProgress() > 0){
-				if(uvPrefixfloat < 0.2) prefix = "Miniscule";
-				else if(uvPrefixfloat < 0.4) prefix = "Small";
-				else if(uvPrefixfloat < 0.6) prefix = "Moderate";
-				else if(uvPrefixfloat < 0.8) prefix = "High";
-				else prefix = "Excessive";
-				mPanelUVSeekBarText.setText(prefix + " Undervolt: -" + String.valueOf(mPanelUVSeekBar.getProgress()) + "mV");
-			} else mPanelUVSeekBarText.setText("Default Voltage");
+				if(uvPrefixfloat < 0.2) prefix = getContext().getString(R.string.msg_miniscule);
+				else if(uvPrefixfloat < 0.4) prefix = getContext().getString(R.string.msg_small);
+				else if(uvPrefixfloat < 0.6) prefix = getContext().getString(R.string.msg_moderate);
+				else if(uvPrefixfloat < 0.8) prefix = getContext().getString(R.string.msg_high);
+				else prefix = getContext().getString(R.string.msg_excessive);
+				mPanelUVSeekBarText.setText(prefix + LINE_SPACE+ getContext().getString(R.string.msg_undervolt) + " -" + String.valueOf(mPanelUVSeekBar.getProgress()) + "mV");
+			} else mPanelUVSeekBarText.setText(getContext().getString(R.string.msg_default_volt));
 	    }
 
 	    @Override

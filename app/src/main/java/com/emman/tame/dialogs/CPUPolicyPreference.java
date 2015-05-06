@@ -118,7 +118,7 @@ public class CPUPolicyPreference extends DialogPreference
 	
 	for(int i = 0; i < Utils.getNumOfCpus();){
 		Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
-		CpuNames.add("Core   " + (i+1));
+		CpuNames.add(getContext().getString(R.string.msg_core) + "   " + (i+1));
 		i++;
 	}
 	dataAdapter = new ArrayAdapter<String>(getContext(),
@@ -131,10 +131,10 @@ public class CPUPolicyPreference extends DialogPreference
 			int i = 0;
 			mCore[i] = new CpuPolicy();
 			mCore[i].governor = Utils.readOneLine(Utils.toCPU(GOV_FILE, i));
-			mCore[i].min = "N/A";
+			mCore[i].min = getContext().getString(R.string.item_na);
 			mCore[i].max = Utils.readOneLine(Utils.toCPU(FREQ_MAX_FILE, i));
 
-		list = new ArrayList<String>(Arrays.asList("N/A"));
+		list = new ArrayList<String>(Arrays.asList(getContext().getString(R.string.item_na)));
 		dataAdapter = new ArrayAdapter<String>(getContext(),
 			android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

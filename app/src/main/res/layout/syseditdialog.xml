@@ -12,7 +12,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add to Run at Boot"
+        android:text="@string/item_add_runatboot"
 	android:button="@null"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/rab"/>
@@ -30,7 +30,7 @@
         android:id="@+id/positive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="@string/item_save"
         android:layout_marginTop="8dp"
         android:layout_marginRight="5dp"
         />

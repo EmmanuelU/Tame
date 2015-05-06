@@ -94,8 +94,8 @@ public class MainActivity extends Activity
 	context = this;
 	if(!Utils.checkSu()){
 		Intent intent = getIntent();
-		Utils.notification(this, NotificationID.ROOTFAIL, intent, "Please restart me with Superuser access.");
-		Utils.toast(this, "Fatal Error, see notification drawer.");
+		Utils.notification(this, NotificationID.ROOTFAIL, intent, getString(R.string.msg_no_su));
+		Utils.toast(this, getString(R.string.msg_fatal_error));
 		this.finish();
 	}
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -103,14 +103,14 @@ public class MainActivity extends Activity
         if(!Utils.packageExists(this, PACKAGE_SUPERSU) && Utils.isLollipop()){
 		Intent intent = new Intent();
 		intent.setData(Uri.parse(LINK_PACKAGE_SUPERSU));
-		Utils.notification(this, NotificationID.ROOTFAIL, intent, "As of now, Tame requires the SuperSU binary on Lollipop to avoid any potential issues. Click me to be directed to the Market. Blame CyanogenMod's Privacy Guard.");
-		Utils.toast(this, "Fatal Error.");
+		Utils.notification(this, NotificationID.ROOTFAIL, intent, getString(R.string.msg_lp_no_su));
+		Utils.toast(this, getString(R.string.msg_fatal_error));
 		this.finish();
 	}
 	
 	if(Utils.isStringEmpty(mPreferences.getString(TAME_UID, ""))) updateSharedPrefs(mPreferences, TAME_UID, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID));
 	else if(!mPreferences.getString(TAME_UID, "").equals(Secure.getString(this.getContentResolver(), Secure.ANDROID_ID))){
-		Utils.notification(this, NotificationID.UID, null, "You previously used Tame from a different device. While you shouldn't run into any problems, you may consider resetting my data.");
+		Utils.notification(this, NotificationID.UID, null, getString(R.string.msg_uid_change));
 		updateSharedPrefs(mPreferences, TAME_UID, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID));
 	}
 
@@ -125,7 +125,7 @@ public class MainActivity extends Activity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 	
-	if(AboutTame.isWild()) Utils.toast(this, "WildKernel Detected");
+	if(AboutTame.isWild()) Utils.toast(this, getString(R.string.msg_wk_detect));
     }
 
     @Override

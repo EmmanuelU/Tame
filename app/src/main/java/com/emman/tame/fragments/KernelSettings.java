@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.util.Log;
 
+import com.emman.tame.MainActivity;
 import com.emman.tame.dialogs.BLNPreference;
 import com.emman.tame.dialogs.PanelUVPreference;
 import com.emman.tame.R;
@@ -133,8 +134,8 @@ public class KernelSettings extends PreferenceFragment
 	
 	if(Utils.fileExists(PanelUVPreference.mPanelUVFile)){
 		if(Integer.parseInt(Utils.readOneLine(PanelUVPreference.mPanelUVFile)) > 0)
-			mPanelUVDialog.setSummary("Undervolt: -" + Utils.readOneLine(PanelUVPreference.mPanelUVFile) + "mV");
-		else mPanelUVDialog.setSummary("Default Voltage");
+			mPanelUVDialog.setSummary(MainActivity.getContext().getString(R.string.msg_undervolt) + " -" + Utils.readOneLine(PanelUVPreference.mPanelUVFile) + "mV");
+		else mPanelUVDialog.setSummary(MainActivity.getContext().getString(R.string.msg_default_volt));
 	}
     }
 

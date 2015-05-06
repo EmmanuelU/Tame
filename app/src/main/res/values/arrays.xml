@@ -4,8 +4,8 @@
     <string-array name="empty_array"/>
 
     <string-array name="mc_array_entries">
-	<item>Disabled</item>
-	<item>Moderate</item>
+	<item>Normal</item>
+	<item>Preferred</item>
 	<item>Aggressive</item>
     </string-array>
 

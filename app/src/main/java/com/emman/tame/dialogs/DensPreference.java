@@ -76,17 +76,17 @@ public class DensPreference extends DialogPreference
 	mView = view;
 	updateData();
 	
-	mScreenDensityBackup.setText("Rename and replace your /system/build.prop with " + FILE_BACKUP_BUILD_PROP + " or click below to restore, incase of problems.\n");
-	mScreenDensity.setSelection(mScreenDensity.getText().length());
+	mScreenDensityBackup.setText(getContext().getString(R.string.note_rbackup));
+	mScreenDensity.setSelection(mScreenDensity.getText().length()); //EOL
 
 	mScreenDensityBackupButton.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View view) {
 			if(Utils.pushProp(FILE_BACKUP_BUILD_PROP)){
-				Utils.toast(getContext(), "Backup build.prop restored, please reboot your device.");
-				GeneralSettings.updateDensSummary("Reboot device to restore your backup.");
+				Utils.toast(getContext(), getContext().getString(R.string.msg_changes_reboot));
+				GeneralSettings.updateDensSummary(getContext().getString(R.string.msg_backedup));
 				getDialog().dismiss();
 			} else {
-				mScreenDensityBackupButton.setText("Error");
+				mScreenDensityBackupButton.setText(getContext().getString(R.string.item_error));
 			}
 			mScreenDensityBackupButton.setEnabled(false);
 		}
@@ -116,7 +116,7 @@ public class DensPreference extends DialogPreference
 	if(!initiateData()) return;
 	mScreenDensity.setText(Utils.readProp("ro.sf.lcd_density"));
 	if(!Utils.fileExists(FILE_BACKUP_BUILD_PROP)){
-		mScreenDensityBackupButton.setText("No Backup Found");
+		mScreenDensityBackupButton.setText(getContext().getString(R.string.msg_nobackup));
 		mScreenDensityBackupButton.setEnabled(false);	
 	}
     }
@@ -124,10 +124,10 @@ public class DensPreference extends DialogPreference
     private void setData(){
 	if(!initiateData()) return;
 	if(Utils.writeProp("ro.sf.lcd_density", mScreenDensity.getText().toString())){
-		Utils.toast(getContext(), "Density changed to " + mScreenDensity.getText().toString() + "dpi.");
-		GeneralSettings.updateDensSummary(Utils.readProp("ro.sf.lcd_density") + "dpi. " + mScreenDensity.getText().toString() + "dpi after reboot.");
+		Utils.toast(getContext(), getContext().getString(R.string.msg_dens_change) + LINE_SPACE + mScreenDensity.getText().toString() + "dpi.");
+		GeneralSettings.updateDensSummary(Utils.readProp("ro.sf.lcd_density") + "dpi. " + mScreenDensity.getText().toString() + getContext().getString(R.string.msg_dens_change2));
 	}
-	else Utils.toast(getContext(), "Failed to edit Build.prop");
+	else Utils.toast(getContext(), getContext().getString(R.string.item_error));
     }
 
 } 

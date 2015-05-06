@@ -90,7 +90,7 @@ public class CPUInputBoostV2Preference extends DialogPreference
 
 	    @Override
 	    public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-			mCpuBoostThresholdText.setText(( "Threshold: ") + String.valueOf(mCpuBoostThreshold.getProgress()) + "%");
+	    	updateText();
 	    }
 
 	    @Override
@@ -142,8 +142,12 @@ public class CPUInputBoostV2Preference extends DialogPreference
 	
 	mCpuBoostThreshold.setProgress(Integer.parseInt(Utils.readOneLine(CPU_BOOST_INPUT_UP_THRESHOLD_FILE)));
 	mCpuBoostThreshold.setMax(100);
-	mCpuBoostThresholdText.setText(( "Threshold: ") + String.valueOf(mCpuBoostThreshold.getProgress()) + "%");
+	updateText();
 
+    }
+
+    private void updateText(){
+	mCpuBoostThresholdText.setText((getContext().getString(R.string.item_threshold) + LINE_SPACE) + String.valueOf(mCpuBoostThreshold.getProgress()) + "%");
     }
 
     private void updateDependencies(){
