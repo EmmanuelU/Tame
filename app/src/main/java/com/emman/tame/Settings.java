@@ -35,7 +35,7 @@ import com.emman.tame.R;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
-public class Settings extends PreferenceFragment
+public class Settings extends PreferenceActivity
 		implements Resources {
 
     private PreferenceScreen mPref;
@@ -48,6 +48,8 @@ public class Settings extends PreferenceFragment
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.tame_settings);
+
+	getActionBar().setDisplayHomeAsUpEnabled(true);
 
 	updateData();
     }
@@ -64,7 +66,7 @@ public class Settings extends PreferenceFragment
     }
 
     private boolean initiateData(){
-	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 	mPref = getPreferenceScreen();
 
 	mCheckUpdate = (SwitchPreference) mPref.findPreference("check_updates");

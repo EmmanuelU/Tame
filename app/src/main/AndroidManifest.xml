@@ -33,7 +33,11 @@
 
         <activity
             android:name=".Settings"
-            android:label="@string/page_settings">
+            android:label="@string/page_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+           	 android:name="android.support.PARENT_ACTIVITY"
+         	   android:value="com.emman.tame.MainActivity" />
         </activity>
 
 	<receiver android:name=".BootCompletedReceiver" >

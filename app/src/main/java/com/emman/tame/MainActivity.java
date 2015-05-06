@@ -212,14 +212,7 @@ public class MainActivity extends Activity
 
         int id = item.getItemId();
         if (id == R.id.settings) {
-		//Intent intent = new Intent(MainActivity.this, Settings.class);
-		//startActivity(intent);
-		mTitle = getString(R.string.page_settings);
-		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction()
-		        .replace(R.id.container, new Settings())
-		        .commit();
-		restoreActionBar();
+            	startActivity(new Intent(this, Settings.class));
 		return true;
        }
         return super.onOptionsItemSelected(item);
