@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.emman.tame.MainActivity;
 import com.emman.tame.R;
 import com.emman.tame.utils.NotificationID;
 import com.emman.tame.utils.Resources;
@@ -98,13 +99,11 @@ public class CPUSettings extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-	FragmentManager fragmentManager = getFragmentManager();
 
 	if(!Utils.fileIsReadable(FREQ_MIN_FILE) || !Utils.fileIsReadable(FREQ_MAX_FILE)){
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LINK_WK_CPU_PATCH));
 		Utils.notification(getActivity(), NotificationID.CPUPERM, intent, getString(R.string.msg_kernelbug1));
 	}
-
 
 	addPreferencesFromResource(R.xml.cpu_settings);
 	prefSet = getPreferenceScreen();

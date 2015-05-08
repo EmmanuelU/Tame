@@ -66,9 +66,10 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.emman.tame.MainActivity;
+import com.emman.tame.R;
 import com.emman.tame.utils.FileArrayAdapter;
 import com.emman.tame.utils.FileOption;
-import com.emman.tame.R;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
@@ -94,7 +95,8 @@ public class SysFSExplorer extends ListFragment
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		FileOption o = adapter.getItem(position);
+		final FileOption o = adapter.getItem(position);
+
 		if(o.getData().equalsIgnoreCase("folder")||o.getData().equalsIgnoreCase("parent directory")){
 			currentPath = o.getPath();
 			currentDir = new File(currentPath);
@@ -149,8 +151,19 @@ public class SysFSExplorer extends ListFragment
          Collections.sort(dir);
          Collections.sort(fls);
          dir.addAll(fls);
-         if(!f.getName().equalsIgnoreCase("sys"))
+         if(!f.getName().equalsIgnoreCase("sys")){
              dir.add(0,new FileOption(currentPath,"Parent Directory",f.getParent()));
+		MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
+			@Override
+			public void onBackPressed() {
+				currentPath = new File(currentPath).getParent();
+				currentDir = new File(currentPath);
+				fill(currentDir);
+			}
+		});
+	} else {
+		MainActivity.setOnBackPressedListener(null);
+	}
 
 	adapter = new FileArrayAdapter(getActivity(),R.layout.sysfs_explorer,dir);
 	this.setListAdapter(adapter);

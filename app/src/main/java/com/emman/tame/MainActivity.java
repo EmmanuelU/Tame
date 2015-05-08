@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentManager.OnBackStackChangedListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -87,6 +88,8 @@ public class MainActivity extends Activity
     private SharedPreferences mPreferences;
 
     private static Context context;
+
+    private static overrideBackListener overrideBackObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,10 +168,9 @@ public class MainActivity extends Activity
 		break;
         }
 	if (fragment != null) {
-			FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction()
-		        .replace(R.id.container, fragment)
-		        .commit();
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+		MainActivity.setOnBackPressedListener(null); //normal operations
 	}
     }
 
@@ -286,5 +288,22 @@ public class MainActivity extends Activity
 	return context;
     }
 
+    public static interface overrideBackListener {
+	void onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed(){
+	if(overrideBackObserver == null)
+		super.onBackPressed();
+	else
+		try{
+		overrideBackObserver.onBackPressed();
+		} catch (Exception e) {}
+    }
+
+    public static void setOnBackPressedListener(overrideBackListener observer) {
+	overrideBackObserver = observer;
+    }
 
 }
