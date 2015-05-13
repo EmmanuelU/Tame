@@ -21,6 +21,6 @@
 		android:textStyle="bold" 
 		android:layout_marginLeft="10dp"
 		android:textSize="8pt"
-		android:textColor="#AA0114"/>
+		android:textColor="@color/tame_brighter"/>
  
 </LinearLayout>

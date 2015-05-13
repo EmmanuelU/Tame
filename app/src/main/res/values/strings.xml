@@ -147,4 +147,9 @@
 
     <string name="item_note_core_toggle">Unplugging a core here will disable it indefinitely, as oppose to allowing mpdecision to automatically disable. I recommend unplugging from bottom to top, to avoid issues.</string>
 
+    <string name="item_unused">Unused:</string>
+    <string name="item_freq_trans">Frequency Transitions</string>
+    <string name="item_transy_freq">Transitional Frequencies:</string>
+    <string name="item_deep_sleep">Deep Sleep</string>
+
 </resources>

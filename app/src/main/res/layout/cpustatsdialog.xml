@@ -24,6 +24,16 @@
 			android:gravity="center_horizontal"
 			android:id="@+id/cpufreqs"/>
 
+		    <LinearLayout
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+		            android:id="@+id/cpu_stats_group"
+			    android:layout_centerHorizontal="true"
+			    android:orientation="vertical"
+			    android:gravity="center_horizontal">
+
+		    </LinearLayout>
+
 		    <TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

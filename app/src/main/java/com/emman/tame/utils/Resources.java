@@ -100,6 +100,7 @@ public interface Resources {
 	public static final String FREQINFO_CUR_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq";
 	public static final String NUM_OF_CPUS_PATH = "/sys/devices/system/cpu/present";
 	public static final String FREQ_LIST_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies";
+	public static final String CPU_TIME_IN_STATE = "/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state";
 	public static final String KERNEL_BUILD_VERSION = "/proc/version";
 	public static final String KERNEL_INFO = "/proc/cpuinfo";
 

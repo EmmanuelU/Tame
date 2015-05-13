@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_centerHorizontal="true"
+    android:gravity="center_horizontal">
+
+	    <TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="32sp"
+		android:id="@+id/totaltime"/>
+
+	    <TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+                android:textSize="11sp"
+		android:textStyle="italic"
+		android:gravity="center"
+		android:id="@+id/notused"/>
+
+</LinearLayout>
