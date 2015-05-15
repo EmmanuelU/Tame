@@ -181,7 +181,7 @@ public class CPUStatsPreference extends DialogPreference
 
 	int mRareTime = 0; 
 	int mTotalTime = (int) SystemClock.elapsedRealtime();
-	long mSleepTime = mTotalTime - SystemClock.uptimeMillis();
+	int mSleepTime = mTotalTime - (int) SystemClock.uptimeMillis();
 
 	for(int i = 0; i < mCpuFreqList.length;){
 		mFreqTimeList[i] = mTimeList[i].split(" ", 2)[1];
@@ -196,13 +196,13 @@ public class CPUStatsPreference extends DialogPreference
         }
     });
 	mSleepmBar.setMax(mTotalTime);
-	mSleepmBar.setProgress((int) mSleepTime);
+	mSleepmBar.setProgress(mSleepTime);
 
 	time = String.format("%d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(mSleepTime), TimeUnit.MILLISECONDS.toMinutes(mSleepTime) -  TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mSleepTime)), TimeUnit.MILLISECONDS.toSeconds(mSleepTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mSleepTime)));
 
 	mSleepFreq.setText(getContext().getString(R.string.item_deep_sleep));
 	mSleepFreqInfo.setText(time);
-	mSleepBarText.setText(Integer.toString(((int) mSleepTime * 100) / mTotalTime) + "%" + NEW_LINE);
+	mSleepBarText.setText(Long.toString((long) mSleepTime * 100 / mTotalTime) + "%" + NEW_LINE);
 
 	for(int i = 0; i < mCpuFreqList.length;){
 
@@ -230,7 +230,7 @@ public class CPUStatsPreference extends DialogPreference
 				mFreqs[i].enabled = false;
 			} else if(((timeMS * 100) / mTotalTime) < 1) {
 				rarelyUsedFreqs = (Utils.isStringEmpty(rarelyUsedFreqs) ? Utils.toMHz(mCpuFreqList[i]) + LINE_SPACE : rarelyUsedFreqs + "," + LINE_SPACE + Utils.toMHz(mCpuFreqList[i]));
-				mRareTime = mRareTime + Integer.parseInt(mFreqTimeList[i]);
+				mRareTime = mRareTime + (Integer.parseInt(mFreqTimeList[i]) * 10);
 				if(mFreqs[i].enabled) mCpuStatsGroup.removeView(mFreqs[i].mView);
 				mFreqs[i].enabled = false;
 			} else {
@@ -238,7 +238,7 @@ public class CPUStatsPreference extends DialogPreference
 
 				mFreqs[i].mFreq.setText(Utils.toMHz(mCpuFreqList[i]));
 				mFreqs[i].mFreqInfo.setText(time);
-				mFreqs[i].mBarText.setText(Integer.toString(((int) timeMS * 100) / mTotalTime) + "%" + NEW_LINE);
+				mFreqs[i].mBarText.setText(Long.toString(timeMS * 100 / mTotalTime) + "%" + NEW_LINE);
 			}
 		i++;
 	}
@@ -255,7 +255,7 @@ public class CPUStatsPreference extends DialogPreference
 	time = String.format("%d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(mRareTime), TimeUnit.MILLISECONDS.toMinutes(mRareTime) -  TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mRareTime)), TimeUnit.MILLISECONDS.toSeconds(mRareTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mRareTime)));
 	mRareFreq.setText(getContext().getString(R.string.item_freq_trans));
 	mRareFreqInfo.setText(time);
-	mRareBarText.setText((mRareTime * 100 / mTotalTime) + "%" + NEW_LINE);
+	mRareBarText.setText(Long.toString((long) mRareTime * 100 / mTotalTime) + "%" + NEW_LINE);
 
 	mTotalTimeText.setText(String.format("%d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(mTotalTime), TimeUnit.MILLISECONDS.toMinutes(mTotalTime) -  TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mTotalTime)), TimeUnit.MILLISECONDS.toSeconds(mTotalTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mTotalTime))));
 
