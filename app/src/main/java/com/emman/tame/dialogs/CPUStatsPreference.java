@@ -200,18 +200,27 @@ public class CPUStatsPreference extends DialogPreference
 
 	time = String.format("%d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(mSleepTime), TimeUnit.MILLISECONDS.toMinutes(mSleepTime) -  TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mSleepTime)), TimeUnit.MILLISECONDS.toSeconds(mSleepTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mSleepTime)));
 
-	mSleepFreq.setText(getContext().getString(R.string.item_deep_sleep));
+	if((long) mSleepTime * 100 / mTotalTime == 0){
+		mSleepFreq.setTextColor(getContext().getResources().getColor(R.color.tame_brighter));
+		mSleepFreq.setText(getContext().getString(R.string.item_no_deep_sleep));
+	} else {
+		mSleepFreq.setTextColor(mSleepFreqInfo.getTextColors());
+		mSleepFreq.setText(getContext().getString(R.string.item_deep_sleep));
+	}
+
 	mSleepFreqInfo.setText(time);
 	mSleepBarText.setText(Long.toString((long) mSleepTime * 100 / mTotalTime) + "%" + NEW_LINE);
 
 	for(int i = 0; i < mCpuFreqList.length;){
 
-			/* 
+			/*
 				insane mathz that took me a while, just to get simpliefied
 				long hour = (((Integer.parseInt(mFreqTimeList[i]) / 100) / 60) / 60);
 				long minute = (((Integer.parseInt(mFreqTimeList[i]) / 100) / 60) - (hour * 60));
 				long second = (Integer.parseInt(mFreqTimeList[i]) / 100) - (minute * 60);
 				String time = String.format("%02d:%02d:%02d", hour, minute, second);
+
+				simple: time = String.format("%d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(mSleepTime), TimeUnit.MILLISECONDS.toMinutes(mSleepTime) -  TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mSleepTime)), TimeUnit.MILLISECONDS.toSeconds(mSleepTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mSleepTime)));
 			*/
 			long timeMS = Integer.parseInt(mFreqTimeList[i]) * 10;
 
