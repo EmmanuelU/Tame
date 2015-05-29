@@ -20,4 +20,9 @@
 	android:positiveButtonText="@string/item_return"
     />
 
+    <Preference
+	android:key="sysfs"
+	android:title="@string/item_sysfs"
+    />
+
 </PreferenceScreen>

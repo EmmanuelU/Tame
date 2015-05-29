@@ -66,6 +66,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.emman.tame.fragments.GeneralSettings;
 import com.emman.tame.MainActivity;
 import com.emman.tame.R;
 import com.emman.tame.utils.FileArrayAdapter;
@@ -162,7 +163,14 @@ public class SysFSExplorer extends ListFragment
 			}
 		});
 	} else {
-		MainActivity.setOnBackPressedListener(null);
+		MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
+			@Override
+			public void onBackPressed() {
+				FragmentManager fragmentManager = getFragmentManager();
+				fragmentManager.beginTransaction().replace(R.id.container, new GeneralSettings()).commit();
+				MainActivity.setOnBackPressedListener(null); //normal operations
+			}
+		});
 	}
 
 	adapter = new FileArrayAdapter(getActivity(),R.layout.sysfs_explorer,dir);

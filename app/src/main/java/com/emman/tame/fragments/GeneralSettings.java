@@ -3,6 +3,7 @@ package com.emman.tame.fragments;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,6 +29,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.util.Log;
 
+import com.emman.tame.fragments.SysFSExplorer;
 import com.emman.tame.R;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
@@ -37,6 +39,7 @@ public class GeneralSettings extends PreferenceFragment
 
     private static Preference mDensDialog;
     private static Preference mScriptDialog;
+    private Preference mSysFS;
 
     private SharedPreferences mPreferences;
 
@@ -51,19 +54,22 @@ public class GeneralSettings extends PreferenceFragment
         prefSet = getPreferenceScreen();
 
 	updateData();
-    }
 
-    @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-
-        return true;
+	mSysFS.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+		public boolean onPreferenceClick(Preference preference) {
+                 	FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.container, new SysFSExplorer()).commit();
+		    	return true;
+       		}
+        });
     }
 
     private boolean initiateData(){
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-	mScriptDialog = findPreference("scriptdialog");
 	mDensDialog = findPreference("densdialog");
+	mScriptDialog = findPreference("scriptdialog");
+	mSysFS = findPreference("sysfs");
 
 	return true;
     }

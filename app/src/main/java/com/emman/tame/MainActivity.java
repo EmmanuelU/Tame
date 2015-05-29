@@ -164,11 +164,6 @@ public class MainActivity extends Activity
 		mTitle = getString(R.string.page_generalsettings);
 		fragment = new GeneralSettings();
 		break;
-
-	    case 5:
-		mTitle = getString(R.string.page_sysfs);
-		fragment = new SysFSExplorer();
-		break;
         }
 	if (fragment != null) {
 		FragmentManager fragmentManager = getFragmentManager();
