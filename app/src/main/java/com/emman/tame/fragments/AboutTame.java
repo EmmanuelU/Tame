@@ -51,6 +51,8 @@ import java.net.ProtocolException;
 import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
@@ -78,6 +80,7 @@ public class AboutTame extends Fragment
     private TextView mLatVersion;
     private TextView mAppLatVersion;
     private TextView mSOBNote;
+    private TextView mSOBStatus;
 
 
     Animation fadein = new AlphaAnimation(0.0f, 1.0f);
@@ -109,6 +112,9 @@ public class AboutTame extends Fragment
 	mLatVersion = (TextView) mView.findViewById(R.id.latversionheader);
 	mAppLatVersion = (TextView) mView.findViewById(R.id.applatversionheader);
 	mSOBNote = (TextView) mView.findViewById(R.id.sobnote);
+	mSOBStatus = (TextView) mView.findViewById(R.id.sobstatus);
+
+	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         mAppUpdate.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View view) {
@@ -121,9 +127,12 @@ public class AboutTame extends Fragment
 			CheckUpdate();
 		}
 	});
-
-	mSOBNote.setText(getString(R.string.msg_sobnote) + FILE_DISABLE_SET_ON_BOOT_ZIP);
 	
+	mSOBNote.setText(getString(R.string.msg_sobnote) + FILE_DISABLE_SET_ON_BOOT_ZIP);
+	mSOBNote.setEnabled(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0")));
+
+	mSOBStatus.setText(getString(R.string.msg_sobstatus) + LINE_SPACE + mPreferences.getString(SET_ON_BOOT_TS, "Never"));
+
 	TameLogoAnim();
 	mTameLogo.startAnimation(fadeout);
 	setversiondata();

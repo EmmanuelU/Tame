@@ -68,6 +68,9 @@ import com.emman.tame.utils.NotificationID;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, Resources {
 
@@ -177,12 +180,6 @@ public class MainActivity extends Activity
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
 
-	mSetOnBootNote = (TextView) findViewById(R.id.sobnote);
-	if(mSetOnBootNote != null){
-		if(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0"))) mSetOnBootNote.setVisibility(View.VISIBLE);
-		else mSetOnBootNote.setVisibility(View.GONE);
-	}
-
 	actionBar.setDisplayShowCustomEnabled(true);
 	actionBar.setCustomView(R.layout.action_bar);
 
@@ -260,12 +257,6 @@ public class MainActivity extends Activity
         }
     }
 
-    private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
-	final SharedPreferences.Editor editor = preferences.edit();
-	editor.putString(var, value);
-	editor.commit();
-    }
-
     public static void ExecuteBootData(SharedPreferences preferences){
 	Utils.CMD("rm -rf " + FILE_SET_ON_BOOT, false);
 	CPUPolicyPreference.SetOnBootData(preferences);
@@ -282,6 +273,13 @@ public class MainActivity extends Activity
 	GPUPreference.SetOnBootData(preferences);
 	FastChargePreference.SetOnBootData(preferences);
 	Utils.CMD("sh " + FILE_SET_ON_BOOT, true);
+	updateSharedPrefs(preferences, SET_ON_BOOT_TS, new SimpleDateFormat("MMMM d, yyyy - h:ma").format(new Date()));
+    }
+
+    private static void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
+	final SharedPreferences.Editor editor = preferences.edit();
+	editor.putString(var, value);
+	editor.commit();
     }
 
     public static Context getContext(){

@@ -57,6 +57,7 @@ public class SOBPreference extends DialogPreference
 
     private View mView;
 
+    private CheckBox mCPUSOBToggle;
     private Switch mSOBToggle;
 
     private SharedPreferences mPreferences;
@@ -93,9 +94,9 @@ public class SOBPreference extends DialogPreference
 
     private boolean initiateData(){
 
-	mPreferences = PreferenceManager
-                    .getDefaultSharedPreferences(getContext());
+	mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
+	mCPUSOBToggle = (CheckBox) mView.findViewById(R.id.sob_cpu);
 	mSOBToggle = (Switch) mView.findViewById(R.id.sob);
 
 	return true;
@@ -103,14 +104,15 @@ public class SOBPreference extends DialogPreference
 
     private void updateDependencies(){
 	if(!initiateData()) return;
-	
-	
+
+	mCPUSOBToggle.setEnabled(mSOBToggle.isChecked());
     }
 
     private void setData(){
 	if(!initiateData()) return;
 	
 	updateSharedPrefs(mPreferences, SET_ON_BOOT, Utils.boolToString(mSOBToggle.isChecked()));
+	updateSharedPrefs(mPreferences, CPU_SET_ON_BOOT, Utils.boolToString(mCPUSOBToggle.isChecked()));
 
 	Settings.settingsCallback();
     }
@@ -119,6 +121,7 @@ public class SOBPreference extends DialogPreference
 	if(!initiateData()) return;
 
 	mSOBToggle.setChecked(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0")));
+	mCPUSOBToggle.setChecked(Utils.stringToBool(mPreferences.getString(CPU_SET_ON_BOOT, "1")));
 
 	updateDependencies();
     }

@@ -44,7 +44,9 @@ public interface Resources {
 	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP = PATH_TAME_LOCAL + "DisableTame_S-O-B.zip";
 	public static final String FILE_DISABLE_SET_ON_BOOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "WildNFree.tame";
 	public static final String SET_ON_BOOT = "set_on_boot";
+	public static final String SET_ON_BOOT_TS = "set_on_boot_ts";
 	public static final String RUN_AT_BOOT = "run_at_boot";
+	public static final String CPU_SET_ON_BOOT = "cpu_set_on_boot";
 	public static final String CHECK_UPDATE_AT_BOOT = "check_update_at_boot";
 	public static final String RUN_AT_BOOT_COMMANDS = "run_at_boot_commands";
 	public static final String FILE_TMP_BUILD_PROP = PATH_TAME_LOCAL + "tmp.prop";

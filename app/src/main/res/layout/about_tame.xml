@@ -50,7 +50,6 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text=""
             android:id="@+id/applatversionheader"
             android:gravity="center"
             android:textColor="#ff8a8586"
@@ -76,7 +75,6 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text=""
             android:id="@+id/latversionheader"
             android:gravity="center"
             android:textColor="#ff8a8586"
@@ -94,9 +92,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text=""
+            android:id="@+id/sobstatus"
+            android:gravity="center"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/sobnote"
-            android:visibility="gone"
             android:gravity="center"
             android:textSize="14dp" />
     </LinearLayout>

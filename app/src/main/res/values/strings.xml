@@ -47,6 +47,7 @@
     <string name="item_sob">Restore Settings on Boot</string>
     <string name="item_sum_sob">Android naturally reverts settings to default after a reboot. Enabling this will keep your custom settings.</string>
     <string name="msg_sobnote">Note: After a reboot, Tame may take a minute or two to restore settings.\n\n In the event that you screwed up and you want to disable Tame Settings from recovery, there is a flash-able zip on your sdcard.\n\n</string>
+    <string name="msg_sobstatus">Last Restored Settings:</string>
 
     <string name="item_check_updates">Check for Updates</string>
     <string name="item_sum_check_updates">Check for an update to Tame or WildKernel at every boot.</string>
@@ -104,6 +105,7 @@
     <string name="item_core_manage">Plug Management</string>
     <string name="item_core_util">Primary Core Utilization</string>
     <string name="item_sum_core_util">Group more processes onto primary core.</string>
+    <string name="item_processor_polices">Processor Policies</string>
 
     <string name="item_screendens">Screen Density</string>
     

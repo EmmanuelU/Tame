@@ -308,24 +308,26 @@ public class CPUPolicyPreference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	String[] governors = preferences.getString(SAVED_GOV, "0 0").split("\\s+");
-	String[] minfreqs = preferences.getString(SAVED_MIN_FREQ, "0 0").split("\\s+");
-	String[] maxfreqs = preferences.getString(SAVED_MAX_FREQ, "0 0").split("\\s+");
-	List<String> lenght = Arrays.asList(governors);
-	for(int i = 0; i < lenght.size();){
-		if(Utils.isStringEmpty(governors[i]) || Utils.isStringEmpty(minfreqs[i]) || Utils.isStringEmpty(maxfreqs[i])){
-			i++;
-			continue;
+	if(Utils.stringToBool(preferences.getString(CPU_SET_ON_BOOT, "1"))){
+		String[] governors = preferences.getString(SAVED_GOV, "0 0").split("\\s+");
+		String[] minfreqs = preferences.getString(SAVED_MIN_FREQ, "0 0").split("\\s+");
+		String[] maxfreqs = preferences.getString(SAVED_MAX_FREQ, "0 0").split("\\s+");
+		List<String> lenght = Arrays.asList(governors);
+		for(int i = 0; i < lenght.size();){
+			if(Utils.isStringEmpty(governors[i]) || Utils.isStringEmpty(minfreqs[i]) || Utils.isStringEmpty(maxfreqs[i])){
+				i++;
+				continue;
+			}
+			else{
+				Utils.SetSOBValue(Utils.toCPU(CPU_ONLINE, i), "1");
+				Utils.SetSOBValue(Utils.toCPU(GOV_FILE, i), governors[i]);
+				Utils.SetSOBValue(Utils.toCPU(FREQ_MIN_FILE, i), minfreqs[i]);
+				Utils.SetSOBValue(Utils.toCPU(FREQ_MAX_FILE, i), maxfreqs[i]);
+				i++;
+			}
 		}
-		else{
-			Utils.SetSOBValue(Utils.toCPU(CPU_ONLINE, i), "1");
-			Utils.SetSOBValue(Utils.toCPU(GOV_FILE, i), governors[i]);
-			Utils.SetSOBValue(Utils.toCPU(FREQ_MIN_FILE, i), minfreqs[i]);
-			Utils.SetSOBValue(Utils.toCPU(FREQ_MAX_FILE, i), maxfreqs[i]);
-			i++;
-		}
+		Utils.SetSOBValue(CPU_GOV_SYNC_FILE, preferences.getString(SAVED_CPU_GOV_SYNC, "1"));
 	}
-	Utils.SetSOBValue(CPU_GOV_SYNC_FILE, preferences.getString(SAVED_CPU_GOV_SYNC, "1"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
