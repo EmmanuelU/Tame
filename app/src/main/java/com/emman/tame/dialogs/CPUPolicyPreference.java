@@ -102,6 +102,9 @@ public class CPUPolicyPreference extends DialogPreference
 
 	if(!initiateData()) return;
 
+	mCpuFreqList = Utils.readOneLine(FREQ_LIST_FILE).split("\\s+");
+	mCpuGovList = Utils.readOneLine(GOV_LIST_FILE).split("\\s+");
+
 	list = new ArrayList<String>(Arrays.asList(Utils.getFileFreqToMhz(FREQ_LIST_FILE, 1000)));
 	dataAdapter = new ArrayAdapter<String>(getContext(),
 		android.R.layout.simple_spinner_item, list);
@@ -226,9 +229,6 @@ public class CPUPolicyPreference extends DialogPreference
 	mPolicySync = (CheckBox) mView.findViewById(R.id.tame_policy_sync);
 	IBDisclaimer = (TextView) mView.findViewById(R.id.IBdisclaimer);
 	mCpuPolicyGroup = (LinearLayout) mView.findViewById(R.id.cpu_policy_group);
-	
-	mCpuFreqList = Utils.readOneLine(FREQ_LIST_FILE).split("\\s+");
-	mCpuGovList = Utils.readOneLine(GOV_LIST_FILE).split("\\s+");
 
 	return true;
     }
@@ -259,6 +259,7 @@ public class CPUPolicyPreference extends DialogPreference
 	Utils.queueSYSValue(Utils.toCPU(GOV_FILE, mCpu), mCore[mCpu].governor);
 	Utils.queueSYSValue(Utils.toCPU(FREQ_MIN_FILE, mCpu), mCore[mCpu].min);
 	Utils.queueSYSValue(Utils.toCPU(FREQ_MAX_FILE, mCpu), mCore[mCpu].max);
+
 	governors = mCore[0].governor;
 	minfreqs = mCore[0].min;
 	maxfreqs = mCore[0].max;
@@ -271,8 +272,10 @@ public class CPUPolicyPreference extends DialogPreference
 	updateSharedPrefs(mPreferences, SAVED_GOV, governors);
 	updateSharedPrefs(mPreferences, SAVED_MIN_FREQ, minfreqs);
 	updateSharedPrefs(mPreferences, SAVED_MAX_FREQ, maxfreqs);
+
 	Utils.writeSYSValue(CPU_GOV_SYNC_FILE, Utils.boolToString(mCpuGovSync.isChecked()));
 	updateSharedPrefs(mPreferences, SAVED_CPU_GOV_SYNC, (mCpuGovSync.isChecked() || mPolicySync.isChecked()) ? "1" : "0");
+
 	Utils.launchSYSQueue();
     }
 
@@ -312,19 +315,18 @@ public class CPUPolicyPreference extends DialogPreference
 		String[] governors = preferences.getString(SAVED_GOV, "0 0").split("\\s+");
 		String[] minfreqs = preferences.getString(SAVED_MIN_FREQ, "0 0").split("\\s+");
 		String[] maxfreqs = preferences.getString(SAVED_MAX_FREQ, "0 0").split("\\s+");
-		List<String> lenght = Arrays.asList(governors);
-		for(int i = 0; i < lenght.size();){
-			if(Utils.isStringEmpty(governors[i]) || Utils.isStringEmpty(minfreqs[i]) || Utils.isStringEmpty(maxfreqs[i])){
-				i++;
-				continue;
+		int length = (governors.length + minfreqs.length + maxfreqs.length) / 3;
+		//use max
+		for(int i = 0; i < length;){
+			if(!(Utils.isStringEmpty(governors[i]) || Utils.isStringEmpty(minfreqs[i]) || Utils.isStringEmpty(maxfreqs[i]))){
+				if(!(governors[i].equals("0") || minfreqs[i].equals("0") || maxfreqs[i].equals("0"))){
+					Utils.SetSOBValue(Utils.toCPU(CPU_ONLINE, i), "1");
+					Utils.SetSOBValue(Utils.toCPU(GOV_FILE, i), governors[i]);
+					Utils.SetSOBValue(Utils.toCPU(FREQ_MIN_FILE, i), minfreqs[i]);
+					Utils.SetSOBValue(Utils.toCPU(FREQ_MAX_FILE, i), maxfreqs[i]);
+				}
 			}
-			else{
-				Utils.SetSOBValue(Utils.toCPU(CPU_ONLINE, i), "1");
-				Utils.SetSOBValue(Utils.toCPU(GOV_FILE, i), governors[i]);
-				Utils.SetSOBValue(Utils.toCPU(FREQ_MIN_FILE, i), minfreqs[i]);
-				Utils.SetSOBValue(Utils.toCPU(FREQ_MAX_FILE, i), maxfreqs[i]);
-				i++;
-			}
+			i++;
 		}
 		Utils.SetSOBValue(CPU_GOV_SYNC_FILE, preferences.getString(SAVED_CPU_GOV_SYNC, "1"));
 	}
