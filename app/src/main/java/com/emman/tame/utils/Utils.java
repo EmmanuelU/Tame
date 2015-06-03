@@ -447,16 +447,19 @@ public class Utils
 	else return "0"; 
     }
 
-public static boolean isInteger(String s) {
-    if(isStringEmpty(s)) return false;
-    try { 
-        Integer.parseInt(s); 
-    } catch(NumberFormatException e) { 
-        return false; 
+    public static boolean isInteger(String s) {
+	if(isStringEmpty(s)) return false;
+	try {
+		Integer.parseInt(s); 
+	} catch(NumberFormatException e) { 
+		return false; 
+	}
+	return true;
     }
-    // only got here if we didn't return false
-    return true;
-}
+
+    public static boolean isSubstringInString(String substring, String string) {
+	return string.toLowerCase().contains(substring.toLowerCase());
+    }
 
     /**
      * Read file via shell
@@ -477,6 +480,13 @@ public static boolean isInteger(String s) {
         return null;
     }
 
+    public static String getSUVersion(){
+	CMDProcessor.CommandResult cr = new CMDProcessor().sh.runWaitFor("su -v");
+	if (cr.success())
+            return cr.stdout;
+	else return "";
+    }
+
     public static String CMD(String command, boolean useSu) {
         CMDProcessor.CommandResult cr = null;
         if (useSu) {
@@ -486,7 +496,7 @@ public static boolean isInteger(String s) {
         }
         if (cr.success())
             return cr.stdout;
-        return null;
+        else return "";
     }
 
     public static void toast(Context context, String message) {

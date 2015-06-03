@@ -106,7 +106,7 @@ public class MainActivity extends Activity
 	}
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(!Utils.packageExists(this, PACKAGE_SUPERSU) && Utils.isLollipop()){
+        if(!Utils.isSubstringInString("SUPERSU", Utils.getSUVersion()) && Utils.isLollipop()){
 		Intent intent = new Intent();
 		intent.setData(Uri.parse(LINK_PACKAGE_SUPERSU));
 		Utils.notification(this, NotificationID.ROOTFAIL, intent, getString(R.string.msg_lp_no_su));
