@@ -39,7 +39,7 @@
 	    android:layout_height="wrap_content">
 
 	    <SeekBar
-		android:layout_width="270dp"
+		android:layout_width="260dp"
 		android:layout_height="wrap_content"
 		android:thumb="@android:color/transparent"
 		android:id="@+id/bar"/>
@@ -47,7 +47,6 @@
 	    <TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:thumb="@android:color/transparent"
                 android:textSize="12sp"
 		android:id="@+id/bartext"/>
 
