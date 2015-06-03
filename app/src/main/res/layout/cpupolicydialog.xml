@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/item_sync"
+	android:textStyle="bold"
 	android:button="@null"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/cpu_gov_sync"
@@ -30,11 +31,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/item_sync"
+	android:textStyle="bold"
 	android:button="@null"
 	android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/tame_policy_sync"
 
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"/>    
+
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_marginTop="8dp"
+	    android:layout_marginBottom="8dp"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    android:background="@color/black"/>
 
 <Spinner
 	android:layout_width="wrap_content"
@@ -44,9 +55,19 @@
 	android:text="@string/msg_core"
 	android:layout_marginBottom="5dp"/>
 
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_marginTop="8dp"
+	    android:layout_marginBottom="8dp"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    android:background="@color/black"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+	android:textStyle="bold"
         android:text="@string/item_gov"/>
 
     <Spinner
@@ -55,22 +76,41 @@
         android:id="@+id/cpu_gov"
 	android:layout_marginLeft="2dp"/>
 
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_marginTop="8dp"
+	    android:layout_marginBottom="8dp"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    android:background="@color/black"/>
+
 	<TableRow
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:gravity="center_horizontal">
 
+	  <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="15dp"
+	    android:layout_marginRight="15dp">
+
 	    <TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/item_min_frequency"
-		android:layout_marginRight="5dp"/>
+		android:textStyle="bold"
+		android:layout_alignParentLeft="true"/>
 
 	    <TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/item_max_frequency"
-		android:layout_marginLeft="5dp"/>
+		android:textStyle="bold"
+		android:layout_alignParentRight="true"/>
+
+	</RelativeLayout>
 
 	</TableRow>
 
@@ -79,17 +119,25 @@
 	    android:layout_height="wrap_content"
 	    android:gravity="center_horizontal">
 
+	  <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="15dp"
+	    android:layout_marginRight="15dp">
+
 	    <Spinner
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:id="@+id/cpu_min_freq"
-		android:layout_marginRight="30dp"/>
+		android:layout_alignParentLeft="true"/>
 
 	    <Spinner
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:id="@+id/cpu_max_freq"
-		android:layout_marginLeft="30dp"/>
+		android:layout_alignParentRight="true"/>
+
+	</RelativeLayout>
 
 	</TableRow>
 

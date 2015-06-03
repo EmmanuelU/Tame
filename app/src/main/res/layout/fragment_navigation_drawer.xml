@@ -6,7 +6,9 @@
     android:divider="#ff000000"
     android:dividerHeight="1dp"
     android:textSize="@dimen/actionbar_textsize"
+    android:textStyle="bold"
     android:background="@color/tame"
+    android:drawSelectorOnTop="true"
     tools:context=".NavigationDrawerFragment"
     android:footerDividersEnabled="false"
     android:headerDividersEnabled="false" />
