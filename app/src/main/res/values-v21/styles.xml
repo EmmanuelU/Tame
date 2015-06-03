@@ -8,6 +8,8 @@
 	<item name="android:colorAccent">@color/white</item>
 	<item name="android:colorBackground">@color/tame</item>
         <item name="android:colorButtonNormal">@color/tame</item>
+        <item name="android:colorPrimary">@color/tame</item>
+        <item name="android:colorPrimaryDark">@color/tame_darker</item>
 	<item name="android:windowBackground">@color/black</item>
     </style>
 

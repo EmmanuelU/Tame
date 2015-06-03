@@ -8,9 +8,8 @@
 		android:id="@+id/header" 
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content" 
-		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:singleLine="true" 
-		android:textSize="10pt"
+		android:textSize="12pt"
 		android:textStyle="bold" />
 
 	<TextView 

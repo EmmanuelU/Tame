@@ -20,6 +20,6 @@
 <color name="tame">#ff8c1414</color>
 <color name="tame_brighter">#AA0114</color>
 <color name="tame_darker">#420000</color>
-<color name="transparent_tame">#99420000</color>
+<color name="tame_transparent">#99420000</color>
 
 </resources>
