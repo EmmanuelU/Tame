@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
 
+import java.io.OutputStreamWriter;
 import java.lang.Comparable;
 import java.lang.Process;
 import java.lang.StringBuilder;
@@ -75,8 +76,80 @@ import com.emman.tame.R;
 import com.emman.tame.utils.BackgroundTask;
 import com.emman.tame.utils.NotificationID;
 
+import com.stericson.RootShell.execution.Command;
+import com.stericson.RootTools.RootTools;
+
 public class Utils 
 		implements Resources {
+
+ /* NOT USED AS OF NOW
+     * Based on AndreiLux's SU code in Synapse
+     * https://github.com/AndreiLux/Synapse/blob/master/src/main/java/com/af/synapse/utils/Utils.java#L238
+
+    public static class SU {
+
+        private Process process;
+        private BufferedWriter bufferedWriter;
+        private BufferedReader bufferedReader;
+        private boolean closed;
+        private boolean denied;
+
+        public SU() {
+            try {
+                Log.i(TAG, "SU initialized");
+                process = Runtime.getRuntime().exec("su");
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+                bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to run shell as su");
+            }
+        }
+
+        public synchronized String runCommand(final String command) {
+            try {
+                StringBuilder sb = new StringBuilder();
+                String callback = "/shellCallback/";
+                bufferedWriter.write(command + "\necho " + callback + "\n");
+                bufferedWriter.flush();
+
+                int i;
+                char[] buffer = new char[256];
+                while (true) {
+                    sb.append(buffer, 0, bufferedReader.read(buffer));
+                    if ((i = sb.indexOf(callback)) > -1) {
+                        sb.delete(i, i + callback.length());
+                        break;
+                    }
+                }
+                return sb.toString().trim();
+            } catch (IOException e) {
+                closed = true;
+                e.printStackTrace();
+            } catch (ArrayIndexOutOfBoundsException e) {
+                denied = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        public void close() {
+            try {
+                bufferedWriter.write("exit\n");
+                bufferedWriter.flush();
+
+                process.waitFor();
+                Log.i(TAG, "SU closed: " + process.exitValue());
+                closed = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+*/
+
+    private static String cmdOutput = "";
 
     /**
      * Write a string value to the specified file.
@@ -98,7 +171,7 @@ public class Utils
     }
 
     public static String appendFile(String filename, String value) {
-        new CMDProcessor().sh.runWaitFor("busybox echo '" + value + "' >> " + filename);
+	Utils.CMD("busybox echo '" + value + "' >> " + filename, false);
 	return value;
     }
 
@@ -115,7 +188,7 @@ public class Utils
 				fos.flush();
 				fos.close();
 			} catch (Exception e) {
-				new CMDProcessor().su.runWaitFor("busybox echo " + value + " > " + fname);
+				Utils.CMD("busybox echo " + value + " > " + fname, true);
 			}
 	
 		}
@@ -132,7 +205,7 @@ public class Utils
     public static String queueSYSValue(String fname, String value) {
 	if(!fileExists(fname)) return value;
         if(!fileExists(FILE_SYS_QUEUE)){ 
-		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SYS_QUEUE);
+		Utils.CMD("busybox touch " + FILE_SYS_QUEUE, true);
 		appendFile(FILE_SYS_QUEUE, "#!/bin/sh");
 	}
 	appendFile(FILE_SYS_QUEUE, "echo \"" + value + "\" > " + fname);
@@ -161,7 +234,7 @@ public class Utils
     public static String SetSOBValue(String fname, String value) {
 	if(!fileExists(fname)) return value;
         if(!fileExists(FILE_SET_ON_BOOT)){
-		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_SET_ON_BOOT);
+		Utils.CMD("busybox touch " + FILE_RUN_AT_BOOT, true);
 		appendFile(FILE_SET_ON_BOOT, "#!/bin/sh");
 	}
 	appendFile(FILE_SET_ON_BOOT, "echo \"" + value + "\" > " + fname);
@@ -169,8 +242,8 @@ public class Utils
     }
 
     public static String SetRABCommand(String command) {
-        if(!fileExists(FILE_RUN_AT_BOOT)){ 
-		new CMDProcessor().su.runWaitFor("busybox touch " + FILE_RUN_AT_BOOT);
+        if(!fileExists(FILE_RUN_AT_BOOT)){
+		Utils.CMD("busybox touch " + FILE_RUN_AT_BOOT, true);
 		appendFile(FILE_RUN_AT_BOOT, "#!/bin/sh");
 	}
 	appendFile(FILE_RUN_AT_BOOT, command);
@@ -262,9 +335,7 @@ public class Utils
     }
 
     public static String readProp(String prop) {
-	CMDProcessor.CommandResult cr = null;
-	cr = new CMDProcessor().sh.runWaitFor("getprop " + prop);
-	return (cr.success()) ? cr.stdout : "";
+	return Utils.CMD("getprop " + prop, false);
     }
 
     public static void writeLocalFile(Context context, String filename){
@@ -353,24 +424,8 @@ public class Utils
 	else Log.i(TAG, " " + message);
    }
 
-    public static boolean checkSu() {
-        if (!new File("/system/bin/su").exists() && !new File("/system/xbin/su").exists()) {
-            log("SU does not exist", true);
-            return false;
-        }
-        try {
-            if ((new CMDProcessor().su.runWaitFor("ls /data/app-private"))
-                    .success()) {
-                log("SU exists and we have permission", false);
-                return true;
-            } else {
-                log("SU exists but we dont have permission", false);
-                return false;
-            }
-        } catch (final NullPointerException e) {
-            log(e.getLocalizedMessage().toString(), true);
-            return false;
-        }
+    public static boolean canSU() {
+        return RootTools.isAccessGiven();
     }
 
 
@@ -392,8 +447,8 @@ public class Utils
                 br.close();
             }
         } catch (Exception e) {
-            // attempt to do magic!
-            return (readFileViaShell(fname, false) == null) ? readFileViaShell(fname, true) : readFileViaShell(fname, false);
+            // attempt to do magic with root!
+            return readFileViaShell(fname, true);
         }
         return line;
     }
@@ -469,34 +524,46 @@ public class Utils
      * @return file output
      */
     public static String readFileViaShell(String filePath, boolean useSu) {
-        CMDProcessor.CommandResult cr = null;
-        if (useSu) {
-            cr = new CMDProcessor().su.runWaitFor("cat " + filePath);
-        } else {
-            cr = new CMDProcessor().sh.runWaitFor("cat " + filePath);
-        }
-        if (cr.success())
-            return cr.stdout;
-        return null;
+	return Utils.CMD("cat " + filePath, useSu);
     }
 
     public static String getSUVersion(){
-	CMDProcessor.CommandResult cr = new CMDProcessor().sh.runWaitFor("su -v");
-	if (cr.success())
-            return cr.stdout;
-	else return "";
+	return CMD("su -v", false);
     }
 
     public static String CMD(String command, boolean useSu) {
-        CMDProcessor.CommandResult cr = null;
-        if (useSu) {
-            cr = new CMDProcessor().su.runWaitFor(command);
-        } else {
-            cr = new CMDProcessor().sh.runWaitFor(command);
+	RootTools.debugMode = true;
+	cmdOutput = "";
+
+	Command cmd = new Command(0, false, command){
+	    	@Override
+		public void commandOutput(int id, String line) {
+			if(Utils.isStringEmpty(cmdOutput)) cmdOutput = line;
+			else cmdOutput = cmdOutput + NEW_LINE + line;
+		    	super.commandOutput(id, line);
+		}
+
+		@Override
+		public void commandTerminated(int id, String reason) {
+		    super.commandTerminated(id, reason);
+		}
+
+		@Override
+		public void commandCompleted(int id, int exitcode) {
+		    super.commandCompleted(id, exitcode);
+		}
+	};
+
+	try{
+		RootTools.getShell(useSu).add(cmd);
+	} catch (Exception e){}
+        
+        while (!cmd.isFinished()) {
+               try{
+                   Thread.sleep(50);
+               } catch (InterruptedException e){}
         }
-        if (cr.success())
-            return cr.stdout;
-        else return "";
+	return cmdOutput;
     }
 
     public static void toast(Context context, String message) {

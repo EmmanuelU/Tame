@@ -80,7 +80,7 @@
     <string name="msg_undervolt">Undervolt:</string>
     <string name="msg_volt">Voltage</string>
     <string name="msg_miniscule">Miniscule</string>
-    <string name="msg_small">small</string>
+    <string name="msg_small">Small</string>
     <string name="msg_moderate">Moderate</string>
     <string name="msg_high">High</string>
     <string name="msg_excessive">Excessive</string>

@@ -67,6 +67,8 @@ import com.emman.tame.fragments.SysFSExplorer;
 import com.emman.tame.utils.NotificationID;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
+import com.stericson.RootShell.execution.Command;
+import com.stericson.RootTools.RootTools;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -98,7 +100,7 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 	context = this;
-	if(!Utils.checkSu()){
+	if(!Utils.canSU()){
 		Intent intent = getIntent();
 		Utils.notification(this, NotificationID.ROOTFAIL, intent, getString(R.string.msg_no_su));
 		Utils.toast(this, getString(R.string.msg_fatal_error));

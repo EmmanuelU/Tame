@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.IBinder;
@@ -88,6 +89,7 @@ public class CheckUpdateAtBoot extends Service implements Resources {
 	if(Utils.fileExists(FILE_UPDATE_DATA)){
 		Utils.CMD("chmod +x " + FILE_UPDATE_DATA, false);
 		WildData.device = AboutTame.propdevice;
+		WildData.versionstamp = Integer.parseInt(Utils.CMD("getprop ro.wild.date", false));
 		WildData.latestversion = Utils.CMD("sh " + FILE_UPDATE_DATA + " latestversion", false);
 		WildData.latestversionstamp = Integer.parseInt(Utils.CMD("sh " + FILE_UPDATE_DATA + " latestdate", false));
 		WildData.latestversiondl = Utils.CMD("sh " + FILE_UPDATE_DATA + " latestDL", false);
@@ -100,6 +102,12 @@ public class CheckUpdateAtBoot extends Service implements Resources {
     private boolean TameInit(){
 	if(Utils.fileExists(FILE_APP_UPDATE_DATA)){
 		Utils.CMD("chmod +x " + FILE_APP_UPDATE_DATA, false);
+		try{
+			PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+			TameData.versionstamp = pInfo.versionCode;
+		} catch(Exception e){
+			TameData.versionstamp = 99999;
+		}
 		TameData.latestversion = Utils.CMD("sh " + FILE_APP_UPDATE_DATA + " latestversion", false);
 		TameData.latestversionstamp = Integer.parseInt(Utils.CMD("sh " + FILE_APP_UPDATE_DATA + " latestversioncode", false));
 		TameData.latestversiondl = Utils.CMD("sh " + FILE_APP_UPDATE_DATA + " latestDL", false);
