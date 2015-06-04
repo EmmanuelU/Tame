@@ -45,4 +45,10 @@
 	android:key="cpu_boostv2"
     />
 
+    <com.emman.tame.dialogs.CPUInputBoostV3Preference
+	android:title="@string/item_input_boost"
+	android:summary="@string/item_sum_input_boost"
+	android:key="cpu_boostv3"
+    />
+
 </PreferenceScreen>

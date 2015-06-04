@@ -45,7 +45,7 @@
 
     <string name="item_sob">Restore Settings on Boot</string>
     <string name="item_sum_sob">Android naturally reverts settings to default after a reboot. Enabling this will keep your custom settings.</string>
-    <string name="msg_sobnote">Note: After a reboot, Tame may take a minute or two to restore settings.\n\n In the event that you screwed up and you want to disable Tame Settings from recovery, there is a flash-able zip on your sdcard.\n\n</string>
+    <string name="msg_sobnote">After a reboot, Tame may take a minute or two to restore settings.\n\n In the event that you screwed up and you want to disable Tame Settings from recovery, there is a flash-able zip on your sdcard.\n\n</string>
     <string name="msg_sobstatus">Last Restored Settings:</string>
 
     <string name="item_check_updates">Check for Updates</string>
@@ -91,6 +91,16 @@
     <string name="item_input_boost">Input Boost</string>
     <string name="item_sum_input_boost">Adjust CPU minimum speed during input events.</string>
     <string name="item_threshold">Threshold:</string>
+    <string name="item_duration_msecs">Duration (msecs)</string>
+    <string name="item_frequency">Frequency</string>
+    <string name="item_boost_sum">Utilizes an algorithm to determine when to boost cores. Higher the threshold, the more likely an event will trigger a boost.</string>
+    <string name="msg_boost_disclaimer">Input Boosting must be disabled while changing policies, as it may interfere with CPU parameters.</string>	
+    <string name="note_boost">Boosts are issued based off priority. Set your frequencies from greatest to least, with Processor #1 being the maximum possible boost, as it\'s the highest priority.
+\n\nNote: No boost frequency should be above your maximum CPU frequency, as boosts simply raise the CPU minimum frequency.</string>
+
+    <string name="item_proc3">Processor #3</string>
+    <string name="item_proc2">Processor #2</string>
+    <string name="item_proc1">Processor #1</string>
 
     <string name="item_io">Memory</string>
     <string name="item_iosched">I/O Scheduler</string>
@@ -124,11 +134,6 @@
 
     <string name="item_sysfs">SysFS Explorer</string>
 
-    <string name="item_duration_msecs">Duration (msecs)</string>
-    <string name="item_frequency">Frequency</string>
-    <string name="item_boost_sum">Utilizes an algorithm to determine when to boost cores. Higher the threshold, the more likely an event will trigger a boost.</string>
-    <string name="msg_boost_disclaimer">Input Boosting must be disabled while changing policies, as it may interfere with CPU parameters.</string>
-
     <string name="item_sync">Synchronize</string>
     <string name="item_gov">Governor</string>
     <string name="item_min_frequency">Minimum Frequency</string>
@@ -143,7 +148,7 @@
     <string name="msg_dens_change">Density will be</string>
     <string name="msg_dens_change2">dpi after reboot.</string>
 
-    <string name="item_sum_fcharge">Note: Higher the current, faster the charge. All these settings are safe to use.</string>
+    <string name="item_sum_fcharge">Higher the current, faster the charge. All these settings are safe to use.</string>
 
     <string name="item_mpdec">Mpdecision</string>
     <string name="item_sum_mpdec">Unplug secondary cores while screen off.</string>

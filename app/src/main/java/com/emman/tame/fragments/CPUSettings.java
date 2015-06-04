@@ -52,6 +52,7 @@ public class CPUSettings extends PreferenceFragment
 
     private Preference mCpuBoost;
     private Preference mCpuBoostV2;
+    private Preference mCpuBoostV3;
     private Preference mCurFreq;
     private ListPreference mSchedMC;
     private ListPreference mVDD;
@@ -167,12 +168,17 @@ public class CPUSettings extends PreferenceFragment
     private void updateDependencies(){
 	if(!initiateData()) return;
 
-	if(!Utils.fileExists(CPU_BOOST_INPUT_FREQ_FILE)){
-		mCpuBoost.setEnabled(false);
-	}
 	if(!Utils.fileExists(CPU_BOOST_INPUT_TOGGLE)){
 		prefSet.removePreference(mCpuBoostV2);
 	} else prefSet.removePreference(mCpuBoost);
+
+	if(!Utils.fileExists(CPU_BOOST_INPUT2_TOGGLE)){
+		prefSet.removePreference(mCpuBoostV3);
+	} else prefSet.removePreference(mCpuBoost);
+
+	if(!Utils.fileExists(CPU_BOOST_INPUT_FREQ_FILE)){
+		mCpuBoost.setEnabled(false);
+	}
 	
 	if(!Utils.fileExists(SCHED_MC_FILE)) mSchedMC.setEnabled(false);
 	if(!Utils.fileExists(VDD_LEVELS_FILE)) mVDD.setEnabled(false);
@@ -187,6 +193,7 @@ public class CPUSettings extends PreferenceFragment
 
 	mCpuBoost = (DialogPreference) prefSet.findPreference("cpu_boost");
 	mCpuBoostV2 = (DialogPreference) prefSet.findPreference("cpu_boostv2");
+	mCpuBoostV3 = (DialogPreference) prefSet.findPreference("cpu_boostv3");
 	mCurFreq = (Preference) prefSet.findPreference("cur_freq");
 	mSchedMC = (ListPreference) prefSet.findPreference("sched_mc");
 	mVDD = (ListPreference) prefSet.findPreference("vdd");

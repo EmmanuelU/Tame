@@ -51,6 +51,7 @@ import com.emman.tame.dialogs.EBLNPreference;
 import com.emman.tame.dialogs.HBLNPreference;
 import com.emman.tame.dialogs.CPUInputBoostPreference;
 import com.emman.tame.dialogs.CPUInputBoostV2Preference;
+import com.emman.tame.dialogs.CPUInputBoostV3Preference;
 import com.emman.tame.dialogs.CPUPolicyPreference;
 import com.emman.tame.dialogs.GPUPreference;
 import com.emman.tame.dialogs.IOPreference;
@@ -270,6 +271,7 @@ public class MainActivity extends Activity
 	CPUPolicyPreference.SetOnBootData(preferences);
 	CPUInputBoostPreference.SetOnBootData(preferences);
 	CPUInputBoostV2Preference.SetOnBootData(preferences);
+	CPUInputBoostV3Preference.SetOnBootData(preferences);
 	SMPPreference.SetOnBootData(preferences);
 	PanelUVPreference.SetOnBootData(preferences);
 	CPUSettings.SetOnBootData(preferences);

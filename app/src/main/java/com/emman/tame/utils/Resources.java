@@ -117,6 +117,10 @@ public interface Resources {
 	public static final String CPU_BOOST_INPUT_DUR_FILE = "/sys/module/cpu_input_boost/parameters/input_boost_ms";
 	public static final String CPU_BOOST_INPUT_TOGGLE = "/sys/module/cpu_input_boost/parameters/enabled";
 	public static final String CPU_BOOST_INPUT_UP_THRESHOLD_FILE = "/sys/module/cpu_input_boost/parameters/up_threshold";
+	public static final String CPU_BOOST_INPUT2_TOGGLE = "/sys/kernel/cpu_input_boost/enabled";
+	public static final String CPU_BOOST_INPUT2_FREQS = "/sys/kernel/cpu_input_boost/boost_freqs";
+	public static final String SAVED_CPU_BOOST_INPUT_FREQS = "saved_cpu_boost_input_freqs";
+
 	public static final String SAVED_CPU_GOV_SYNC = "force_cpu_gov_sync";
 	public static final String RETAIN_CPU_GOV_SYNC_FILE = "/sys/kernel/retain_cpu_policy/policy_sync";
 	public static final String CPU_GOV_SYNC_FILE = (Utils.fileExists(RETAIN_CPU_GOV_SYNC_FILE) ? RETAIN_CPU_GOV_SYNC_FILE : "/sys/kernel/cpu_gov_sync/force_cpu_gov_sync");

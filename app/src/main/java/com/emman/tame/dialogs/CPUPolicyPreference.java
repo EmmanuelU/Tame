@@ -128,7 +128,7 @@ public class CPUPolicyPreference extends DialogPreference
 		R.layout.biggerspinlayout, CpuNames);
 	mCpuCore.setAdapter(dataAdapter);
 	
-	if(Utils.stringToBool(Utils.readOneLine(CPU_BOOST_INPUT_TOGGLE)) || (Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE) && !Utils.readOneLine(CPU_BOOST_INPUT_DUR_FILE).equals("0"))){
+	if(Utils.stringToBool(Utils.readOneLine(CPU_BOOST_INPUT_TOGGLE)) || Utils.stringToBool(Utils.readOneLine(CPU_BOOST_INPUT2_TOGGLE)) || (Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE) && !Utils.readOneLine(CPU_BOOST_INPUT_DUR_FILE).equals("0"))){
 		IBDisclaimer.setVisibility(View.VISIBLE);
 
 			int i = 0;
@@ -146,6 +146,7 @@ public class CPUPolicyPreference extends DialogPreference
 
 		updateData();
 		Utils.layoutDisable(mCpuPolicyGroup);
+		IBDisclaimer.setEnabled(true);
 	}
 	else{
 		IBDisclaimer.setVisibility(View.GONE);
@@ -185,7 +186,7 @@ public class CPUPolicyPreference extends DialogPreference
     @Override
     protected void onPrepareDialogBuilder(Builder builder) {
 	super.onPrepareDialogBuilder(builder);
-	if(Utils.stringToBool(Utils.readOneLine(CPU_BOOST_INPUT_TOGGLE)) || (Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE) && !Utils.readOneLine(CPU_BOOST_INPUT_DUR_FILE).equals("0"))) builder.setPositiveButton(null, null);
+	if(Utils.stringToBool(Utils.readOneLine(CPU_BOOST_INPUT_TOGGLE)) || Utils.stringToBool(Utils.readOneLine(CPU_BOOST_INPUT2_TOGGLE)) || (Utils.fileExists(CPU_BOOST_INPUT_DUR_FILE) && !Utils.readOneLine(CPU_BOOST_INPUT_DUR_FILE).equals("0"))) builder.setPositiveButton(null, null);
     }
 
     @Override
