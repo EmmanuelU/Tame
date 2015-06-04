@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
@@ -172,7 +173,7 @@ public class Utils
     }
 
     public static String appendFile(String filename, String value) {
-	Utils.CMD(false, "busybox echo '" + value + "' >> " + filename);
+	CMD(false, "busybox echo '" + value + "' >> " + filename);
 	return value;
     }
 
@@ -189,7 +190,7 @@ public class Utils
 				fos.flush();
 				fos.close();
 			} catch (Exception e) {
-				Utils.CMD(true, "busybox echo " + value + " > " + fname);
+				CMD(true, "busybox echo " + value + " > " + fname);
 			}
 	
 		}
@@ -217,7 +218,7 @@ public class Utils
 	mCMDTask.queueTask(new BackgroundTask.task() {
 		@Override
 		public void doInBackground() {
-			Utils.CMD(true, cmdQueue);
+			CMD(true, cmdQueue);
 		}
 
 		@Override
@@ -242,7 +243,7 @@ public class Utils
     @Deprecated
     public static String SetRABCommand(String command) {
         if(!fileExists(FILE_RUN_AT_BOOT)){
-		Utils.CMD(true, "busybox touch " + FILE_RUN_AT_BOOT);
+		CMD(true, "busybox touch " + FILE_RUN_AT_BOOT);
 		appendFile(FILE_RUN_AT_BOOT, "#!/bin/sh");
 	}
 	appendFile(FILE_RUN_AT_BOOT, command);
@@ -283,7 +284,7 @@ public class Utils
 
     public static boolean writeProp(String propname, String propvalue) {
 	try {
-		Utils.CMD(false, "cp -f /system/build.prop " + FILE_TMP_BUILD_PROP);
+		CMD(false, "cp -f /system/build.prop " + FILE_TMP_BUILD_PROP);
 		String previouspropvalue = readProp(propname);
 		//generate modified build.prop
 		File newfile = new File(FILE_LOCAL_BUILD_PROP);
@@ -309,7 +310,7 @@ public class Utils
 		os.writeBytes("exit\n");
 		os.flush();
 		process.waitFor();
-		Utils.CMD(false, "rm -rf " + FILE_TMP_BUILD_PROP);
+		CMD(false, "rm -rf " + FILE_TMP_BUILD_PROP);
 	} catch (Exception e) {
 		return false;
 	}
@@ -334,7 +335,7 @@ public class Utils
     }
 
     public static String readProp(String prop) {
-	return Utils.CMD(false, "getprop " + prop);
+	return CMD(false, "getprop " + prop);
     }
 
     public static void writeLocalFile(Context context, String filename){
@@ -523,7 +524,7 @@ public class Utils
      * @return file output
      */
     public static String readFileViaShell(String filePath, boolean useSu) {
-	return Utils.CMD(useSu, "cat " + filePath);
+	return CMD(useSu, "cat " + filePath);
     }
 
     public static String getSUVersion(){
@@ -555,13 +556,22 @@ public class Utils
 
 	try{
 		RootTools.getShell(useSu).add(cmd);
-	} catch (Exception e){}
+	} catch (Exception e){
+	}
         
-        while (!cmd.isFinished()) {
-               try{
-                   Thread.sleep(50);
-               } catch (InterruptedException e){}
+	int timeoutms = 0;
+        while (!cmd.isFinished() && timeoutms < 10000){
+		try{
+			Thread.sleep(50);
+			timeoutms += 50;
+              	} catch (Exception e){}
         }
+
+	try{
+		RootTools.getShell(useSu).close();
+	} catch (Exception e){
+	}
+
 	return cmdOutput;
     }
 
@@ -570,6 +580,10 @@ public class Utils
     }
 
     public static void burnttoast(Context context, String message) {
+	Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    public static void errorHandle(Context context, String message) {
 	Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
