@@ -87,32 +87,32 @@ public class CheckUpdateAtBoot extends Service implements Resources {
 
     private boolean WildInit(){
 	if(Utils.fileExists(FILE_UPDATE_DATA)){
-		Utils.CMD("chmod +x " + FILE_UPDATE_DATA, false);
+		Utils.CMD(false, "chmod +x " + FILE_UPDATE_DATA);
 		WildData.device = AboutTame.propdevice;
-		WildData.versionstamp = Integer.parseInt(Utils.CMD("getprop ro.wild.date", false));
-		WildData.latestversion = Utils.CMD("sh " + FILE_UPDATE_DATA + " latestversion", false);
-		WildData.latestversionstamp = Integer.parseInt(Utils.CMD("sh " + FILE_UPDATE_DATA + " latestdate", false));
-		WildData.latestversiondl = Utils.CMD("sh " + FILE_UPDATE_DATA + " latestDL", false);
-		WildData.latestversionreldate = Utils.CMD("sh " + FILE_UPDATE_DATA + " latestdateliteral", false);
-		Utils.CMD("rm -rf " + FILE_UPDATE_DATA, false);
+		WildData.versionstamp = Integer.parseInt(Utils.CMD(false, "getprop ro.wild.date"));
+		WildData.latestversion = Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestversion");
+		WildData.latestversionstamp = Integer.parseInt(Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestdate"));
+		WildData.latestversiondl = Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestDL");
+		WildData.latestversionreldate = Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestdateliteral");
+		Utils.CMD(false, "rm -rf " + FILE_UPDATE_DATA);
 		return true;
 	}
 	return false;
     }
     private boolean TameInit(){
 	if(Utils.fileExists(FILE_APP_UPDATE_DATA)){
-		Utils.CMD("chmod +x " + FILE_APP_UPDATE_DATA, false);
+		Utils.CMD(false, "chmod +x " + FILE_APP_UPDATE_DATA);
 		try{
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 			TameData.versionstamp = pInfo.versionCode;
 		} catch(Exception e){
 			TameData.versionstamp = 99999;
 		}
-		TameData.latestversion = Utils.CMD("sh " + FILE_APP_UPDATE_DATA + " latestversion", false);
-		TameData.latestversionstamp = Integer.parseInt(Utils.CMD("sh " + FILE_APP_UPDATE_DATA + " latestversioncode", false));
-		TameData.latestversiondl = Utils.CMD("sh " + FILE_APP_UPDATE_DATA + " latestDL", false);
-		TameData.latestversionreldate = Utils.CMD("sh " + FILE_APP_UPDATE_DATA + " latestdateliteral", false);
-		Utils.CMD("rm -rf " + FILE_APP_UPDATE_DATA, false);
+		TameData.latestversion = Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestversion");
+		TameData.latestversionstamp = Integer.parseInt(Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestversioncode"));
+		TameData.latestversiondl = Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestDL");
+		TameData.latestversionreldate = Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestdateliteral");
+		Utils.CMD(false, "rm -rf " + FILE_APP_UPDATE_DATA);
 		return true;
 	}
 	return false;

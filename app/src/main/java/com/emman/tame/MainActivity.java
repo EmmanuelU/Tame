@@ -96,6 +96,8 @@ public class MainActivity extends Activity
 
     private static overrideBackListener overrideBackObserver;
 
+    public static String BootCommands;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +110,9 @@ public class MainActivity extends Activity
 	}
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+	ExecuteBootData(mPreferences);
+
+	/* testing for now
         if(!Utils.isSubstringInString("SUPERSU", Utils.getSUVersion()) && Utils.isLollipop()){
 		Intent intent = new Intent();
 		intent.setData(Uri.parse(LINK_PACKAGE_SUPERSU));
@@ -115,6 +120,7 @@ public class MainActivity extends Activity
 		Utils.toast(this, getString(R.string.msg_fatal_error));
 		this.finish();
 	}
+	*/
 	
 	if(Utils.isStringEmpty(mPreferences.getString(TAME_UID, ""))) updateSharedPrefs(mPreferences, TAME_UID, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID));
 	else if(!mPreferences.getString(TAME_UID, "").equals(Secure.getString(this.getContentResolver(), Secure.ANDROID_ID))){
@@ -134,6 +140,12 @@ public class MainActivity extends Activity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 	
 	if(AboutTame.isWild()) Utils.toast(this, getString(R.string.msg_wk_detect));
+
+	/* remove deprecated files */
+	if(Utils.fileExists("/sdcard/DisableTame_S-O-B.zip")) Utils.CMD(false, "rm -rf /sdcard/DisableTame_S-O-B.zip");
+	Utils.CMD(false, "rm -rf " + FILE_SET_ON_BOOT);
+	Utils.CMD(false, "rm -rf " + FILE_RUN_AT_BOOT);
+	Utils.CMD(false, "rm -rf " + FILE_SYS_QUEUE);
     }
 
     @Override
@@ -255,7 +267,6 @@ public class MainActivity extends Activity
     }
 
     public static void ExecuteBootData(SharedPreferences preferences){
-	Utils.CMD("rm -rf " + FILE_SET_ON_BOOT, false);
 	CPUPolicyPreference.SetOnBootData(preferences);
 	CPUInputBoostPreference.SetOnBootData(preferences);
 	CPUInputBoostV2Preference.SetOnBootData(preferences);
@@ -269,7 +280,9 @@ public class MainActivity extends Activity
 	S2WPreference.SetOnBootData(preferences);
 	GPUPreference.SetOnBootData(preferences);
 	FastChargePreference.SetOnBootData(preferences);
-	Utils.CMD("sh " + FILE_SET_ON_BOOT, true);
+
+	Utils.CMD(true, BootCommands);
+
 	updateSharedPrefs(preferences, SET_ON_BOOT_TS, new SimpleDateFormat("MMMM d, yyyy - h:ma").format(new Date()));
     }
 

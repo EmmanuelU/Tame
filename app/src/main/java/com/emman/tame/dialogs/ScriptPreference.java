@@ -139,12 +139,8 @@ public class ScriptPreference extends DialogPreference
 
     public static void ExecuteOnBootCommands(SharedPreferences preferences){
 	if(Utils.stringToBool(preferences.getString(RUN_AT_BOOT, "0"))){
-		String[] commandString = preferences.getString(RUN_AT_BOOT_COMMANDS, "").split(System.getProperty("line.separator"));
-		Utils.CMD("rm -rf " + FILE_RUN_AT_BOOT, false);
-		for(int i = 0; i < commandString.length; i++){
-			Utils.SetRABCommand(commandString[i]);
-		}
-		Utils.CMD("sh " + FILE_RUN_AT_BOOT, true);
+		String[] commands = preferences.getString(RUN_AT_BOOT_COMMANDS, "").split(System.getProperty("line.separator"));
+		Utils.CMD(true, commands);
 	}
     }
 

@@ -32,7 +32,7 @@ public class BootCompletedReceiver extends BroadcastReceiver implements Resource
 	if(Utils.stringToBool(mPreferences.getString(CHECK_UPDATE_AT_BOOT, "1"))) context.startService(new Intent(context, CheckUpdateAtBoot.class));
 	
 	if(Utils.fileExists(FILE_DISABLE_SET_ON_BOOT)){
-		Utils.CMD("rm -rf " + FILE_DISABLE_SET_ON_BOOT, false);
+		Utils.CMD(false, "rm -rf " + FILE_DISABLE_SET_ON_BOOT);
 		updateSharedPrefs(mPreferences, SET_ON_BOOT, "0");
 		updateSharedPrefs(mPreferences, RUN_AT_BOOT, "0");
 	} else {

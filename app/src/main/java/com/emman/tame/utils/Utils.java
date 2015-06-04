@@ -150,6 +150,7 @@ public class Utils
 */
 
     private static String cmdOutput = "";
+    private static String cmdQueue = "";
 
     /**
      * Write a string value to the specified file.
@@ -171,7 +172,7 @@ public class Utils
     }
 
     public static String appendFile(String filename, String value) {
-	Utils.CMD("busybox echo '" + value + "' >> " + filename, false);
+	Utils.CMD(false, "busybox echo '" + value + "' >> " + filename);
 	return value;
     }
 
@@ -188,7 +189,7 @@ public class Utils
 				fos.flush();
 				fos.close();
 			} catch (Exception e) {
-				Utils.CMD("busybox echo " + value + " > " + fname, true);
+				Utils.CMD(true, "busybox echo " + value + " > " + fname);
 			}
 	
 		}
@@ -204,11 +205,9 @@ public class Utils
 
     public static String queueSYSValue(String fname, String value) {
 	if(!fileExists(fname)) return value;
-        if(!fileExists(FILE_SYS_QUEUE)){ 
-		Utils.CMD("busybox touch " + FILE_SYS_QUEUE, true);
-		appendFile(FILE_SYS_QUEUE, "#!/bin/sh");
-	}
-	appendFile(FILE_SYS_QUEUE, "echo \"" + value + "\" > " + fname);
+	if(isStringEmpty(cmdQueue)) cmdQueue = "echo \"" + value + "\" > " + fname;
+	else cmdQueue = cmdQueue + NEW_LINE + ("echo \"" + value + "\" > " + fname);
+	
 	return value;
     }
 
@@ -218,13 +217,12 @@ public class Utils
 	mCMDTask.queueTask(new BackgroundTask.task() {
 		@Override
 		public void doInBackground() {
-			Utils.CMD("sh " + FILE_SYS_QUEUE, true);
-			Utils.CMD("rm -rf " + FILE_SYS_QUEUE, false);
+			Utils.CMD(true, cmdQueue);
 		}
 
 		@Override
 		public void onCompleted() {
-
+			cmdQueue = "";
 		}
 
 	});
@@ -233,17 +231,18 @@ public class Utils
 
     public static String SetSOBValue(String fname, String value) {
 	if(!fileExists(fname)) return value;
-        if(!fileExists(FILE_SET_ON_BOOT)){
-		Utils.CMD("busybox touch " + FILE_RUN_AT_BOOT, true);
-		appendFile(FILE_SET_ON_BOOT, "#!/bin/sh");
-	}
-	appendFile(FILE_SET_ON_BOOT, "echo \"" + value + "\" > " + fname);
+	if(isStringEmpty(MainActivity.BootCommands)) MainActivity.BootCommands = "echo \"" + value + "\" > " + fname;
+	else MainActivity.BootCommands = MainActivity.BootCommands + NEW_LINE + ("echo \"" + value + "\" > " + fname);
 	return value;
     }
 
+    /**
+    * @deprecated  No longer needed, just multiple strings in {@link #CMD(boolean, String...)}
+    */
+    @Deprecated
     public static String SetRABCommand(String command) {
         if(!fileExists(FILE_RUN_AT_BOOT)){
-		Utils.CMD("busybox touch " + FILE_RUN_AT_BOOT, true);
+		Utils.CMD(true, "busybox touch " + FILE_RUN_AT_BOOT);
 		appendFile(FILE_RUN_AT_BOOT, "#!/bin/sh");
 	}
 	appendFile(FILE_RUN_AT_BOOT, command);
@@ -284,7 +283,7 @@ public class Utils
 
     public static boolean writeProp(String propname, String propvalue) {
 	try {
-		Utils.CMD("cp -f /system/build.prop " + FILE_TMP_BUILD_PROP , false);
+		Utils.CMD(false, "cp -f /system/build.prop " + FILE_TMP_BUILD_PROP);
 		String previouspropvalue = readProp(propname);
 		//generate modified build.prop
 		File newfile = new File(FILE_LOCAL_BUILD_PROP);
@@ -310,7 +309,7 @@ public class Utils
 		os.writeBytes("exit\n");
 		os.flush();
 		process.waitFor();
-		Utils.CMD("rm -rf " + FILE_TMP_BUILD_PROP, false);
+		Utils.CMD(false, "rm -rf " + FILE_TMP_BUILD_PROP);
 	} catch (Exception e) {
 		return false;
 	}
@@ -335,7 +334,7 @@ public class Utils
     }
 
     public static String readProp(String prop) {
-	return Utils.CMD("getprop " + prop, false);
+	return Utils.CMD(false, "getprop " + prop);
     }
 
     public static void writeLocalFile(Context context, String filename){
@@ -524,18 +523,18 @@ public class Utils
      * @return file output
      */
     public static String readFileViaShell(String filePath, boolean useSu) {
-	return Utils.CMD("cat " + filePath, useSu);
+	return Utils.CMD(useSu, "cat " + filePath);
     }
 
     public static String getSUVersion(){
-	return CMD("su -v", false);
+	return CMD(false, "su -v");
     }
 
-    public static String CMD(String command, boolean useSu) {
+    public static String CMD(boolean useSu, String... commands) {
 	RootTools.debugMode = true;
 	cmdOutput = "";
 
-	Command cmd = new Command(0, false, command){
+	Command cmd = new Command(0, false, commands){
 	    	@Override
 		public void commandOutput(int id, String line) {
 			if(Utils.isStringEmpty(cmdOutput)) cmdOutput = line;

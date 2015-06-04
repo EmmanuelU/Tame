@@ -22,7 +22,7 @@
     <string name="msg_kernelbug1">Your Rom or Kernel has a bug, please forward this URL link to your developer. As result, you may experience lag using this app.</string>
     <string name="msg_fatal_error">Fatal Error, please see notification drawer.</string>
     <string name="msg_no_su">Please restart me with root permissions.</string>
-    <string name="msg_lp_no_su">As of now, Tame requires SuperSU on Lollipop to avoid issues. Click me to be directed to the Play Store. Blame CyanogenMod\'s Privacy Guard.</string>
+    <string name="msg_lp_no_su">As of now, Tame requires SuperSU on Lollipop to avoid issues. Click me to be directed to the Play Store. Blame CyanogenMod\'s Privacy Guard and SELinux.</string>
     <string name="msg_uid_change">You previously used Tame from a different device. While you shouldn\'t run into any problems, you may consider resetting my data.</string>
     <string name="msg_wk_detect">WildKernel Detected</string>
     <string name="msg_changes_reboot">Reboot your device for the changes to take effect.</string>
