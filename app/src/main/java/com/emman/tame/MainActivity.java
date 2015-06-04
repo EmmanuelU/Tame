@@ -111,8 +111,6 @@ public class MainActivity extends Activity
 	}
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-	ExecuteBootData(mPreferences);
-
 	/* testing for now
         if(!Utils.isSubstringInString("SUPERSU", Utils.getSUVersion()) && Utils.isLollipop()){
 		Intent intent = new Intent();
@@ -285,7 +283,7 @@ public class MainActivity extends Activity
 
 	Utils.CMD(true, BootCommands);
 
-	updateSharedPrefs(preferences, SET_ON_BOOT_TS, new SimpleDateFormat("MMMM d, yyyy - h:ma").format(new Date()));
+	updateSharedPrefs(preferences, SET_ON_BOOT_TS, new SimpleDateFormat("MMMM d, yyyy - h:mma").format(new Date()));
     }
 
     private static void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
