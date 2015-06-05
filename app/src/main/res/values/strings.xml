@@ -154,7 +154,8 @@
     <string name="item_sum_mpdec">Unplug secondary cores while screen off.</string>
     <string name="item_note_mpdec">Mpdecision automatically turns plugs/unplugs cores based off workload.</string>
 
-    <string name="item_note_core_toggle">Unplugging a core here will disable it indefinitely, as oppose to allowing mpdecision to automatically disable. I recommend unplugging from bottom to top, to avoid issues.</string>
+    <string name="item_note_core_toggle">Unplugging a processor here will disable it until you re-enable it, as oppose to allowing mpdecision to automatically control when it\'s enabled. This has the potential to reduce power consumption, but may have also reduce performance if unbalanced. Consider raising your maximum frequency, in addition to disabling a processor. This maintains a balance while still saving power.</string>
+    <string name="item_note2_core_toggle">Always unplug from bottom to top, to avoid issues. So processor #2 should not be disabled if processor #3 is not disabled.</string>
 
     <string name="item_unused">Unused:</string>
     <string name="item_freq_trans">Frequency Transitions</string>

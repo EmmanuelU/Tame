@@ -77,6 +77,8 @@
 		   <TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
 			android:text="@string/item_note_core_toggle"
 			android:gravity="center_horizontal"
 			android:textStyle="italic"

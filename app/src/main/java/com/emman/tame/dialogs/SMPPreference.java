@@ -86,20 +86,25 @@ public class SMPPreference extends DialogPreference
 
 	for(int i = 1; i < Utils.getNumOfCpus();){
 		mCore[i] = new CpuToggle();
-		mCore[i].view = inflater.inflate(R.layout.cputoggle, null);
+		mCore[i].view = inflater.inflate(R.layout.smp_cputoggle, null);
 		mCore[i].toggle = (Switch) mCore[i].view.findViewById(R.id.core_toggle);
-		mCore[i].toggle.setText("Core "+ (i+1));
+		mCore[i].toggle.setText(getContext().getString(R.string.page_cpusettings) + LINE_SPACE + "#" + (i+1) + "    ");
 		if(Utils.fileExists(CPU_TOGGLE)) mCore[i].toggle.setChecked(Utils.stringToBool(Utils.readOneLine(Utils.toCPU(CPU_TOGGLE, i))));
 		else mCore[i].toggle.setChecked(true);
+
 		mCpuToggleGroup.addView(mCore[i].view);
+
 		mCore[i].toggle.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				updateDependencies();
 			}
 		});
+
 		i++;
 	}
+
+	mCpuToggleGroup.addView(inflater.inflate(R.layout.smp_note2, null));
 
 	updateData();
 
