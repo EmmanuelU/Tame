@@ -16,6 +16,8 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -83,75 +85,10 @@ import com.stericson.RootTools.RootTools;
 public class Utils 
 		implements Resources {
 
- /* NOT USED AS OF NOW
-     * Based on AndreiLux's SU code in Synapse
-     * https://github.com/AndreiLux/Synapse/blob/master/src/main/java/com/af/synapse/utils/Utils.java#L238
 
-    public static class SU {
-
-        private Process process;
-        private BufferedWriter bufferedWriter;
-        private BufferedReader bufferedReader;
-        private boolean closed;
-        private boolean denied;
-
-        public SU() {
-            try {
-                Log.i(TAG, "SU initialized");
-                process = Runtime.getRuntime().exec("su");
-                bufferedWriter = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-                bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            } catch (IOException e) {
-                Log.e(TAG, "Failed to run shell as su");
-            }
-        }
-
-        public synchronized String runCommand(final String command) {
-            try {
-                StringBuilder sb = new StringBuilder();
-                String callback = "/shellCallback/";
-                bufferedWriter.write(command + "\necho " + callback + "\n");
-                bufferedWriter.flush();
-
-                int i;
-                char[] buffer = new char[256];
-                while (true) {
-                    sb.append(buffer, 0, bufferedReader.read(buffer));
-                    if ((i = sb.indexOf(callback)) > -1) {
-                        sb.delete(i, i + callback.length());
-                        break;
-                    }
-                }
-                return sb.toString().trim();
-            } catch (IOException e) {
-                closed = true;
-                e.printStackTrace();
-            } catch (ArrayIndexOutOfBoundsException e) {
-                denied = true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        public void close() {
-            try {
-                bufferedWriter.write("exit\n");
-                bufferedWriter.flush();
-
-                process.waitFor();
-                Log.i(TAG, "SU closed: " + process.exitValue());
-                closed = true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
+    public static Context getContext() {
+	return MainActivity.getContext();
     }
-*/
-
-    private static String cmdOutput = "";
-    private static String cmdQueue = "";
 
     /**
      * Write a string value to the specified file.
@@ -173,12 +110,16 @@ public class Utils
     }
 
     public static String appendFile(String filename, String value) {
-	CMD(false, "busybox echo '" + value + "' >> " + filename);
+	CMD(false, "echo '" + value + "' >> " + filename);
 	return value;
     }
 
+    public static String getSYSCommand(String fname, String value) {
+	return "echo " + value + " > " + fname;
+    }
+
     public static String writeSYSValue(final String fname, final String value) {
-	Context context = MainActivity.getContext();
+	Context context = getContext();
         if(!fileExists(fname)) return value;
 	final BackgroundTask mCMDTask = new BackgroundTask(context);
 	mCMDTask.queueTask(new BackgroundTask.task() {
@@ -190,7 +131,7 @@ public class Utils
 				fos.flush();
 				fos.close();
 			} catch (Exception e) {
-				CMD(true, "busybox echo " + value + " > " + fname);
+				CMD(true, "echo " + value + " > " + fname);
 			}
 	
 		}
@@ -204,6 +145,7 @@ public class Utils
 	return value;
     }
 
+    private static String cmdQueue = "";
     public static String queueSYSValue(String fname, String value) {
 	if(!fileExists(fname)) return value;
 	if(isStringEmpty(cmdQueue)) cmdQueue = "echo \"" + value + "\" > " + fname;
@@ -213,7 +155,7 @@ public class Utils
     }
 
     public static void launchSYSQueue() {
-	Context context = MainActivity.getContext();
+	Context context = getContext();
 	final BackgroundTask mCMDTask = new BackgroundTask(context);
 	mCMDTask.queueTask(new BackgroundTask.task() {
 		@Override
@@ -243,7 +185,7 @@ public class Utils
     @Deprecated
     public static String SetRABCommand(String command) {
         if(!fileExists(FILE_RUN_AT_BOOT)){
-		CMD(true, "busybox touch " + FILE_RUN_AT_BOOT);
+		CMD(true, "touch " + FILE_RUN_AT_BOOT);
 		appendFile(FILE_RUN_AT_BOOT, "#!/bin/sh");
 	}
 	appendFile(FILE_RUN_AT_BOOT, command);
@@ -282,10 +224,11 @@ public class Utils
    return Integer.parseInt(res);
    }
 
-    public static boolean writeProp(String propname, String propvalue) {
+    public static boolean writeSystemProp(String propname, String propvalue) {
 	try {
 		CMD(false, "cp -f /system/build.prop " + FILE_TMP_BUILD_PROP);
-		String previouspropvalue = readProp(propname);
+		CMD(false, "cp -f /system/build.prop " + FILE_BACKUP_BUILD_PROP);
+		String previouspropvalue = readSystemProp(propname);
 		//generate modified build.prop
 		File newfile = new File(FILE_LOCAL_BUILD_PROP);
 		FileWriter fw = new FileWriter(newfile);
@@ -299,42 +242,23 @@ public class Utils
 		fw.close();
 		br.close();
 		fr.close();
+		CMD(false, "rm -rf " + FILE_TMP_BUILD_PROP);
 
 		//replace /system/build.prop
-		Process process = Runtime.getRuntime().exec("su");
-		DataOutputStream os = new DataOutputStream(process.getOutputStream());
-		os.writeBytes("mount -o remount rw /system/\n"); 
-		os.writeBytes("mv -f /system/build.prop " + FILE_BACKUP_BUILD_PROP + "\n"); 
-		os.writeBytes("mv -f " + FILE_LOCAL_BUILD_PROP + " /system/build.prop\n"); 
-		os.writeBytes("chmod 644 /system/build.prop\n");
-		os.writeBytes("exit\n");
-		os.flush();
-		process.waitFor();
-		CMD(false, "rm -rf " + FILE_TMP_BUILD_PROP);
+		updateSystemProp(FILE_LOCAL_BUILD_PROP);
 	} catch (Exception e) {
 		return false;
 	}
 	return true;
     }
 
-    public static boolean pushProp(String newpropfile) {
+    public static boolean updateSystemProp(String newpropfile) {
 	if(!fileExists(newpropfile)) return false;
-	try {
-		Process process = Runtime.getRuntime().exec("su");
-		DataOutputStream os = new DataOutputStream(process.getOutputStream());
-		os.writeBytes("mount -o remount rw /system/\n"); 
-		os.writeBytes("mv -f " + newpropfile + " /system/build.prop\n"); 
-		os.writeBytes("chmod 644 /system/build.prop\n");
-		os.writeBytes("exit\n");
-		os.flush();
-		process.waitFor();
-	} catch (Exception e) {
-		return false;
-	}
+	CMDSpecialOS(true, "mount -o remount rw /system/", "mv -f " + newpropfile + " /system/build.prop", "chmod 644 /system/build.prop");
 	return true;
     }
 
-    public static String readProp(String prop) {
+    public static String readSystemProp(String prop) {
 	return CMD(false, "getprop " + prop);
     }
 
@@ -466,9 +390,65 @@ public class Utils
 		}
 	}
 	catch (Exception e) {
-		return "";
+		// attempt to do magic with root!
+           	return readFileViaShell(fname, true);
 	}
 	return text.toString();
+    }
+
+    public static boolean isNetworkOnline(Context context) {
+	ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	return (netInfo != null && netInfo.isConnectedOrConnecting());
+    }
+
+    private static boolean fetchComplete = false;
+    public static String fetchTextFile(final String fileUrl) {
+	if(!isNetworkOnline(getContext())) return "";
+	final StringBuilder contents = new StringBuilder();
+	final BackgroundTask mFetchTask = new BackgroundTask(getContext());
+	fetchComplete = false;
+	mFetchTask.queueTask(new BackgroundTask.task() {
+		@Override
+		public void doInBackground() {
+			DefaultHttpClient  httpclient = new DefaultHttpClient();
+			try {
+				HttpGet httppost = new HttpGet(fileUrl);
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity ht = response.getEntity();
+
+				BufferedHttpEntity buf = new BufferedHttpEntity(ht);
+
+				InputStream is = buf.getContent();
+
+				BufferedReader r = new BufferedReader(new InputStreamReader(is));
+
+				String line;
+				while ((line = r.readLine()) != null) {
+				    contents.append(line + "\n");
+				}
+			}
+			catch (Exception e) {}
+			fetchComplete = true;
+		}
+
+		@Override
+		public void onCompleted() {
+			fetchComplete = true;
+		}
+
+	});
+	mFetchTask.execute();
+	
+	int timeoutms = 0;
+        while (!fetchComplete && timeoutms < 10000){
+		try{
+			Thread.sleep(50);
+			timeoutms += 50;
+              	} catch (Exception e){}
+        }
+
+	return contents.toString();
     }
 
     public static boolean packageExists(Context context, String targetPackage){
@@ -531,8 +511,9 @@ public class Utils
 	return CMD(false, "su -v");
     }
 
-    public static String CMD(boolean useSu, String... commands) {
-	RootTools.debugMode = true;
+    private static String cmdOutput = "";
+
+    public static String CMD(final boolean useSu, String... commands) {
 	cmdOutput = "";
 
 	Command cmd = new Command(0, false, commands){
@@ -573,6 +554,52 @@ public class Utils
 	}
 
 	return cmdOutput;
+    }
+
+    public static void CMDBackground(final boolean useSu, String... commands) {
+
+	Command cmd = new Command(0, false, commands){
+	    	@Override
+		public void commandOutput(int id, String line) {
+			if(Utils.isStringEmpty(cmdOutput)) cmdOutput = line;
+			else cmdOutput = cmdOutput + NEW_LINE + line;
+		    	super.commandOutput(id, line);
+		}
+
+		@Override
+		public void commandTerminated(int id, String reason) {
+		    super.commandTerminated(id, reason);
+			try{
+				RootTools.getShell(useSu).close();
+			} catch (Exception e){}
+		}
+
+		@Override
+		public void commandCompleted(int id, int exitcode) {
+		    super.commandCompleted(id, exitcode);
+			try{
+				RootTools.getShell(useSu).close();
+			} catch (Exception e){}
+		}
+	};
+
+	try{
+		RootTools.getShell(useSu).add(cmd);
+	} catch (Exception e){
+	}
+
+    }
+
+    public static void CMDSpecialOS(final boolean useSu, String... commands) {  
+    	try{ 
+		Process p = Runtime.getRuntime().exec(useSu ? "su" : "sh");
+		DataOutputStream os = new DataOutputStream(p.getOutputStream());            
+		for (String command : commands) {
+			os.writeBytes(command + NEW_LINE);
+		}       
+		os.writeBytes("exit" + NEW_LINE);  
+		os.flush();
+	} catch (Exception e) {}
     }
 
     public static void toast(Context context, String message) {
@@ -760,7 +787,8 @@ public class Utils
     public static String[] getFilemA(String file) {
         if(fileExists(file)) {
             ArrayList<String> names = new ArrayList<String>();
-            names.add("Default");
+	
+            names.add(getContext().getString(R.string.item_default));
             //setPermissions(file);
             File freqfile = new File(file);
             FileInputStream fin1 = null;

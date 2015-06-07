@@ -93,13 +93,6 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 	}
     }
 
-    public static boolean isNetworkOnline(Context context) {
-	ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	NetworkInfo netInfo = cm.getActiveNetworkInfo();
-	if (netInfo != null && netInfo.isConnectedOrConnecting()) return true;
-	else return false;
-    }
-
     @Override
     protected String doInBackground(String... sUrl) {
         InputStream input = null;

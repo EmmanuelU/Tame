@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.List;
 
 import com.emman.tame.fragments.AboutTame;
+import com.emman.tame.R;
 import com.emman.tame.utils.DownloadTask;
 import com.emman.tame.utils.NotificationID;
 import com.emman.tame.utils.Resources;
@@ -124,7 +125,7 @@ public class CheckUpdateAtBoot extends Service implements Resources {
 	
 		//WildKernel Update
 		if(AboutTame.isWild()){
-			if(DownloadTask.isNetworkOnline(context)){
+			if(Utils.isNetworkOnline(context)){
 				final UpdateTask wildDownloadTask = new UpdateTask(context, FILE_UPDATE_DATA);
 				wildDownloadTask.setOnFinishListener(new onUpdateTaskFinished() {
 					@Override
@@ -132,7 +133,7 @@ public class CheckUpdateAtBoot extends Service implements Resources {
 						if(WildInit()){
 							if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(AboutTame.propversion)){
 								Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WildData.latestversiondl));
-								Utils.notification(context, NotificationID.WKUPDATE, browserIntent, "WildKernel Build " + WildData.latestversion + " from " + WildData.latestversionreldate + " is now available to download.");
+								Utils.notification(context, NotificationID.WKUPDATE, browserIntent, "WildKernel Build " + LINE_SPACE + context.getString(R.string.msg_app_update, WildData.latestversion, WildData.latestversionreldate));
 							}
 						}
 					}
@@ -143,7 +144,7 @@ public class CheckUpdateAtBoot extends Service implements Resources {
 		}
 
 		//Tame Update
-		if(DownloadTask.isNetworkOnline(context)){
+		if(Utils.isNetworkOnline(context)){
 			final UpdateTask tameDownloadTask = new UpdateTask(context, FILE_APP_UPDATE_DATA);
 			tameDownloadTask.setOnFinishListener(new onUpdateTaskFinished() {
 				@Override
@@ -151,7 +152,7 @@ public class CheckUpdateAtBoot extends Service implements Resources {
 					if(TameInit()){
 						if(TameData.latestversionstamp > TameData.versionstamp){
 							Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TameData.latestversiondl));
-							Utils.notification(context, NotificationID.APPUPDATE, browserIntent, "Tame v" + TameData.latestversion + " from " + TameData.latestversionreldate + " is now available to download.");
+							Utils.notification(context, NotificationID.APPUPDATE, browserIntent, "Tame v" + LINE_SPACE + context.getString(R.string.msg_app_update, TameData.latestversion, TameData.latestversionreldate));
 						}
 					}
 				}

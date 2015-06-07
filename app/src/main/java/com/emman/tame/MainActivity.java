@@ -141,10 +141,13 @@ public class MainActivity extends Activity
 	if(AboutTame.isWild()) Utils.toast(this, getString(R.string.msg_wk_detect));
 
 	/* remove deprecated files */
-	if(Utils.fileExists("/sdcard/DisableTame_S-O-B.zip")) Utils.CMD(false, "rm -rf /sdcard/DisableTame_S-O-B.zip");
-	Utils.CMD(false, "rm -rf " + FILE_SET_ON_BOOT);
-	Utils.CMD(false, "rm -rf " + FILE_RUN_AT_BOOT);
-	Utils.CMD(false, "rm -rf " + FILE_SYS_QUEUE);
+	String commands = "";
+	commands = "rm -rf /sdcard/DisableTame_S-O-B.zip";
+	commands = commands + NEW_LINE + "rm -rf " + FILE_SET_ON_BOOT;
+	commands = commands + NEW_LINE + "rm -rf " + FILE_RUN_AT_BOOT;
+	commands = commands + NEW_LINE + "rm -rf " + FILE_SYS_QUEUE;
+
+	Utils.CMDBackground(true, commands);
     }
 
     @Override

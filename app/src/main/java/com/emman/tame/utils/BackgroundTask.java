@@ -52,7 +52,6 @@ public class BackgroundTask extends AsyncTask<String, Integer, String> {
     private PowerManager.WakeLock mWakeLock;
 
     private ArrayList<task> backgroundTaskObservers = new ArrayList<task>();
-    private boolean taskCompleted = false;
 
 
     public BackgroundTask(Context context) {
@@ -77,17 +76,12 @@ public class BackgroundTask extends AsyncTask<String, Integer, String> {
 	return context;
     }
 
-    public boolean isTaskCompleted() {
-	return taskCompleted;
-    }
-
     public void queueTask(task observer) {
 	backgroundTaskObservers.add(observer);
     }
 
     @Override
     protected void onPostExecute(String result) {
-	taskCompleted = true;
 	for(task observer : backgroundTaskObservers){
 		observer.onCompleted();
 	}

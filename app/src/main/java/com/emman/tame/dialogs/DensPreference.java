@@ -76,12 +76,12 @@ public class DensPreference extends DialogPreference
 	mView = view;
 	updateData();
 	
-	mScreenDensityBackup.setText(getContext().getString(R.string.note_rbackup));
+	mScreenDensityBackup.setText(getContext().getString(R.string.note_rbackup, FILE_BACKUP_BUILD_PROP));
 	mScreenDensity.setSelection(mScreenDensity.getText().length()); //EOL
 
 	mScreenDensityBackupButton.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View view) {
-			if(Utils.pushProp(FILE_BACKUP_BUILD_PROP)){
+			if(Utils.updateSystemProp(FILE_BACKUP_BUILD_PROP)){
 				Utils.toast(getContext(), getContext().getString(R.string.msg_changes_reboot));
 				GeneralSettings.updateDensSummary(getContext().getString(R.string.msg_backedup));
 				getDialog().dismiss();
@@ -114,7 +114,7 @@ public class DensPreference extends DialogPreference
 
     private void updateData(){
 	if(!initiateData()) return;
-	mScreenDensity.setText(Utils.readProp("ro.sf.lcd_density"));
+	mScreenDensity.setText(Utils.readSystemProp("ro.sf.lcd_density"));
 	if(!Utils.fileExists(FILE_BACKUP_BUILD_PROP)){
 		mScreenDensityBackupButton.setText(getContext().getString(R.string.msg_nobackup));
 		mScreenDensityBackupButton.setEnabled(false);	
@@ -123,9 +123,9 @@ public class DensPreference extends DialogPreference
 
     private void setData(){
 	if(!initiateData()) return;
-	if(Utils.writeProp("ro.sf.lcd_density", mScreenDensity.getText().toString())){
-		Utils.toast(getContext(), getContext().getString(R.string.msg_dens_change) + LINE_SPACE + mScreenDensity.getText().toString() + "dpi.");
-		GeneralSettings.updateDensSummary(Utils.readProp("ro.sf.lcd_density") + "dpi. " + mScreenDensity.getText().toString() + getContext().getString(R.string.msg_dens_change2));
+	if(Utils.writeSystemProp("ro.sf.lcd_density", mScreenDensity.getText().toString())){
+		Utils.toast(getContext(), getContext().getString(R.string.msg_dens_change, mScreenDensity.getText().toString()));
+		GeneralSettings.updateDensSummary(Utils.readSystemProp("ro.sf.lcd_density") + "dpi. " + mScreenDensity.getText().toString() + getContext().getString(R.string.msg_dens_change2));
 	}
 	else Utils.toast(getContext(), getContext().getString(R.string.item_error));
     }

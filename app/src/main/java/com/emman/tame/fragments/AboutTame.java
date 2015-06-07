@@ -131,7 +131,7 @@ public class AboutTame extends Fragment
 	mSOBNote.setText(getString(R.string.msg_sobnote) + FILE_DISABLE_SET_ON_BOOT_ZIP);
 	mSOBNote.setEnabled(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0")));
 
-	mSOBStatus.setText(getString(R.string.msg_sobstatus) + LINE_SPACE + mPreferences.getString(SET_ON_BOOT_TS, "Never"));
+	mSOBStatus.setText(getString(R.string.msg_sobstatus) + LINE_SPACE + mPreferences.getString(SET_ON_BOOT_TS, getActivity().getString(R.string.item_never)));
 
 	TameLogoAnim();
 	mTameLogo.startAnimation(fadeout);
@@ -180,7 +180,7 @@ public class AboutTame extends Fragment
     }
 
     private boolean CheckUpdate(){
-	if(!DownloadTask.isNetworkOnline(getActivity())){
+	if(!Utils.isNetworkOnline(getActivity())){
 		Utils.toast(getActivity(), getString(R.string.msg_no_net));
 	} else if(WildData.fetchedlatestversion && !WildData.islatestversion){
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WildData.latestversiondl));
@@ -225,7 +225,7 @@ public class AboutTame extends Fragment
     }
 
     private boolean CheckAppUpdate(){
-	if(!DownloadTask.isNetworkOnline(getActivity())){
+	if(!Utils.isNetworkOnline(getActivity())){
 		Utils.toast(getActivity(), getString(R.string.msg_no_net));
 	} else if(TameData.fetchedlatestversion && !TameData.islatestversion){
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TameData.latestversiondl));

@@ -122,14 +122,16 @@ public class IOPreference extends DialogPreference
 
     private void setData(){
 	if(!initiateData()) return;
+	String commands = "";
 	for(int i = 0; i < 2;){ //devices can hopefully only have 2 sdcards
-		Utils.queueSYSValue(Utils.toSDCARD(IOSCHED_LIST_FILE, i), availableIOSchedulers[(int) mIOSched.getSelectedItemId()]);
-		Utils.queueSYSValue(Utils.toSDCARD(READAHEAD_FILE, i), Utils.getReadAhead(true)[(int) mReadAhead.getSelectedItemId()]);
+		if(Utils.isStringEmpty(commands)) commands = Utils.getSYSCommand(Utils.toSDCARD(IOSCHED_LIST_FILE, i), availableIOSchedulers[(int) mIOSched.getSelectedItemId()]);
+		else commands = commands + NEW_LINE + Utils.getSYSCommand(Utils.toSDCARD(IOSCHED_LIST_FILE, i), availableIOSchedulers[(int) mIOSched.getSelectedItemId()]);
+		commands = commands + NEW_LINE + Utils.getSYSCommand(Utils.toSDCARD(READAHEAD_FILE, i), Utils.getReadAhead(true)[(int) mReadAhead.getSelectedItemId()]);
 		i++;
 	}
 	updateSharedPrefs(mPreferences, SAVED_IOSCHED, availableIOSchedulers[(int) mIOSched.getSelectedItemId()]);
 	updateSharedPrefs(mPreferences, SAVED_READAHEAD, Utils.getReadAhead(true)[(int) mReadAhead.getSelectedItemId()]);
-	Utils.launchSYSQueue();
+	Utils.CMD(true, commands);
 	KernelSettings.IOupdate(availableIOSchedulersLine);
     }
 
