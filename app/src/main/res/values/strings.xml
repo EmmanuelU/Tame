@@ -91,7 +91,7 @@
     <string name="item_sum_fast_charge">Increase mA current during charging. Only affects non-wall chargers.</string>
 
     <string name="item_input_boost">Input Boost</string>
-    <string name="item_sum_input_boost">Adjust CPU minimum speed during input events.</string>
+    <string name="item_sum_input_boost">Adjust CPU minimum speed during input events. Useful to combat experience UI Lag.</string>
     <string name="item_threshold">Threshold:</string>
     <string name="item_duration_msecs">Duration (msecs)</string>
     <string name="item_frequency">Frequency</string>
