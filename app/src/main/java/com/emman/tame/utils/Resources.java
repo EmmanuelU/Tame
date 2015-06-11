@@ -18,39 +18,37 @@ public interface Resources {
 	}
 
 	public static final String FILE_TEXT_FORMAT = "text/*";
-
-	public static final String TAG = "Tame";
-	public static final String NEW_LINE = "\n";
-	public static final String LINE_SPACE = " ";
-	
-	public static final String TAME_UID = "tame_uid";
-	
-	//supported by most custom ROMs
-	public static final String EXTRA_FORCE_SHOW_LIGHTS = "android.forceShowLights";
-
-	public static final String PATH_TAME_LOCAL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tame/";
-
+	public static final String EXTRA_FORCE_SHOW_LIGHTS = "android.forceShowLights"; //supported by most custom AOSP ROMs
 	public static final String PACKAGE_SUPERSU = "eu.chainfire.supersu";
 	public static final String LINK_PACKAGE_SUPERSU = "market://details?id=eu.chainfire.supersu";
 
-	public static final String TAME_LAST_KMSG = PATH_TAME_LOCAL + "last_kmsg.txt";
-	public static final String TAME_LOGCAT = PATH_TAME_LOCAL + "logcat.txt";
-	public static final String FILE_UPDATE_DATA = PATH_TAME_LOCAL + "updatewild.sh";
-	public static final String FILE_APP_UPDATE_DATA = PATH_TAME_LOCAL + "updatetame.sh";
+	public static final String NEW_LINE = "\n";
+	public static final String LINE_SPACE = " ";
+
+	public static final String TAG = "Tame";
+	public static final String PATH_TAME_LOCAL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + TAG + "/";
 	public static final String LINK_APP_UPDATE = "https://raw.githubusercontent.com/EmmanuelU/Tame/master/releases/updatetame.sh";
-	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP = PATH_TAME_LOCAL + "DisableTame_S-O-B.zip";
-	public static final String FILE_DISABLE_SET_ON_BOOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "WildNFree.tame";
+	public static final String LINK_WK_CPU_PATCH = "https://github.com/EmmanuelU/wild_kernel_htc_msm8660/commit/f9d17e63e7f9055fde6febd0b709405b023bdb38";
+	
+	public static final String TAME_UID = "tame_uid";
 	public static final String SET_ON_BOOT = "set_on_boot";
 	public static final String SET_ON_BOOT_TS = "set_on_boot_ts";
 	public static final String RUN_AT_BOOT = "run_at_boot";
 	public static final String CPU_SET_ON_BOOT = "cpu_set_on_boot";
 	public static final String CHECK_UPDATE_AT_BOOT = "check_update_at_boot";
 	public static final String RUN_AT_BOOT_COMMANDS = "run_at_boot_commands";
+
+	public static final String FILE_UPDATE_DATA = PATH_TAME_LOCAL + "updatewild.sh";
+	public static final String FILE_APP_UPDATE_DATA = PATH_TAME_LOCAL + "updatetame.sh";
+
+	public static final String TAME_LAST_KMSG = PATH_TAME_LOCAL + "last_kmsg.txt";
+	public static final String TAME_LOGCAT = PATH_TAME_LOCAL + "logcat.txt";
+
+	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP = PATH_TAME_LOCAL + "DisableTame_S-O-B.zip";
+	public static final String FILE_DISABLE_SET_ON_BOOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "WildNFree.tame";
 	public static final String FILE_TMP_BUILD_PROP = PATH_TAME_LOCAL + "tmp.prop";
 	public static final String FILE_LOCAL_BUILD_PROP = PATH_TAME_LOCAL + "build.prop";
 	public static final String FILE_BACKUP_BUILD_PROP = PATH_TAME_LOCAL + "build.prop.bak";
-
-	public static final String LINK_WK_CPU_PATCH = "https://github.com/EmmanuelU/wild_kernel_htc_msm8660/commit/f9d17e63e7f9055fde6febd0b709405b023bdb38";
 
 	public static final String S2W = "s2w";
 	public static final String FILE_S2W_TOGGLE = "/sys/android_touch/sweep2wake";
