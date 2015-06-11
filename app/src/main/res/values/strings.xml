@@ -21,11 +21,11 @@
 
     <string name="msg_no_net">No Internet Access Detected</string>
     <string name="msg_reboot">Reboot is recommended.</string>
-    <string name="msg_kernelbug1">Your Rom or Kernel has a bug, please forward this URL link to your developer. As result, you may experience lag using this app.</string>
+    <string name="msg_kernelbug1">Your kernel has a bug, please forward this URL link to your ROM/Kernel developer. As result, you may experience lag using this app.</string>
     <string name="msg_fatal_error">Fatal Error, please see notification drawer.</string>
     <string name="msg_no_su">Please restart me with root permissions.</string>
-    <string name="msg_lp_no_su">As of now, Tame requires SuperSU on Lollipop to avoid issues. Click me to be directed to the Play Store. Blame CyanogenMod\'s Privacy Guard and SELinux.</string>
-    <string name="msg_uid_change">You previously used Tame from a different device. While you shouldn\'t run into any problems, you may consider resetting my data.</string>
+    <string name="msg_lp_no_su">While Tame no longer requires SuperSU on Lollipop, I still suggest using it to avoid any potential issues.</string>
+    <string name="msg_uid_change">It appears that you previously used Tame from a different device. While you shouldn\'t run into any problems, you may consider resetting my data.</string>
     <string name="msg_wk_detect">WildKernel Detected</string>
     <string name="msg_changes_reboot">Reboot your device for the changes to take effect.</string>
     <string name="msg_edit_caution">Edit Values with Caution</string>
@@ -46,12 +46,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="item_sob">Restore Settings on Boot</string>
-    <string name="item_sum_sob">Android naturally reverts settings to default after a reboot. Enabling this will keep your custom settings.</string>
+    <string name="item_sum_sob">Android naturally erases kernel settings to default after a reboot. Enabling this will restore your custom settings.</string>
     <string name="msg_sobnote">After a reboot, Tame may take a minute or two to restore settings.\n\n In the event that you screwed up and you want to disable Tame Settings from recovery, there is a flash-able zip on your sdcard.\n\n</string>
     <string name="msg_sobstatus">Last Restored Settings:</string>
 
     <string name="item_check_updates">Check for Updates</string>
-    <string name="item_sum_check_updates">Check for an update to Tame or WildKernel at every boot.</string>
+    <string name="item_sum_check_updates">Check for an update to Tame or WildKernel on boot.</string>
     <string name="msg_checking_update">Checking for Updates ...</string>
     <string name="msg_latest_update">Latest Version</string>
     <string name="msg_update_available">Click to Update</string>
@@ -90,13 +90,13 @@
     <string name="item_fast_charge">USB Fast Charge</string>
     <string name="item_sum_fast_charge">Increase mA current during charging. Only affects non-wall chargers.</string>
 
-    <string name="item_input_boost">Input Boost</string>
-    <string name="item_sum_input_boost">Adjust CPU minimum speed during input events. Useful to combat experience UI Lag.</string>
+    <string name="item_input_boost">Touch Boost</string>
+    <string name="item_sum_input_boost">Raises the minimum processor speed while you\'re browsing. Useful to circumvent UI Lag.</string>
     <string name="item_threshold">Threshold:</string>
     <string name="item_duration_msecs">Duration (msecs)</string>
     <string name="item_frequency">Frequency</string>
     <string name="item_boost_sum">Utilizes an algorithm to determine when to boost cores. Higher the threshold, the more likely an event will trigger a boost.</string>
-    <string name="msg_boost_disclaimer">Input Boosting must be disabled while changing policies, as it may interfere with CPU parameters.</string>	
+    <string name="msg_boost_disclaimer">Touch Boosting must be disabled while changing policies, as it may interfere with processor policies.</string>	
     <string name="note_boost">Boosts are issued based off priority. Set your frequencies from greatest to least, with Processor #1 being the maximum possible boost, as it\'s the highest priority.
 \n\nNote: No boost frequency should be above your maximum CPU frequency, as boosts simply raise the CPU minimum frequency.</string>
 
@@ -113,7 +113,7 @@
     <string name="item_stat">Statistics</string>
 
     <string name="item_polices">Policies</string>
-    <string name="item_core_manage">Plug Management</string>
+    <string name="item_core_manage">Power Plug Management</string>
     <string name="item_core_util">Primary Core Utilization</string>
     <string name="item_sum_core_util">Group more processes onto primary core.</string>
     <string name="item_processor_polices">Processor Policies</string>

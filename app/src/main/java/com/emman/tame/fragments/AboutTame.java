@@ -79,6 +79,7 @@ public class AboutTame extends Fragment
     private TextView mAppVersion;
     private TextView mLatVersion;
     private TextView mAppLatVersion;
+    private TextView mLPSU;
     private TextView mSOBNote;
     private TextView mSOBStatus;
 
@@ -111,6 +112,7 @@ public class AboutTame extends Fragment
 	mAppVersion = (TextView) mView.findViewById(R.id.appversionheader);
 	mLatVersion = (TextView) mView.findViewById(R.id.latversionheader);
 	mAppLatVersion = (TextView) mView.findViewById(R.id.applatversionheader);
+	mLPSU = (TextView) mView.findViewById(R.id.lp_no_su);
 	mSOBNote = (TextView) mView.findViewById(R.id.sobnote);
 	mSOBStatus = (TextView) mView.findViewById(R.id.sobstatus);
 
@@ -132,6 +134,10 @@ public class AboutTame extends Fragment
 	mSOBNote.setEnabled(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0")));
 
 	mSOBStatus.setText(getString(R.string.msg_sobstatus) + LINE_SPACE + mPreferences.getString(SET_ON_BOOT_TS, getActivity().getString(R.string.item_never)));
+
+        if(!Utils.isSubstringInString("SUPERSU", Utils.getSUVersion()) && Utils.isLollipop()){
+		mLPSU.setVisibility(View.VISIBLE);
+	}
 
 	TameLogoAnim();
 	mTameLogo.startAnimation(fadeout);

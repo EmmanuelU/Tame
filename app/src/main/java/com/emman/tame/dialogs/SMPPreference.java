@@ -241,7 +241,7 @@ public class SMPPreference extends DialogPreference
 		Utils.layoutDisable(mIntelliPSubGroup);
 	}
 
-	if(mIntelliPScroff.isChecked())
+	if(mIntelliP.isChecked() && mIntelliPScroff.isChecked())
 		Utils.layoutEnable(mIntelliPScroffSubGroup);
 	else
 		Utils.layoutDisable(mIntelliPScroffSubGroup);
