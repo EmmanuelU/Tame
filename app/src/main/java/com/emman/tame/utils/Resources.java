@@ -57,10 +57,18 @@ public interface Resources {
 	public static final String S2W_SENSITIVE = "s2w_sensitive";
 	public static final String FILE_S2W_SENSITIVE = "/sys/android_touch/sweep2wake_sensitive";
 
-	public static final String MPDEC = "mpdec";
+	public static final String SMP_CONTROL = "mpdec";
+	public static final String SMP_SCROFF = "mpdec_scroff";
+
 	public static final String FILE_MPDEC_TOGGLE = "/sys/kernel/msm_mpdecision/conf/enabled";
-	public static final String MPDEC_SCROFF = "mpdec_scroff";
 	public static final String FILE_MPDEC_SCROFF = "/sys/kernel/msm_mpdecision/conf/scroff_single_core";
+
+	public static final String FILE_INTELLIP_TOGGLE = "/sys/module/intelli_plug/parameters/intelli_plug_active";
+	public static final String FILE_INTELLIP_SCROFF_FREQ = "/sys/module/intelli_plug/parameters/screen_off_max";
+	public static final String FILE_INTELLIP_BOOST = "/sys/module/intelli_plug/parameters/touch_boost_active";
+	public static final String INTELLIP_BOOST = "intellip_boost";
+	public static final String INTELLIP_LIMIT_SCROFF = "intellip_limit_scroff";
+	public static final String INTELLIP_LIMIT_SCROFF_FREQ = "intellip_limit_scroff_freq";
 
 	public static final String TOUCHKEY_BLN = "touchkey_bln";
 	public static final String FILE_BLN_TOGGLE = "/sys/class/misc/backlightnotification/enabled";

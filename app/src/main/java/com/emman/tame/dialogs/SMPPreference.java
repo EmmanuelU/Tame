@@ -32,6 +32,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TableRow;
@@ -56,14 +57,27 @@ public class SMPPreference extends DialogPreference
 
     private Switch mMPDec;
     private CheckBox mMPDecScroff;
+    private LinearLayout mMPDecGroup;
+    private LinearLayout mMPDecSubGroup;
+
+    private Switch mIntelliP;
+    private CheckBox mIntelliPBoost;
+    private CheckBox mIntelliPScroff;
+    private Spinner mIntelliPScroffFreq;
+    private LinearLayout mIntelliPGroup;
+    private LinearLayout mIntelliPSubGroup;
+    private LinearLayout mIntelliPScroffSubGroup;
 
     private LayoutInflater inflater;
 
     private LinearLayout mCpuToggleGroup;
-    private LinearLayout mMPDecGroup;
-    private LinearLayout mMPDecSubGroup;
+
+    private String[] mCpuFreqList;
 
     private SharedPreferences mPreferences;
+
+    private List<String> list;
+    private ArrayAdapter<String> dataAdapter;
 
     class CpuToggle {
 	View view;
@@ -106,9 +120,32 @@ public class SMPPreference extends DialogPreference
 
 	mCpuToggleGroup.addView(inflater.inflate(R.layout.smp_note2, null));
 
+	mCpuFreqList = Utils.readOneLine(FREQ_LIST_FILE).split("\\s+");
+
+	list = new ArrayList<String>(Arrays.asList(Utils.getFileFreqToMhz(FREQ_LIST_FILE, 1000)));
+	dataAdapter = new ArrayAdapter<String>(getContext(),
+		android.R.layout.simple_spinner_item, list);
+	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	
+	mIntelliPScroffFreq.setAdapter(dataAdapter);
+
 	updateData();
 
 	mMPDec.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			updateDependencies();
+		}
+	});
+
+	mIntelliP.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			updateDependencies();
+		}
+	});
+
+	mIntelliPScroff.setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			updateDependencies();
@@ -134,6 +171,14 @@ public class SMPPreference extends DialogPreference
 	mMPDecGroup = (LinearLayout) mView.findViewById(R.id.mpdec_group);
 	mMPDecSubGroup = (LinearLayout) mView.findViewById(R.id.mpdec_subgroup);
 
+	mIntelliP = (Switch) mView.findViewById(R.id.intellip);
+	mIntelliPBoost = (CheckBox) mView.findViewById(R.id.intellip_boost);
+	mIntelliPScroff = (CheckBox) mView.findViewById(R.id.intellip_scroff);
+	mIntelliPScroffFreq = (Spinner) mView.findViewById(R.id.intellip_scroff_freq);
+	mIntelliPGroup = (LinearLayout) mView.findViewById(R.id.intellip_group);
+	mIntelliPSubGroup = (LinearLayout) mView.findViewById(R.id.intellip_subgroup);
+	mIntelliPScroffSubGroup = (LinearLayout) mView.findViewById(R.id.intellip_scroff_subgroup);
+
 	mCpuToggleGroup = (LinearLayout) mView.findViewById(R.id.core_toggle_group);
 	inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -144,8 +189,14 @@ public class SMPPreference extends DialogPreference
 	
 	if(!initiateData()) return;
 
-	updateSharedPrefs(mPreferences, MPDEC, Utils.writeSYSValue(FILE_MPDEC_TOGGLE, mMPDec.isChecked() ? "1" : "0"));
-	updateSharedPrefs(mPreferences, MPDEC_SCROFF, Utils.writeSYSValue(FILE_MPDEC_SCROFF, mMPDecScroff.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, SMP_CONTROL, Utils.writeSYSValue(FILE_MPDEC_TOGGLE, mMPDec.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, SMP_SCROFF, Utils.writeSYSValue(FILE_MPDEC_SCROFF, mMPDecScroff.isChecked() ? "1" : "0"));
+
+	updateSharedPrefs(mPreferences, SMP_CONTROL, Utils.writeSYSValue(FILE_INTELLIP_TOGGLE, mIntelliP.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, INTELLIP_BOOST, Utils.writeSYSValue(FILE_INTELLIP_BOOST, mIntelliPBoost.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, INTELLIP_LIMIT_SCROFF, Utils.boolToString(mIntelliPScroff.isChecked()));
+	updateSharedPrefs(mPreferences, INTELLIP_LIMIT_SCROFF_FREQ, (mIntelliPScroff.isChecked() ? Utils.writeSYSValue(FILE_INTELLIP_SCROFF_FREQ, mCpuFreqList[(int) mIntelliPScroffFreq.getSelectedItemId()]) : Utils.writeSYSValue(FILE_INTELLIP_SCROFF_FREQ, "0")));
+
 
 	String enabled = "1";
 	for(int i = 1; i < Utils.getNumOfCpus();){
@@ -153,10 +204,8 @@ public class SMPPreference extends DialogPreference
 		enabled = enabled + LINE_SPACE + Utils.boolToString(mCore[i].toggle.isChecked());
 		i++;
 	}
-
 	Utils.launchSYSQueue();
 	updateSharedPrefs(mPreferences, SAVED_CPU_TOGGLE, enabled);
-
     }
 
     private void updateData(){
@@ -164,6 +213,11 @@ public class SMPPreference extends DialogPreference
 
 	mMPDec.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_MPDEC_TOGGLE)));
 	mMPDecScroff.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_MPDEC_SCROFF)));
+
+	mIntelliP.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_INTELLIP_TOGGLE)));
+	mIntelliPBoost.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_INTELLIP_BOOST)));
+	mIntelliPScroff.setChecked(Utils.stringToBool(mPreferences.getString(INTELLIP_LIMIT_SCROFF, "0")));
+	mIntelliPScroffFreq.setSelection(Utils.getArrayIndex(mCpuFreqList, Utils.readOneLine(FILE_INTELLIP_SCROFF_FREQ)));
 
 	updateDependencies();
 
@@ -179,8 +233,20 @@ public class SMPPreference extends DialogPreference
 		Utils.layoutDisable(mMPDecSubGroup);
 	}
 
-	if(!Utils.fileExists(CPU_TOGGLE)) Utils.layoutDisable(mCpuToggleGroup);
+	if(!Utils.fileExists(FILE_INTELLIP_TOGGLE)) Utils.layoutDisable(mIntelliPGroup);	
+	else if(mIntelliP.isChecked()){
 
+		Utils.layoutEnable(mIntelliPSubGroup);
+	} else {
+		Utils.layoutDisable(mIntelliPSubGroup);
+	}
+
+	if(mIntelliPScroff.isChecked())
+		Utils.layoutEnable(mIntelliPScroffSubGroup);
+	else
+		Utils.layoutDisable(mIntelliPScroffSubGroup);
+
+	if(!Utils.fileExists(CPU_TOGGLE)) Utils.layoutDisable(mCpuToggleGroup);
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
@@ -192,8 +258,12 @@ public class SMPPreference extends DialogPreference
 		i++;
 	}
 
-	Utils.SetSOBValue(FILE_MPDEC_TOGGLE, preferences.getString(MPDEC, "1"));
-	Utils.SetSOBValue(FILE_MPDEC_SCROFF, preferences.getString(MPDEC_SCROFF, "1"));
+	Utils.SetSOBValue(FILE_MPDEC_TOGGLE, preferences.getString(SMP_CONTROL, "1"));
+	Utils.SetSOBValue(FILE_MPDEC_SCROFF, preferences.getString(SMP_SCROFF, "1"));
+
+	Utils.SetSOBValue(FILE_INTELLIP_TOGGLE, preferences.getString(SMP_CONTROL, "1"));
+	Utils.SetSOBValue(FILE_INTELLIP_BOOST, preferences.getString(INTELLIP_BOOST, "1"));
+	Utils.SetSOBValue(FILE_INTELLIP_SCROFF_FREQ, Utils.stringToBool(preferences.getString(INTELLIP_LIMIT_SCROFF, "0")) ? preferences.getString(INTELLIP_LIMIT_SCROFF_FREQ, "0") : "0");
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

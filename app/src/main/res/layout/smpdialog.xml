@@ -2,13 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="15dp"
-    android:weightSum="1"
-    android:layout_centerHorizontal="true"
-    android:gravity="center_horizontal">
+    android:orientation="vertical">
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" >
+	    
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    android:layout_marginTop="15dp"
+	    android:weightSum="1"
+	    android:layout_centerHorizontal="true"
+	    android:gravity="center_horizontal">
 
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -45,13 +54,101 @@
 		    <CheckBox
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/item_sum_mpdec"
+			android:text="@string/item_sum_scroff_mpdec"
 			android:textSize="13sp"
 			android:button="@null"
 			android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
 			android:id="@+id/mpdec_scroff"
 
 			android:layout_alignParentTop="true"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:layout_marginTop="8dp"
+	    android:layout_marginBottom="8dp"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    android:background="@color/black"/>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:layout_centerHorizontal="true"
+	    android:gravity="center_horizontal"
+	    android:id="@+id/intellip_group">
+
+		   <TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/item_note_intellip"
+			android:gravity="center_horizontal"
+			android:textStyle="italic"
+			android:textSize="11sp"/>
+
+	    <Switch
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/item_intellip"
+		android:id="@+id/intellip"
+
+		android:layout_alignParentTop="true"/>
+
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:layout_centerHorizontal="true"
+		    android:gravity="center_horizontal"
+		    android:id="@+id/intellip_subgroup">
+
+		    <CheckBox
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/item_sum_boost_intellip"
+			android:textSize="13sp"
+			android:button="@null"
+			android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+			android:id="@+id/intellip_boost"
+			android:layout_alignParentTop="true"/>
+
+		    <CheckBox
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/item_sum_scroff_intellip"
+			android:textSize="13sp"
+			android:button="@null"
+			android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+			android:id="@+id/intellip_scroff"
+			android:layout_alignParentTop="true"/>
+
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:layout_centerHorizontal="true"
+		    android:gravity="center_horizontal"
+		    android:id="@+id/intellip_scroff_subgroup">
+
+		    <Spinner
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/intellip_scroff_freq"/>
+
+		   <TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/item_note_scroff"
+			android:gravity="center_horizontal"
+			android:textStyle="italic"
+			android:textSize="11sp"/>
+
+		</LinearLayout>
 
 		</LinearLayout>
 
@@ -86,5 +183,8 @@
 		    
 
 	</LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
