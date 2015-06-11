@@ -137,7 +137,7 @@ public class ScriptPreference extends DialogPreference
 	mCommands.setSelection(mCommands.getText().length());
     }
 
-    public static void ExecuteOnBootCommands(SharedPreferences preferences){
+    public static void ExecuteBootCommands(SharedPreferences preferences){
 	if(Utils.stringToBool(preferences.getString(RUN_AT_BOOT, "0"))){
 		String[] commands = preferences.getString(RUN_AT_BOOT_COMMANDS, "").split(System.getProperty("line.separator"));
 		Utils.CMD(true, commands);

@@ -29,6 +29,7 @@ public interface Resources {
 	public static final String PATH_TAME_LOCAL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + TAG + "/";
 	public static final String LINK_APP_UPDATE = "https://raw.githubusercontent.com/EmmanuelU/Tame/master/releases/updatetame.sh";
 	public static final String LINK_WK_CPU_PATCH = "https://github.com/EmmanuelU/wild_kernel_htc_msm8660/commit/f9d17e63e7f9055fde6febd0b709405b023bdb38";
+	public static final String TAME_SERVICE = "TamerService";
 	
 	public static final String TAME_UID = "tame_uid";
 	public static final String SET_ON_BOOT = "set_on_boot";

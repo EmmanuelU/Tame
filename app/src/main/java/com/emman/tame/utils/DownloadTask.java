@@ -40,7 +40,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-public class DownloadTask extends AsyncTask<String, Integer, String> {
+public class DownloadTask extends AsyncTask<String, Integer, String> implements Resources {
 
     private Context context;
     private PowerManager.WakeLock mWakeLock;
@@ -70,7 +70,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
         // presses the power button during download
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-             getClass().getName());
+             TAME_SERVICE);
         mWakeLock.acquire();
         if(useDialog) mProgressDialog.show();
     }

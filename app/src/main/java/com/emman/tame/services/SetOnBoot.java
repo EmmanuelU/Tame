@@ -1,5 +1,6 @@
 package com.emman.tame.services;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -16,51 +17,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import com.emman.tame.BootCompletedReceiver;
 import com.emman.tame.MainActivity;
+import com.emman.tame.utils.Resources;
 
-public class SetOnBoot extends Service {
+public class SetOnBoot extends IntentService implements Resources {
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent == null) {
-            stopSelf();
-        }
-        new SetTameSettings(this).execute();
-        return START_STICKY;
+    public SetOnBoot() {
+	super(TAME_SERVICE);
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    protected void onHandleIntent(Intent intent) {
+	MainActivity.ExecuteBootData(PreferenceManager.getDefaultSharedPreferences(this));
+	BootCompletedReceiver.completeWakefulIntent(intent);
     }
 
-    class SetTameSettings extends AsyncTask<Void, Void, Void> {
-
-        Context context;
-	SharedPreferences mPreferences;
-
-        public SetTameSettings(Context context) {
-            this.context = context;
-            mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        }
-
-        @SuppressWarnings("deprecation")
-        @Override
-        protected Void doInBackground(Void... args) {
-            MainActivity.ExecuteBootData(mPreferences);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            stopSelf();
-        }
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 }
