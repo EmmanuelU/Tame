@@ -781,7 +781,7 @@ public class Utils
             String[] toMhz = new String[names.size()];
             return names.toArray(toMhz);
         }
-        return null;
+        return "".split("\\s+");
     }
 
     public static String[] getFilemA(String file) {
@@ -820,7 +820,7 @@ public class Utils
             String[] toMa = new String[names.size()];
             return names.toArray(toMa);
         }
-        return null;
+        return "".split("\\s+");
     }
 
     public static void ExtractAssets(Context context){

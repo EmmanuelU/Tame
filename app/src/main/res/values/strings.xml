@@ -151,6 +151,7 @@
     <string name="msg_dens_change2">dpi after reboot.</string>
 
     <string name="item_sum_fcharge">Higher the current, faster the charge. All these settings are safe to use.</string>
+    <string name="item_max_current">Max Current</string>
 
     <string name="item_mpdec">Mpdecision</string>
     <string name="item_sum_scroff_mpdec">Unplug secondary cores while screen off</string>

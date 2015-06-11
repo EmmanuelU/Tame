@@ -60,6 +60,8 @@ public class FastChargePreference extends DialogPreference
     private Switch mFastChargeToggle;
     private String[] mFastChargeMAList;
 
+    private boolean mFastChargeOld;
+
     private SharedPreferences mPreferences;
 
     public FastChargePreference(Context context, AttributeSet attrs) {
@@ -74,7 +76,13 @@ public class FastChargePreference extends DialogPreference
 	mView = view;
 	initiateData();
 
-	List<String> list = new ArrayList<String>(Arrays.asList(Utils.getFilemA(AVAILABLE_FAST_CHARGE_LIST)));
+	mFastChargeOld = !Utils.fileExists(AVAILABLE_FAST_CHARGE_LIST);
+
+	List<String> list;
+	if(mFastChargeOld)
+		list = new ArrayList<String>(Arrays.asList(getContext().getString(R.string.item_max_current)));
+	else
+		list = new ArrayList<String>(Arrays.asList(Utils.getFilemA(AVAILABLE_FAST_CHARGE_LIST)));
 	
 	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
 		android.R.layout.simple_spinner_item, list);
@@ -107,7 +115,10 @@ public class FastChargePreference extends DialogPreference
 	mFastCharge = (Spinner) mView.findViewById(R.id.fast_charge);
 	mFastChargeToggle = (Switch) mView.findViewById(R.id.fast_charge_toggle);
 	
-	mFastChargeMAList = Utils.readOneLine(AVAILABLE_FAST_CHARGE_LIST).split("\\s+");
+	if(mFastChargeOld)
+		mFastChargeMAList = getContext().getString(R.string.item_max_current).split("\\s+"); //will always be one line anyway >:)
+	else
+		mFastChargeMAList = Utils.readOneLine(AVAILABLE_FAST_CHARGE_LIST).split("\\s+");
 
 	return true;
     }
@@ -118,6 +129,8 @@ public class FastChargePreference extends DialogPreference
 	if(mFastCharge.getSelectedItemId() > 0){
 		updateSharedPrefs(mPreferences, SAVED_FORCE_FAST_CHARGE, Utils.writeSYSValue(FORCE_FAST_CHARGE_FILE, mFastChargeToggle.isChecked() ? "2" : "0"));
 		updateSharedPrefs(mPreferences, SAVED_FORCE_FAST_CHARGE_LEVEL, Utils.writeSYSValue(FORCE_FAST_CHARGE_LEVEL_FILE, mFastChargeMAList[(int) mFastCharge.getSelectedItemId() - 1]));
+	} else if(mFastChargeOld){
+		updateSharedPrefs(mPreferences, SAVED_FORCE_FAST_CHARGE, Utils.writeSYSValue(FORCE_FAST_CHARGE_FILE, mFastChargeToggle.isChecked() ? "1" : "0"));
 	} else updateSharedPrefs(mPreferences, SAVED_FORCE_FAST_CHARGE, Utils.writeSYSValue(FORCE_FAST_CHARGE_FILE, "0"));
 	
     }
@@ -125,7 +138,11 @@ public class FastChargePreference extends DialogPreference
     private void updateData(){
 	if(!initiateData()) return;
 
-	mFastChargeToggle.setChecked(Utils.readOneLine(FORCE_FAST_CHARGE_FILE).equals("2") ? true : false);
+	if(mFastChargeOld)
+		mFastChargeToggle.setChecked(Utils.stringToBool(Utils.readOneLine(FORCE_FAST_CHARGE_FILE)));
+	else
+		mFastChargeToggle.setChecked(Utils.readOneLine(FORCE_FAST_CHARGE_FILE).equals("2") ? true : false);
+
 	mFastCharge.setSelection(Utils.getArrayIndex(mFastChargeMAList, Utils.readOneLine(FORCE_FAST_CHARGE_LEVEL_FILE)) + 1);
 
 	updateDependencies();
