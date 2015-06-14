@@ -80,6 +80,7 @@ import com.emman.tame.utils.BackgroundTask;
 import com.emman.tame.utils.NotificationID;
 
 import com.stericson.RootShell.execution.Command;
+import com.stericson.RootShell.execution.Shell;
 import com.stericson.RootTools.RootTools;
 
 public class Utils 
@@ -180,7 +181,7 @@ public class Utils
     }
 
     /**
-    * @deprecated  No longer needed, just multiple strings in {@link #CMD(boolean, String...)}
+    * @deprecated  No longer needed, just input multiple strings in {@link #CMD(boolean, String...)}
     */
     @Deprecated
     public static String SetRABCommand(String command) {
@@ -197,7 +198,7 @@ public class Utils
     }
 
     public static boolean isLollipop() {
-	return Build.VERSION.SDK_INT > 20;
+	return getAndroidAPI() > 20;
     }
 
     public static void openFile(Context context, String filePath, String type) {
@@ -226,8 +227,9 @@ public class Utils
 
     public static boolean writeSystemProp(String propname, String propvalue) {
 	try {
-		CMD(false, "cp -f /system/build.prop " + FILE_TMP_BUILD_PROP);
-		CMD(false, "cp -f /system/build.prop " + FILE_BACKUP_BUILD_PROP);
+		RootTools.remount("/system/", "RW");
+		CMD(true, "mount -o remount rw /system/", "rm -rf " + FILE_LOCAL_BUILD_PROP, "mv -f /system/build.prop " + FILE_TMP_BUILD_PROP);
+		RootTools.copyFile("/system/build.prop", FILE_TMP_BUILD_PROP, true, false);
 		String previouspropvalue = readSystemProp(propname);
 		//generate modified build.prop
 		File newfile = new File(FILE_LOCAL_BUILD_PROP);
@@ -245,17 +247,24 @@ public class Utils
 		CMD(false, "rm -rf " + FILE_TMP_BUILD_PROP);
 
 		//replace /system/build.prop
-		updateSystemProp(FILE_LOCAL_BUILD_PROP);
+		if(!updateSystemProp(FILE_LOCAL_BUILD_PROP)){
+			return false;
+		}
 	} catch (Exception e) {
+		CMD(true, "mount -o remount rw /system/", "chmod 644  /system/build.prop");
 		return false;
 	}
 	return true;
     }
 
     public static boolean updateSystemProp(String newpropfile) {
+	RootTools.debugMode = true;
 	if(!fileExists(newpropfile)) return false;
-	CMDSpecialOS(true, "mount -o remount rw /system/", "mv -f " + newpropfile + " /system/build.prop", "chmod 644 /system/build.prop");
-	return true;
+
+	RootTools.remount("/system/", "RW");
+	RootTools.deleteFileOrDirectory("/system/build.prop", true);
+	CMD(true, "mount -o remount rw /system/", "chmod 644 " + newpropfile);
+	return RootTools.copyFile(newpropfile, "/system/build.prop", true, true);
     }
 
     public static String readSystemProp(String prop) {
@@ -511,9 +520,29 @@ public class Utils
 	return CMD(false, "su -v");
     }
 
-    private static String cmdOutput = "";
+    public static String CMDScript(String... commands){
+	String buildScript = "echo '#!/bin/sh' > " + FILE_SYS_QUEUE;
+	for(String line : commands) {
+		buildScript = buildScript + NEW_LINE + "echo '" + line + "' >> " + FILE_SYS_QUEUE;
+	}
+	return CMD(false, true, null, buildScript, "sh " + FILE_SYS_QUEUE);
+    }
+
+    public static String CMDSpecial(String... commands) {
+	return CMD(true, true, Shell.ShellContext.SHELL, commands);
+    }
+
+    public static void CMDBackground(final boolean useSu, String... commands) {
+	CMD(useSu, false, null, commands);
+    }
 
     public static String CMD(final boolean useSu, String... commands) {
+	return CMD(useSu, true, null, commands);
+    }
+
+    private static String cmdOutput = "";
+
+    public static String CMD(final boolean useSu, final boolean waitFor, Shell.ShellContext context, String... commands){
 	cmdOutput = "";
 
 	Command cmd = new Command(0, false, commands){
@@ -527,79 +556,49 @@ public class Utils
 		@Override
 		public void commandTerminated(int id, String reason) {
 		    super.commandTerminated(id, reason);
+		    if(!waitFor){
+                    	try{
+                        	RootTools.getShell(useSu).close();
+			} catch (Exception e){}
+		    }
 		}
 
 		@Override
 		public void commandCompleted(int id, int exitcode) {
-		    super.commandCompleted(id, exitcode);
+		    super.commandCompleted(id, exitcode);		    
+		    if(!waitFor){
+                    	try{
+                        	RootTools.getShell(useSu).close();
+			} catch (Exception e){}
+		    }
 		}
 	};
 
-	try{
-		RootTools.getShell(useSu).add(cmd);
+	try{	
+		if(context == null)
+			RootTools.getShell(useSu).add(cmd);
+		else
+			RootTools.getShell(useSu, 10000, context).add(cmd); //timeout of 10000 doesn't function for whatever reason, so I implemented my own below (timeoutms)
 	} catch (Exception e){
 	}
-        
-	int timeoutms = 0;
-        while (!cmd.isFinished() && timeoutms < 10000){
+
+	if(waitFor){  
+		int timeoutms = 0;
+		while (!cmd.isFinished() && timeoutms < 10000){
+			try{
+				Thread.sleep(50);
+				timeoutms += 50;
+		      	} catch (Exception e){}
+		}
+
 		try{
-			Thread.sleep(50);
-			timeoutms += 50;
-              	} catch (Exception e){}
-        }
+			RootTools.getShell(useSu).close();
+		} catch (Exception e){}
 
-	try{
-		RootTools.getShell(useSu).close();
-	} catch (Exception e){
+		return cmdOutput;
 	}
 
-	return cmdOutput;
-    }
-
-    public static void CMDBackground(final boolean useSu, String... commands) {
-
-	Command cmd = new Command(0, false, commands){
-	    	@Override
-		public void commandOutput(int id, String line) {
-			if(Utils.isStringEmpty(cmdOutput)) cmdOutput = line;
-			else cmdOutput = cmdOutput + NEW_LINE + line;
-		    	super.commandOutput(id, line);
-		}
-
-		@Override
-		public void commandTerminated(int id, String reason) {
-		    super.commandTerminated(id, reason);
-			try{
-				RootTools.getShell(useSu).close();
-			} catch (Exception e){}
-		}
-
-		@Override
-		public void commandCompleted(int id, int exitcode) {
-		    super.commandCompleted(id, exitcode);
-			try{
-				RootTools.getShell(useSu).close();
-			} catch (Exception e){}
-		}
-	};
-
-	try{
-		RootTools.getShell(useSu).add(cmd);
-	} catch (Exception e){
-	}
-
-    }
-
-    public static void CMDSpecialOS(final boolean useSu, String... commands) {  
-    	try{ 
-		Process p = Runtime.getRuntime().exec(useSu ? "su" : "sh");
-		DataOutputStream os = new DataOutputStream(p.getOutputStream());            
-		for (String command : commands) {
-			os.writeBytes(command + NEW_LINE);
-		}       
-		os.writeBytes("exit" + NEW_LINE);  
-		os.flush();
-	} catch (Exception e) {}
+	return "";
     }
 
     public static void toast(Context context, String message) {

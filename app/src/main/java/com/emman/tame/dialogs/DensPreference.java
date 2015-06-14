@@ -77,6 +77,7 @@ public class DensPreference extends DialogPreference
 	updateData();
 	
 	mScreenDensityBackup.setText(getContext().getString(R.string.note_rbackup, FILE_BACKUP_BUILD_PROP));
+	if(Utils.isLollipop()) mScreenDensityBackup.setText(mScreenDensityBackup.getText().toString() + NEW_LINE + getContext().getString(R.string.note_rbackup_lp));
 	mScreenDensity.setSelection(mScreenDensity.getText().length()); //EOL
 
 	mScreenDensityBackupButton.setOnClickListener(new View.OnClickListener() {

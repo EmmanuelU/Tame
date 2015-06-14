@@ -110,16 +110,6 @@ public class MainActivity extends Activity
 		this.finish();
 	}
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-	/* testing for now
-        if(!Utils.isSubstringInString("SUPERSU", Utils.getSUVersion()) && Utils.isLollipop()){
-		Intent intent = new Intent();
-		intent.setData(Uri.parse(LINK_PACKAGE_SUPERSU));
-		Utils.notification(this, NotificationID.ROOTFAIL, intent, getString(R.string.msg_lp_no_su));
-		Utils.toast(this, getString(R.string.msg_fatal_error));
-		this.finish();
-	}
-	*/
 	
 	if(Utils.isStringEmpty(mPreferences.getString(TAME_UID, ""))) updateSharedPrefs(mPreferences, TAME_UID, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID));
 	else if(!mPreferences.getString(TAME_UID, "").equals(Secure.getString(this.getContentResolver(), Secure.ANDROID_ID))){
@@ -145,7 +135,6 @@ public class MainActivity extends Activity
 	commands = "rm -rf /sdcard/DisableTame_S-O-B.zip";
 	commands = commands + NEW_LINE + "rm -rf " + FILE_SET_ON_BOOT;
 	commands = commands + NEW_LINE + "rm -rf " + FILE_RUN_AT_BOOT;
-	commands = commands + NEW_LINE + "rm -rf " + FILE_SYS_QUEUE;
 
 	Utils.CMDBackground(true, commands);
     }

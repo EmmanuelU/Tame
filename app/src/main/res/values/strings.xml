@@ -146,6 +146,7 @@
     <string name="msg_rbackup">Restore Backup</string>
     <string name="msg_nobackup">No Backup Found</string>
     <string name="note_rbackup">Rename and replace your /system/build.prop with %1$s or click below to restore, incase of problems.\n</string>
+    <string name="note_rbackup_lp">I HIGHLY recommend not attempting this on your current ROM (5.0+), as it will most likely break your ROM past repair. SELinux broke my current method and I\'m still working on a workaround to this, but for now only use this on KitKat and below.\n</string>
     <string name="msg_backedup">Backup build.prop restored, please reboot your device.</string>
     <string name="msg_dens_change">Density will be %1$s dpi.</string>
     <string name="msg_dens_change2">dpi after reboot.</string>

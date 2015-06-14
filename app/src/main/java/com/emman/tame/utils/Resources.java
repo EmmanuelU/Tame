@@ -41,6 +41,7 @@ public interface Resources {
 
 	public static final String FILE_UPDATE_DATA = PATH_TAME_LOCAL + "updatewild.sh";
 	public static final String FILE_APP_UPDATE_DATA = PATH_TAME_LOCAL + "updatetame.sh";
+	public static final String FILE_SYS_QUEUE = PATH_TAME_LOCAL + "Tame-SYSQueue.sh";
 
 	public static final String TAME_LAST_KMSG = PATH_TAME_LOCAL + "last_kmsg.txt";
 	public static final String TAME_LOGCAT = PATH_TAME_LOCAL + "logcat.txt";
@@ -148,6 +149,5 @@ public interface Resources {
 	/* Deprecated variables */
 	public static final String FILE_SET_ON_BOOT = PATH_TAME_LOCAL + "Tame-SOB.sh";
 	public static final String FILE_RUN_AT_BOOT = PATH_TAME_LOCAL + "Tame-RAB.sh";
-	public static final String FILE_SYS_QUEUE = PATH_TAME_LOCAL + "Tame-SYSQueue.sh";
 
 }
