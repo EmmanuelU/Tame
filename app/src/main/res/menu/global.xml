@@ -1,6 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/debug"
+        android:title="@string/item_debug_mode"
+        android:icon="@android:drawable/ic_menu_preferences"
+	android:checkable="true" />
+
     <item android:id="@+id/settings"
-        android:title="@string/page_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:title="@string/page_settings"/>
 </menu>

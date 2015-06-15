@@ -14,4 +14,10 @@
 	android:positiveButtonText="@string/item_save"
     />
 
+    <com.emman.tame.dialogs.DebugPreference
+	android:key="debugdialog"
+	android:title="@string/item_debug"
+	android:positiveButtonText="@string/item_return"
+    />
+
 </PreferenceScreen>

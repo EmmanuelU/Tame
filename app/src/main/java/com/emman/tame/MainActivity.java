@@ -43,6 +43,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.emman.tame.dialogs.BLNPreference;
@@ -91,9 +92,9 @@ public class MainActivity extends Activity
 
     private TextView mSetOnBootNote;
 
-    private SharedPreferences mPreferences;
+    private static SharedPreferences mPreferences;
 
-    private static Context context;
+    private static Context mContext;
 
     private static overrideBackListener overrideBackObserver;
 
@@ -102,14 +103,15 @@ public class MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-	context = this;
+	mContext = this;
+	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
 	if(!Utils.canSU()){
 		Intent intent = getIntent();
 		Utils.notification(this, NotificationID.ROOTFAIL, intent, getString(R.string.msg_no_su));
 		Utils.toast(this, getString(R.string.msg_fatal_error));
 		this.finish();
 	}
-	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 	
 	if(Utils.isStringEmpty(mPreferences.getString(TAME_UID, ""))) updateSharedPrefs(mPreferences, TAME_UID, Secure.getString(this.getContentResolver(), Secure.ANDROID_ID));
 	else if(!mPreferences.getString(TAME_UID, "").equals(Secure.getString(this.getContentResolver(), Secure.ANDROID_ID))){
@@ -198,6 +200,8 @@ public class MainActivity extends Activity
             getMenuInflater().inflate(R.menu.global, menu);
             restoreActionBar();
 	    mMenu = menu;
+
+            mMenu.findItem(R.id.debug).setChecked(isDebugging());
             return true;
         }
         return super.onCreateOptionsMenu(menu);
@@ -210,10 +214,15 @@ public class MainActivity extends Activity
         // as you specify a parent activity in AndroidManifest.xml.
 
         int id = item.getItemId();
-        if (id == R.id.settings) {
+        if(id == R.id.settings) {
             	startActivity(new Intent(this, Settings.class));
 		return true;
-       }
+	} else if(id == R.id.debug) {
+		item.setChecked(!item.isChecked());
+		if(item.isChecked()) Utils.burntToast(this, getString(R.string.item_msg_tamelog, FILE_TAME_LOG));
+            	updateSharedPrefs(mPreferences, TAME_DEBUG, Utils.boolToString(item.isChecked()));
+		return true;
+	}
         return super.onOptionsItemSelected(item);
     }
 
@@ -285,7 +294,11 @@ public class MainActivity extends Activity
     }
 
     public static Context getContext(){
-	return context;
+	return mContext;
+    }
+
+    public static boolean isDebugging() {
+	return Utils.stringToBool(mPreferences.getString(TAME_DEBUG, "0"));
     }
 
     public static interface overrideBackListener {

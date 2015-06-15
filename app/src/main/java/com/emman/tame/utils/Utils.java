@@ -61,7 +61,9 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -132,7 +134,12 @@ public class Utils
 				fos.flush();
 				fos.close();
 			} catch (Exception e) {
-				CMD(true, "echo " + value + " > " + fname);
+				logFile("Failed to normally write '" + value + "' to " + fname + ". Attempting SU...");
+				String ret = CMD(true, "echo " + value + " > " + fname);
+				if(!isStringEmpty(ret)) //outputed some error
+					logFile("Failed to write '" + value + "' to " + fname + " using SU.", ret);
+				else
+					logFile("Successfully wrote '" + value + "' to " + fname + " using SU.");
 			}
 	
 		}
@@ -177,6 +184,7 @@ public class Utils
 	if(!fileExists(fname)) return value;
 	if(isStringEmpty(MainActivity.BootCommands)) MainActivity.BootCommands = "echo \"" + value + "\" > " + fname;
 	else MainActivity.BootCommands = MainActivity.BootCommands + NEW_LINE + ("echo \"" + value + "\" > " + fname);
+	logFile("New SOB Request: '" + value + "' to " + fname + ".");
 	return value;
     }
 
@@ -208,6 +216,7 @@ public class Utils
 		File file = new File(filePath);
 		intent.setDataAndType(Uri.fromFile(file), type);
 		context.startActivity(intent); 
+		logFile("Opening " + filePath + " (" + type + ") with external module.");
 	}
     }
     
@@ -226,6 +235,9 @@ public class Utils
    }
 
     public static boolean writeSystemProp(String propname, String propvalue) {
+	boolean failed = false;
+	Exception error = null;
+	logFile("Attempting to set '" + propvalue + "' as " + propname + " in build.prop...");
 	try {
 		RootTools.remount("/system/", "RW");
 		CMD(true, "mount -o remount rw /system/", "rm -rf " + FILE_LOCAL_BUILD_PROP, "mv -f /system/build.prop " + FILE_TMP_BUILD_PROP);
@@ -248,13 +260,18 @@ public class Utils
 
 		//replace /system/build.prop
 		if(!updateSystemProp(FILE_LOCAL_BUILD_PROP)){
-			return false;
+			failed = true;
 		}
 	} catch (Exception e) {
-		CMD(true, "mount -o remount rw /system/", "chmod 644  /system/build.prop");
-		return false;
+		error = e;
+		failed = true;
+	} finally {
+		if(failed){
+			errorHandle(error, "Failed to write to build.prop, are you on Lollipop? Attempting to save ROM integrity");
+			CMD(true, "mount -o remount rw /system/", "chmod 644  /system/build.prop");
+		}
+		return !failed;
 	}
-	return true;
     }
 
     public static boolean updateSystemProp(String newpropfile) {
@@ -277,7 +294,7 @@ public class Utils
 		outputStream.write(filename.getBytes());
 		outputStream.close();
 	} catch (Exception e) {
-		e.printStackTrace();
+		errorHandle(e);
 	}
     }
 
@@ -317,6 +334,7 @@ public class Utils
                 numOfCpu = 1;
             }
         }
+	logFile("Number of Processors: " + numOfCpu);
         return numOfCpu;
     }
 
@@ -352,11 +370,6 @@ public class Utils
         alertDialog.show();
     }
 
-    public static void log(String message, boolean error) {
-	if(error) Log.e(TAG, " " + message);
-	else Log.i(TAG, " " + message);
-   }
-
     public static boolean canSU() {
         return RootTools.isAccessGiven();
     }
@@ -380,13 +393,13 @@ public class Utils
                 br.close();
             }
         } catch (Exception e) {
-            // attempt to do magic with root!
             return readFileViaShell(fname, true);
         }
         return line;
     }
 
     public static String readFile(String fname) {
+	if(!fileExists(fname)) return "";
 	File file = new File(fname);
 	StringBuilder text = new StringBuilder();
 	try {
@@ -399,7 +412,6 @@ public class Utils
 		}
 	}
 	catch (Exception e) {
-		// attempt to do magic with root!
            	return readFileViaShell(fname, true);
 	}
 	return text.toString();
@@ -437,7 +449,9 @@ public class Utils
 				    contents.append(line + "\n");
 				}
 			}
-			catch (Exception e) {}
+			catch (Exception e) {
+				errorHandle(e);
+			}
 			fetchComplete = true;
 		}
 
@@ -454,7 +468,12 @@ public class Utils
 		try{
 			Thread.sleep(50);
 			timeoutms += 50;
-              	} catch (Exception e){}
+              	} catch (Exception e){
+			errorHandle(e);
+		}
+		finally{
+			if(timeoutms >= 10000) logFile("Fetch File '" + fileUrl + "' timed out.");
+		}
         }
 
 	return contents.toString();
@@ -532,11 +551,15 @@ public class Utils
 	return CMD(true, true, Shell.ShellContext.SHELL, commands);
     }
 
-    public static void CMDBackground(final boolean useSu, String... commands) {
+    public static String CMDQuiet(boolean useSu, String... commands) {
+	return CMD(useSu, true, Shell.ShellContext.SHELL, commands);
+    }
+
+    public static void CMDBackground(boolean useSu, String... commands) {
 	CMD(useSu, false, null, commands);
     }
 
-    public static String CMD(final boolean useSu, String... commands) {
+    public static String CMD(boolean useSu, String... commands) {
 	return CMD(useSu, true, null, commands);
     }
 
@@ -559,17 +582,17 @@ public class Utils
 		    if(!waitFor){
                     	try{
                         	RootTools.getShell(useSu).close();
-			} catch (Exception e){}
+			} catch (Exception unlikely){}
 		    }
 		}
 
 		@Override
 		public void commandCompleted(int id, int exitcode) {
-		    super.commandCompleted(id, exitcode);		    
+		    super.commandCompleted(id, exitcode);    
 		    if(!waitFor){
                     	try{
                         	RootTools.getShell(useSu).close();
-			} catch (Exception e){}
+			} catch (Exception unlikely){}
 		    }
 		}
 	};
@@ -579,8 +602,7 @@ public class Utils
 			RootTools.getShell(useSu).add(cmd);
 		else
 			RootTools.getShell(useSu, 10000, context).add(cmd); //timeout of 10000 doesn't function for whatever reason, so I implemented my own below (timeoutms)
-	} catch (Exception e){
-	}
+	} catch (Exception unlikely){}
 
 	if(waitFor){  
 		int timeoutms = 0;
@@ -588,12 +610,15 @@ public class Utils
 			try{
 				Thread.sleep(50);
 				timeoutms += 50;
-		      	} catch (Exception e){}
+		      	} catch (Exception unlikely){}
+			finally{
+				if(timeoutms >= 10000) logFile("Command timed out after 10 seconds.", "Output: " + cmdOutput);
+			}
 		}
 
 		try{
 			RootTools.getShell(useSu).close();
-		} catch (Exception e){}
+		} catch (Exception unlikely){}
 
 		return cmdOutput;
 	}
@@ -603,14 +628,30 @@ public class Utils
 
     public static void toast(Context context, String message) {
 	Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+	logFile("Toast: " + message);
     }
 
-    public static void burnttoast(Context context, String message) {
+    public static void burntToast(Context context, String message) {
 	Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+	logFile("Burnt Toast: " + message);
     }
 
-    public static void errorHandle(Context context, String message) {
-	Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    public static void logFile(String... messages) {
+	//messages don't need to be translated because I'm the only one reading them anyway
+	if(MainActivity.isDebugging())
+		for(String message : messages) {
+			CMD(false, "echo '" + new SimpleDateFormat("[LL/d/yyyy @ kk:mm:ss] ").format(new Date()) + message + "' >> " + FILE_TAME_LOG);
+		}
+		CMD(false, "echo  >> " + FILE_TAME_LOG);
+    }
+
+    public static void errorHandle(Exception e) {
+	errorHandle(e, e.toString());
+    }
+
+    public static void errorHandle(Exception e, String errordesc) {
+	e.printStackTrace();
+	logFile(errordesc);
     }
 
     public static int getNotificationID(NotificationID id) {
@@ -654,6 +695,7 @@ public class Utils
 	Notif.setContentIntent(pIntent);
 	mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
+	logFile("Notification: " + message);
     }
     
     public static void testNotification(Context context, NotificationID id, Intent intent, String message, int on, int off, int color) {
@@ -693,6 +735,7 @@ public class Utils
 	Notif.setContentIntent(pIntent);
 	mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
+	logFile("Notification: " + message);
     }
     
     public static void clearNotification(Context context, NotificationID id){
@@ -770,7 +813,7 @@ public class Utils
                         fin1.close();
                     }
                 }
-                catch (IOException ioe1) {
+                catch (Exception ioe1) {
                     //System.out.println("Error while closing stream: " + ioe1);
                 }
             }
@@ -848,10 +891,12 @@ public class Utils
             }
  
         } catch (Exception e) {
-            e.printStackTrace();
+	    logFile("Failed to extract zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Do you have an sdcard?");
             Utils.notification(context, NotificationID.EXTRACT, null, "Failed to extract zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Do you have an sdcard?");
+            errorHandle(e);
 	    return;
         }
+	logFile("Extracted emergency zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Flash in recovery when you wish to disable Tame's next Set on Boot.");
 	Utils.notification(context, NotificationID.EXTRACT, null, "Extracted emergency zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Flash in recovery when you wish to disable Tame's next Set on Boot.");
     }
  
@@ -871,12 +916,9 @@ public class Utils
             out.close();
             out = null;
  
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+	    logFile("Failed to extract Application Assets, do you have an sdcard?");
+            errorHandle(e);
         }
     }
 

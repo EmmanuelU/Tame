@@ -43,6 +43,9 @@ public interface Resources {
 	public static final String FILE_APP_UPDATE_DATA = PATH_TAME_LOCAL + "updatetame.sh";
 	public static final String FILE_SYS_QUEUE = PATH_TAME_LOCAL + "Tame-SYSQueue.sh";
 
+	public static final String TAME_DEBUG = "tame_debug";
+	public static final String FILE_TAME_LOG = PATH_TAME_LOCAL + "Tame-LOG.txt";
+
 	public static final String TAME_LAST_KMSG = PATH_TAME_LOCAL + "last_kmsg.txt";
 	public static final String TAME_LOGCAT = PATH_TAME_LOCAL + "logcat.txt";
 
