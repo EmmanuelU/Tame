@@ -206,6 +206,7 @@ public class MainActivity extends Activity
 	    mMenu = menu;
 
             mMenu.findItem(R.id.debug).setChecked(isDebugging());
+            mMenu.findItem(R.id.sob).setChecked(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0")));
             return true;
         }
         return super.onCreateOptionsMenu(menu);
@@ -225,6 +226,12 @@ public class MainActivity extends Activity
 		item.setChecked(!item.isChecked());
 		if(item.isChecked()) Utils.burntToast(this, getString(R.string.item_msg_tamelog, FILE_TAME_LOG));
             	updateSharedPrefs(mPreferences, TAME_DEBUG, Utils.boolToString(item.isChecked()));
+		return true;
+	} else if(id == R.id.sob) {
+		item.setChecked(!item.isChecked());
+		TextView mSOBNote = (TextView) findViewById(R.id.sobnote);
+		if(mSOBNote != null) mSOBNote.setEnabled(item.isChecked());
+            	updateSharedPrefs(mPreferences, SET_ON_BOOT, Utils.boolToString(item.isChecked()));
 		return true;
 	}
         return super.onOptionsItemSelected(item);

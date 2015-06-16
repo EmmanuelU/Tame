@@ -85,10 +85,6 @@ public class Settings extends PreferenceActivity
 	
     }
 
-    public static void settingsCallback(){
-	
-    }
-
     public static void SetOnBootData(SharedPreferences preferences){
 	
     }

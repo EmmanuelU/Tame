@@ -34,6 +34,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -62,6 +63,7 @@ public class ScriptPreference extends DialogPreference
 
     private View mView;
 
+    private Button mScriptRestore;
     private EditText mCommands;
     private Switch mScript;
 
@@ -91,6 +93,17 @@ public class ScriptPreference extends DialogPreference
 		}
 	});
 
+	mScriptRestore.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			mScriptRestore.setText(getContext().getString(R.string.msg_loading));
+			mScriptRestore.setEnabled(false);
+			ExecuteBootCommands(mPreferences);
+			mScriptRestore.setText(getContext().getString(R.string.msg_done));
+			Utils.toast(getContext(), getContext().getString(R.string.msg_restored_cmd));
+		}
+	});
+
     }
 
     @Override
@@ -108,6 +121,7 @@ public class ScriptPreference extends DialogPreference
 
 	mCommands = (EditText) mView.findViewById(R.id.commands);
 	mScript = (Switch) mView.findViewById(R.id.scripttoggle);
+	mScriptRestore = (Button) mView.findViewById(R.id.restore_cmd);
 
 	return true;
     }
@@ -139,7 +153,6 @@ public class ScriptPreference extends DialogPreference
     }
 
     public static void ExecuteBootCommands(SharedPreferences preferences){
-
 	String[] commands = preferences.getString(RUN_AT_BOOT_COMMANDS, "").split(System.getProperty("line.separator"));
 	Utils.log(null, preferences, "-RAB-", Utils.arrayToString(commands));
 	Utils.CMD(true, commands);

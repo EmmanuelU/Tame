@@ -11,7 +11,7 @@
 	android:key="SOBdialog"
 	android:title="@string/item_sob"
 	android:summary="@string/item_sum_sob"
-	android:positiveButtonText="@string/item_save"
+	android:positiveButtonText="@string/item_return"
     />
 
     <com.emman.tame.dialogs.DebugPreference

@@ -46,6 +46,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="item_sob">Restore Settings on Boot</string>
+    <string name="item_restore_settings_now">Restore Settings Now</string>
+    <string name="msg_restored_settings">Restored saved boot settings.</string>
     <string name="item_sum_sob">Android naturally erases kernel settings to default after a reboot. Enabling this will restore your custom settings.</string>
     <string name="msg_sobnote">After a reboot, Tame may take a minute or two to restore settings.\n\n In the event that you screwed up and you want to disable Tame Settings from recovery, there is a flash-able zip on your sdcard.\n\n</string>
     <string name="msg_sobstatus">Last Restored Settings:</string>
@@ -123,8 +125,10 @@
     <string name="item_runatboot">Run At Boot</string>
     <string name="item_add_runatboot">Add to Run At Boot</string>
     <string name="item_sum_runatboot">Schedule shell commands to be executed every startup. While this is independent of Tame\'s Set On Boot, this will disable itself if the SOB disabler zip is flashed.</string>
+    <string name="item_restore_cmd_now">Run Commands Now</string>
+    <string name="msg_restored_cmd">Commands executed.</string>
     <string name="item_note_runatboot">Commands will be executed using root permissions, so no need to request.</string>
-    <string name="item_hint_runatboot">Type your shell commands here.</string>
+    <string name="item_hint_runatboot">Type your shell commands here. </string>
     <string name="item_sum_runatboot_queued">Commands queued for next device boot.</string>
 
     <string name="item_log">Dump System Logs</string>
@@ -142,6 +146,7 @@
     <string name="item_max_frequency">Maximum Frequency</string>
 
     <string name="msg_loading">Loading ...</string>
+    <string name="msg_done">Done</string>
 
     <string name="msg_rbackup">Restore Backup</string>
     <string name="msg_nobackup">No Backup Found</string>
@@ -176,11 +181,11 @@
     <string name="msg_app_update">%1$s from %2$s is now available to download.</string>
 
     <string name="item_debug">Debug</string>
-    <string name="item_debug_mode">Debug Mode</string>
+    <string name="item_debug_mode">Debugging Mode</string>
     <string name="item_clear_tamelog">Clear Log</string>
     <string name="msg_cleared_tamelog">Log cleared.</string>
     <string name="item_tamelog">View Log</string>
     <string name="item_sum_tamelog">This log is stored at %1$s for your convenience.\n\n%2$s</string>
-    <string name="item_msg_tamelog">Debugging mode slows down the functionality app, only use it when needed.</string>
+    <string name="item_msg_tamelog">Debugging mode slows down the functionality app. Only use it when needed.</string>
 
 </resources>

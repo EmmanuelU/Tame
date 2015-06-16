@@ -2,6 +2,7 @@ package com.emman.tame.dialogs;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -47,6 +49,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.emman.tame.R;
+import com.emman.tame.MainActivity;
 import com.emman.tame.fragments.CPUSettings;
 import com.emman.tame.Settings;
 import com.emman.tame.utils.Resources;
@@ -57,6 +60,7 @@ public class SOBPreference extends DialogPreference
 
     private View mView;
 
+    private Button mSOBRestore;
     private CheckBox mCPUSOBToggle;
     private Switch mSOBToggle;
 
@@ -78,24 +82,36 @@ public class SOBPreference extends DialogPreference
 	mSOBToggle.setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
+			updateSharedPrefs(mPreferences, SET_ON_BOOT, Utils.boolToString(mSOBToggle.isChecked()));
 			updateDependencies();
 		}
 	});
+
+	mCPUSOBToggle.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			updateSharedPrefs(mPreferences, CPU_SET_ON_BOOT, Utils.boolToString(mCPUSOBToggle.isChecked()));
+		}
+	});
+
+	mSOBRestore.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			mSOBRestore.setText(getContext().getString(R.string.msg_loading));
+			mSOBRestore.setEnabled(false);
+			MainActivity.ExecuteBootData(mPreferences);
+			mSOBRestore.setText(getContext().getString(R.string.msg_done));
+			Utils.toast(getContext(), getContext().getString(R.string.msg_restored_settings));
+		}
+	});
 	
-    }
-
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-	super.onDialogClosed(positiveResult);
-		if (getOnPreferenceChangeListener() != null) getOnPreferenceChangeListener().onPreferenceChange(this, null);
-	if(positiveResult) setData();
-
     }
 
     private boolean initiateData(){
 
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
+	mSOBRestore = (Button) mView.findViewById(R.id.restore_sob);
 	mCPUSOBToggle = (CheckBox) mView.findViewById(R.id.sob_cpu);
 	mSOBToggle = (Switch) mView.findViewById(R.id.sob);
 
@@ -106,15 +122,6 @@ public class SOBPreference extends DialogPreference
 	if(!initiateData()) return;
 
 	mCPUSOBToggle.setEnabled(mSOBToggle.isChecked());
-    }
-
-    private void setData(){
-	if(!initiateData()) return;
-	
-	updateSharedPrefs(mPreferences, SET_ON_BOOT, Utils.boolToString(mSOBToggle.isChecked()));
-	updateSharedPrefs(mPreferences, CPU_SET_ON_BOOT, Utils.boolToString(mCPUSOBToggle.isChecked()));
-
-	Settings.settingsCallback();
     }
 
     private void updateData(){
@@ -130,6 +137,12 @@ public class SOBPreference extends DialogPreference
 	final SharedPreferences.Editor editor = preferences.edit();
 	editor.putString(var, value);
 	editor.commit();
+    }
+
+    @Override
+    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+	super.onPrepareDialogBuilder(builder);
+	builder.setNegativeButton(null, null);
     }
 
 } 

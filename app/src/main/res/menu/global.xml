@@ -1,6 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/sob"
+        android:title="@string/item_sob"
+        android:icon="@android:drawable/ic_menu_preferences"
+	android:checkable="true" />
+
+    <item
         android:id="@+id/debug"
         android:title="@string/item_debug_mode"
         android:icon="@android:drawable/ic_menu_preferences"
