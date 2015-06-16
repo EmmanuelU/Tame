@@ -53,6 +53,7 @@ import java.util.ArrayList;
 
 import com.emman.tame.R;
 import com.emman.tame.fragments.CPUSettings;
+import com.emman.tame.MainActivity;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
 
@@ -138,10 +139,10 @@ public class ScriptPreference extends DialogPreference
     }
 
     public static void ExecuteBootCommands(SharedPreferences preferences){
-	if(Utils.stringToBool(preferences.getString(RUN_AT_BOOT, "0"))){
-		String[] commands = preferences.getString(RUN_AT_BOOT_COMMANDS, "").split(System.getProperty("line.separator"));
-		Utils.CMD(true, commands);
-	}
+
+	String[] commands = preferences.getString(RUN_AT_BOOT_COMMANDS, "").split(System.getProperty("line.separator"));
+	Utils.log(null, preferences, "-RAB-", Utils.arrayToString(commands));
+	Utils.CMD(true, commands);
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

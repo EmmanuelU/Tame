@@ -17,6 +17,7 @@
     <com.emman.tame.dialogs.DebugPreference
 	android:key="debugdialog"
 	android:title="@string/item_debug"
+	android:summary="@string/item_msg_tamelog"
 	android:positiveButtonText="@string/item_return"
     />
 

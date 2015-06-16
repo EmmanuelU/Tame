@@ -105,6 +105,10 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
 	mContext = this;
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+	//NO CODE BEFORE THIS LINE
+	Utils.logSafeContext = true;
+
+	Utils.log("-NEW SESSION-");
 
 	if(!Utils.canSU()){
 		Intent intent = getIntent();
@@ -267,6 +271,7 @@ public class MainActivity extends Activity
     }
 
     public static void ExecuteBootData(SharedPreferences preferences){
+
 	CPUPolicyPreference.SetOnBootData(preferences);
 	CPUInputBoostPreference.SetOnBootData(preferences);
 	CPUInputBoostV2Preference.SetOnBootData(preferences);
@@ -281,6 +286,8 @@ public class MainActivity extends Activity
 	S2WPreference.SetOnBootData(preferences);
 	GPUPreference.SetOnBootData(preferences);
 	FastChargePreference.SetOnBootData(preferences);
+
+	Utils.log(null, preferences, "-SOB-", BootCommands);
 
 	Utils.CMD(true, BootCommands);
 

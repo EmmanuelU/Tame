@@ -10,6 +10,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
@@ -93,28 +94,37 @@ public class Utils
 	return MainActivity.getContext();
     }
 
-    /**
-     * Write a string value to the specified file.
-     * @param filename      The filename
-     * @param value         The value
-     */
-    public static String writeValue(String filename, String value) {
+
+    public static String writeFile(String fname, String data) {
         try {
-            FileOutputStream fos = new FileOutputStream(new File(filename));
-            fos.write(value.getBytes());
+            FileOutputStream fos = new FileOutputStream(new File(fname));
+            fos.write(data.getBytes());
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-	return value;
+        } catch (Exception unlikely) {}
+	return data;
     }
 
-    public static String appendFile(String filename, String value) {
-	CMD(false, "echo '" + value + "' >> " + filename);
-	return value;
+    public static String appendFile(String fname, String data) {
+	try {    
+    		File file = new File(fname);
+ 
+    		if(!file.exists()){
+    			file.createNewFile();
+    		}
+ 
+    		FileWriter fileWritter = new FileWriter(file,true);
+    	        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+    	        bufferWritter.write(data);
+    	        bufferWritter.write(NEW_LINE);
+    	        bufferWritter.close();
+ 
+	} catch (Exception common) {
+		common.printStackTrace();
+		CMD(false, "echo '" + data + "' >> " + fname);
+	}
+
+	return data;
     }
 
     public static String getSYSCommand(String fname, String value) {
@@ -134,12 +144,12 @@ public class Utils
 				fos.flush();
 				fos.close();
 			} catch (Exception e) {
-				logFile("Failed to normally write '" + value + "' to " + fname + ". Attempting SU...");
+				log("-FILE-", "Failed to normally write '" + value + "' to " + fname + ". Attempting SU...");
 				String ret = CMD(true, "echo " + value + " > " + fname);
 				if(!isStringEmpty(ret)) //outputed some error
-					logFile("Failed to write '" + value + "' to " + fname + " using SU.", ret);
+					log("-FILE-", "Failed to write '" + value + "' to " + fname + " using SU.", ret);
 				else
-					logFile("Successfully wrote '" + value + "' to " + fname + " using SU.");
+					log("-FILE-", "Successfully wrote '" + value + "' to " + fname + " using SU.");
 			}
 	
 		}
@@ -184,7 +194,6 @@ public class Utils
 	if(!fileExists(fname)) return value;
 	if(isStringEmpty(MainActivity.BootCommands)) MainActivity.BootCommands = "echo \"" + value + "\" > " + fname;
 	else MainActivity.BootCommands = MainActivity.BootCommands + NEW_LINE + ("echo \"" + value + "\" > " + fname);
-	logFile("New SOB Request: '" + value + "' to " + fname + ".");
 	return value;
     }
 
@@ -216,7 +225,7 @@ public class Utils
 		File file = new File(filePath);
 		intent.setDataAndType(Uri.fromFile(file), type);
 		context.startActivity(intent); 
-		logFile("Opening " + filePath + " (" + type + ") with external module.");
+		log("-FILE-", "Opening " + filePath + " (" + type + ") with external module.");
 	}
     }
     
@@ -237,7 +246,7 @@ public class Utils
     public static boolean writeSystemProp(String propname, String propvalue) {
 	boolean failed = false;
 	Exception error = null;
-	logFile("Attempting to set '" + propvalue + "' as " + propname + " in build.prop...");
+	log("-FILE-", "Attempting to set '" + propvalue + "' as " + propname + " in build.prop...");
 	try {
 		RootTools.remount("/system/", "RW");
 		CMD(true, "mount -o remount rw /system/", "rm -rf " + FILE_LOCAL_BUILD_PROP, "mv -f /system/build.prop " + FILE_TMP_BUILD_PROP);
@@ -317,24 +326,28 @@ public class Utils
 	return true;  
     }
 
-   public static int getNumOfCpus() {
-        int numOfCpu = 1;
-        String numOfCpus = readOneLine(NUM_OF_CPUS_PATH);
-        String[] cpuCount = numOfCpus.split("-");
-        if (cpuCount.length > 1) {
-            try {
-                int cpuStart = Integer.parseInt(cpuCount[0]);
-                int cpuEnd = Integer.parseInt(cpuCount[1]);
+    private static int numOfCpu = 0;
+    public static int getNumOfCpus() {
+	if(numOfCpu == 0){
+		int cpus = 1;
+		String numOfCpus = readOneLine(NUM_OF_CPUS_PATH);
+		String[] cpuCount = numOfCpus.split("-");
+		if (cpuCount.length > 1) {
+		    try {
+			int cpuStart = Integer.parseInt(cpuCount[0]);
+			int cpuEnd = Integer.parseInt(cpuCount[1]);
 
-                numOfCpu = cpuEnd - cpuStart + 1;
+			cpus = cpuEnd - cpuStart + 1;
 
-                if (numOfCpu < 0)
-                    numOfCpu = 1;
-            } catch (NumberFormatException ex) {
-                numOfCpu = 1;
-            }
-        }
-	logFile("Number of Processors: " + numOfCpu);
+			if (cpus < 0)
+			    cpus = 1;
+		    } catch (NumberFormatException ex) {
+			cpus = 1;
+		    }
+		}
+		numOfCpu = cpus;
+		log("-INFO-", "Device has " + numOfCpu + " processors.");
+	}
         return numOfCpu;
     }
 
@@ -345,7 +358,7 @@ public class Utils
      * @param value         The value of max value Integer.MAX
      */
     public static void writeColor(String filename, int value) {
-        writeValue(filename, String.valueOf((long) value * 2));
+        writeFile(filename, String.valueOf((long) value * 2));
     }
 
     /**
@@ -354,7 +367,11 @@ public class Utils
      * @return              Whether the file exists or not
      */
     public static boolean fileExists(String filename) {
-        return new File(filename).exists();
+	if(!new File(filename).exists()){
+		log("-FILE-", "'" + filename + "' does not exist.");
+		return false;
+	}
+        return true;
     }
 
 
@@ -472,7 +489,7 @@ public class Utils
 			errorHandle(e);
 		}
 		finally{
-			if(timeoutms >= 10000) logFile("Fetch File '" + fileUrl + "' timed out.");
+			if(timeoutms >= 10000) log("-NET-", "URL Fetch of '" + fileUrl + "' timed out.");
 		}
         }
 
@@ -501,6 +518,15 @@ public class Utils
     public static boolean stringToBool(String s) {
 	return (s.equals("1"));
     }
+
+    public static String arrayToString(String[] array) {
+	StringBuilder builder = new StringBuilder();
+	for(String s : array) {
+	    builder.append(s);
+	}
+	return builder.toString();
+    }
+
     public static boolean isStringEmpty(String s) {
 	return (s == null || s.equals("") || !(s.trim().length() > 0));
     }
@@ -612,7 +638,7 @@ public class Utils
 				timeoutms += 50;
 		      	} catch (Exception unlikely){}
 			finally{
-				if(timeoutms >= 10000) logFile("Command timed out after 10 seconds.", "Output: " + cmdOutput);
+				if(timeoutms >= 10000) log("-COMMAND-", "Process timed out after 10 seconds.", "Output: " + cmdOutput);
 			}
 		}
 
@@ -628,21 +654,38 @@ public class Utils
 
     public static void toast(Context context, String message) {
 	Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-	logFile("Toast: " + message);
+	log("-TOAST-", message);
     }
 
     public static void burntToast(Context context, String message) {
 	Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-	logFile("Burnt Toast: " + message);
+	log("-TOAST-", message);
     }
 
-    public static void logFile(String... messages) {
+    /**messages don't need to be translated because I'm the only one reading them anyway **/
+    public static boolean logSafeContext = false; //this method requires a non-static primary context (unlike a service)
+    public synchronized static void log(String... messages) {
 	//messages don't need to be translated because I'm the only one reading them anyway
-	if(MainActivity.isDebugging())
+	if(!logSafeContext) return;
+	if(MainActivity.isDebugging()){
+		boolean logHeader = true;
 		for(String message : messages) {
-			CMD(false, "echo '" + new SimpleDateFormat("[LL/d/yyyy @ kk:mm:ss] ").format(new Date()) + message + "' >> " + FILE_TAME_LOG);
+			appendFile(FILE_TAME_LOG, ((logHeader) ? new SimpleDateFormat("[LL/d/yyyy @ kk:mm:ss] ").format(new Date()) : "") + message);
+			logHeader = false;
 		}
-		CMD(false, "echo  >> " + FILE_TAME_LOG);
+		appendFile(FILE_TAME_LOG, "");
+	}
+    }
+
+    public synchronized static void log(Object stub, SharedPreferences preferences, String... messages) {
+	if(Utils.stringToBool(preferences.getString(TAME_DEBUG, "0"))){
+		boolean logHeader = true;
+		for(String message : messages) {
+			appendFile(FILE_TAME_LOG, ((logHeader) ? new SimpleDateFormat("[LL/d/yyyy @ kk:mm:ss] ").format(new Date()) : "") + message);
+			logHeader = false;
+		}
+		appendFile(FILE_TAME_LOG, "");
+	}
     }
 
     public static void errorHandle(Exception e) {
@@ -651,7 +694,7 @@ public class Utils
 
     public static void errorHandle(Exception e, String errordesc) {
 	e.printStackTrace();
-	logFile(errordesc);
+	log("-ERROR-", errordesc);
     }
 
     public static int getNotificationID(NotificationID id) {
@@ -695,7 +738,7 @@ public class Utils
 	Notif.setContentIntent(pIntent);
 	mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
-	logFile("Notification: " + message);
+	log("-NOTIFICATION-", message);
     }
     
     public static void testNotification(Context context, NotificationID id, Intent intent, String message, int on, int off, int color) {
@@ -735,7 +778,7 @@ public class Utils
 	Notif.setContentIntent(pIntent);
 	mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
-	logFile("Notification: " + message);
+	log("-NOTIFICATION-", message);
     }
     
     public static void clearNotification(Context context, NotificationID id){
@@ -789,7 +832,9 @@ public class Utils
                 .toString();
     }
 
+    private static String[] freqMhz = null;
     public static String[] getFileFreqToMhz(String file, int how) {
+	if(freqMhz != null) return freqMhz;
         if(fileExists(file)) {
             ArrayList<String> names = new ArrayList<String>();
             //setPermissions(file);
@@ -821,12 +866,15 @@ public class Utils
                 names.add((Integer.parseInt(s) / how) + "MHz");
             }
             String[] toMhz = new String[names.size()];
-            return names.toArray(toMhz);
+	    freqMhz = names.toArray(toMhz);
+            return freqMhz;
         }
         return "".split("\\s+");
     }
 
+    private static String[] fileMa = null;
     public static String[] getFilemA(String file) {
+	if(fileMa != null) return fileMa;
         if(fileExists(file)) {
             ArrayList<String> names = new ArrayList<String>();
 	
@@ -859,8 +907,9 @@ public class Utils
             for(String s : new String(fileContent).trim().split(" ")) {
                 names.add(Integer.parseInt(s) + "mA");
             }
-            String[] toMa = new String[names.size()];
-            return names.toArray(toMa);
+            String[] toMa = new String[names.size()];	    
+	    fileMa = names.toArray(toMa);
+            return fileMa;
         }
         return "".split("\\s+");
     }
@@ -891,12 +940,11 @@ public class Utils
             }
  
         } catch (Exception e) {
-	    logFile("Failed to extract zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Do you have an sdcard?");
             Utils.notification(context, NotificationID.EXTRACT, null, "Failed to extract zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Do you have an sdcard?");
             errorHandle(e);
 	    return;
         }
-	logFile("Extracted emergency zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Flash in recovery when you wish to disable Tame's next Set on Boot.");
+	log("-FILE-", "Extracted emergency zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Flash in recovery when you wish to disable Tame's next Set on Boot.");
 	Utils.notification(context, NotificationID.EXTRACT, null, "Extracted emergency zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Flash in recovery when you wish to disable Tame's next Set on Boot.");
     }
  
@@ -917,7 +965,7 @@ public class Utils
             out = null;
  
         } catch (Exception e) {
-	    logFile("Failed to extract Application Assets, do you have an sdcard?");
+	    log("-FILE-", "Failed to extract Application Assets, do you have an sdcard?");
             errorHandle(e);
         }
     }

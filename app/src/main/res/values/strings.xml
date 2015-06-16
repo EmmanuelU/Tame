@@ -175,12 +175,12 @@
 
     <string name="msg_app_update">%1$s from %2$s is now available to download.</string>
 
-    <string name="item_debug">Debug Log</string>
+    <string name="item_debug">Debug</string>
     <string name="item_debug_mode">Debug Mode</string>
     <string name="item_clear_tamelog">Clear Log</string>
     <string name="msg_cleared_tamelog">Log cleared.</string>
     <string name="item_tamelog">View Log</string>
     <string name="item_sum_tamelog">This log is stored at %1$s for your convenience.\n\n%2$s</string>
-    <string name="item_msg_tamelog">Debugging mode may slow down the functionality app, only use it when needed.</string>
+    <string name="item_msg_tamelog">Debugging mode slows down the functionality app, only use it when needed.</string>
 
 </resources>

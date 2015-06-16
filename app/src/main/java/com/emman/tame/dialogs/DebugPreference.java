@@ -58,6 +58,7 @@ public class DebugPreference extends DialogPreference implements Resources {
     private Button mClearLog;
     private Button mViewLog;
     private SharedPreferences mPreferences;
+    private Switch mLog;
     private TextView mLogInfo;
 
     public DebugPreference(Context context, AttributeSet attrs) {
@@ -87,11 +88,21 @@ public class DebugPreference extends DialogPreference implements Resources {
 		}
 	});
 
+	mLog.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			updateSharedPrefs(mPreferences, TAME_DEBUG, Utils.boolToString(mLog.isChecked()));
+			updateText();
+		}
+	});
+
+
     }
 
     private boolean initiateData(){
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
+	mLog = (Switch) mView.findViewById(R.id.log);
 	mLogInfo = (TextView) mView.findViewById(R.id.log_info);
 
 	mClearLog = (Button) mView.findViewById(R.id.clearlog);
@@ -103,7 +114,15 @@ public class DebugPreference extends DialogPreference implements Resources {
     private void updateData(){
 	if(!initiateData()) return;
 	
+	mLog.setChecked(Utils.stringToBool(mPreferences.getString(TAME_DEBUG, "0")));
 	mLogInfo.setText(getContext().getString(R.string.item_sum_tamelog, FILE_TAME_LOG, getContext().getString(R.string.item_msg_tamelog)));
+
+	updateText();
+    }
+
+    private void updateText(){
+	if(!initiateData()) return;
+	mLogInfo.setEnabled(mLog.isChecked());
     }
 
     private static void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

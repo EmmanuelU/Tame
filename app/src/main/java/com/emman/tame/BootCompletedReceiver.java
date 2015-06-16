@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 
+import com.emman.tame.MainActivity;
 import com.emman.tame.services.CheckUpdateAtBoot;
 import com.emman.tame.services.SetOnBoot;
 import com.emman.tame.services.RunAtBoot;
@@ -23,7 +24,6 @@ public class BootCompletedReceiver extends WakefulBroadcastReceiver implements R
     @Override
     public void onReceive(Context context, Intent intent) {
 	SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                    
         if(Utils.isStringEmpty(mPreferences.getString(TAME_UID, ""))) updateSharedPrefs(mPreferences, TAME_UID, Secure.getString(context.getContentResolver(), Secure.ANDROID_ID));
 	else if(!mPreferences.getString(TAME_UID, "").equals(Secure.getString(context.getContentResolver(), Secure.ANDROID_ID))){
 		Utils.notification(context, NotificationID.UID, null, "You previously used Tame from a different device. While you shouldn't run into any problems, you may consider resetting my data.");
