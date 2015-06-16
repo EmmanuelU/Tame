@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.OutputStreamWriter;
 import java.lang.Comparable;
 import java.lang.Process;
@@ -62,6 +63,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -276,8 +278,8 @@ public class Utils
 		failed = true;
 	} finally {
 		if(failed){
-			errorHandle(error, "Failed to write to build.prop, are you on Lollipop? Attempting to save ROM integrity");
-			CMD(true, "mount -o remount rw /system/", "chmod 644  /system/build.prop");
+			errorHandle(error, "Failed to write to build.prop, are you on Lollipop? Attempting to save ROM integrity...");
+			CMD(true, "mount -o remount rw /system/", "chmod 644  /system/build.prop", "rm -rf " + FILE_LOCAL_BUILD_PROP, "rm -rf " + FILE_TMP_BUILD_PROP);
 		}
 		return !failed;
 	}
@@ -427,11 +429,11 @@ public class Utils
 			text.append(line);
 			text.append('\n');
 		}
+		return text.toString();
 	}
 	catch (Exception e) {
            	return readFileViaShell(fname, true);
 	}
-	return text.toString();
     }
 
     public static boolean isNetworkOnline(Context context) {
@@ -914,38 +916,69 @@ public class Utils
         return "".split("\\s+");
     }
 
-    public static void ExtractAssets(Context context){
+    public static InputStream getAssetInputStream(Context context, String asset){
+	AssetManager assetFiles = context.getAssets();
+	try{
+		return assetFiles.open(TAG + "/" + asset);
+	} catch (Exception unhandled){}
+	return null;
+    }
+
+    public static String readAssetFile(Context context, String asset) {
+	asset = getFileName(asset);
+	StringBuilder text = new StringBuilder();
+	try {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(getAssetInputStream(context, asset)));
+		String line;
+
+		while((line = br.readLine()) != null) {
+			text.append(line);
+			text.append('\n');
+		}
+		return text.toString();
+	}
+	catch (Exception unhandled) { return "";}
+    }
+
+    public static String readAssetFileLine(Context context, String asset) {
+	asset = getFileName(asset);
+	String line = "";
+	try {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(getAssetInputStream(context, asset)));
+		try {
+			line = br.readLine();
+		} finally {
+			br.close();
+		}
+	}
+	catch (Exception unhandled) {}
+	return line;
+    }
+
+    public static boolean extractAsset(Context context, String asset){
 	try {
             AssetManager assetFiles = context.getAssets();
+	    asset = Utils.getFileName(asset);
  
-            // MyHtmlFiles is the name of folder from inside our assets folder
             String[] files = assetFiles.list(TAG);
  
-            // Initialize streams
             InputStream in = null;
             OutputStream out = null;
- 
-            for (int i = 0; i < files.length; i++) {
- 
-                     
-                     // @Folder name is also case sensitive
-                     // @MyHtmlFiles is the folder from our assets
                       
-                    in = assetFiles.open(TAG + "/" + files[i]);
-			File directory = new File(Environment.getExternalStorageDirectory()+File.separator+TAG);
-			directory.mkdirs();
+	    in = getAssetInputStream(context, asset);
+            File directory = new File(PATH_TAME);
+            directory.mkdirs();
 
-                    out = new FileOutputStream(PATH_TAME_LOCAL + files[i]);
-                    copyAssets(in, out);
-            }
- 
+            out = new FileOutputStream(PATH_TAME + asset);
+            copyAssets(in, out);
+	    log("-FILE-", "Extracted asset to '" + PATH_TAME + asset + "'.");
+	    return true;
         } catch (Exception e) {
-            Utils.notification(context, NotificationID.EXTRACT, null, "Failed to extract zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Do you have an sdcard?");
-            errorHandle(e);
-	    return;
+            errorHandle(e, "Failed to extract asset to '" + PATH_TAME + asset + "'.");
+	    return false;
         }
-	log("-FILE-", "Extracted emergency zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Flash in recovery when you wish to disable Tame's next Set on Boot.");
-	Utils.notification(context, NotificationID.EXTRACT, null, "Extracted emergency zip to '" + FILE_DISABLE_SET_ON_BOOT_ZIP + "'. Flash in recovery when you wish to disable Tame's next Set on Boot.");
     }
  
     private static void copyAssets(InputStream in, OutputStream out) {
@@ -965,9 +998,44 @@ public class Utils
             out = null;
  
         } catch (Exception e) {
-	    log("-FILE-", "Failed to extract Application Assets, do you have an sdcard?");
-            errorHandle(e);
+            errorHandle(e, "Failed to extract Application Assets, do you have an sdcard?");
         }
+    }
+
+   public static String calculateMD5Checksum(String file) throws Exception {
+       InputStream fis =  new FileInputStream(file);
+
+       byte[] buffer = new byte[1024];
+       MessageDigest complete = MessageDigest.getInstance("MD5");
+       int numRead;
+
+       do {
+           numRead = fis.read(buffer);
+           if (numRead > 0) {
+               complete.update(buffer, 0, numRead);
+           }
+       } while (numRead != -1);
+
+       fis.close();
+
+       byte[] b = complete.digest();
+       String result = "";
+
+       for (int i=0; i < b.length; i++) {
+           result += Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
+       }
+       return result;
+   }
+
+    public static String getMD5(String file){
+	try{	
+		return calculateMD5Checksum(file);
+	} catch (Exception unhandled){}
+	return "";
+    }
+
+    public static String getFileName(String file){
+	return new File(file).getName();
     }
 
     public static int getSpinnerIndex(Spinner spinner, String value){

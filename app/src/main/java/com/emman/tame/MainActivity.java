@@ -136,6 +136,14 @@ public class MainActivity extends Activity
 	
 	if(AboutTame.isWild()) Utils.toast(this, getString(R.string.msg_wk_detect));
 
+
+	if(!Utils.readAssetFileLine(this, FILE_DISABLE_SET_ON_BOOT_ZIP_MD5).equals(Utils.getMD5(FILE_DISABLE_SET_ON_BOOT_ZIP))){
+		if(Utils.extractAsset(this, FILE_DISABLE_SET_ON_BOOT_ZIP))
+			Utils.notification(this, NotificationID.EXTRACT, null, getString(R.string.msg_dsob_extract, FILE_DISABLE_SET_ON_BOOT_ZIP));
+		else
+			 Utils.notification(this, NotificationID.EXTRACT, null, getString(R.string.msg_dsob_extractfail, FILE_DISABLE_SET_ON_BOOT_ZIP));
+	}
+
 	/* remove deprecated files */
 	String commands = "";
 	commands = "rm -rf /sdcard/DisableTame_S-O-B.zip";

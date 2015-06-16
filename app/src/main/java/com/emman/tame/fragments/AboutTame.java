@@ -143,8 +143,6 @@ public class AboutTame extends Fragment
 	mTameLogo.startAnimation(fadeout);
 	setversiondata();
 
-	if(!Utils.fileExists(FILE_DISABLE_SET_ON_BOOT_ZIP)) Utils.ExtractAssets(getActivity());
-
         return mView;
     }
 
