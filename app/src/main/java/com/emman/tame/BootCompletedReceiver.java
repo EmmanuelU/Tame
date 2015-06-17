@@ -26,13 +26,14 @@ public class BootCompletedReceiver extends WakefulBroadcastReceiver implements R
 	SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if(Utils.isStringEmpty(mPreferences.getString(TAME_UID, ""))) updateSharedPrefs(mPreferences, TAME_UID, Secure.getString(context.getContentResolver(), Secure.ANDROID_ID));
 	else if(!mPreferences.getString(TAME_UID, "").equals(Secure.getString(context.getContentResolver(), Secure.ANDROID_ID))){
-		Utils.notification(context, NotificationID.UID, null, "You previously used Tame from a different device. While you shouldn't run into any problems, you may consider resetting my data.");
+		Utils.notification(context, NotificationID.UID, null, context.getString(R.string.msg_uid_change));
 		updateSharedPrefs(mPreferences, TAME_UID, Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
 	}
 
 	if(Utils.stringToBool(mPreferences.getString(CHECK_UPDATE_AT_BOOT, "1"))) context.startService(new Intent(context, CheckUpdateAtBoot.class));
 	
 	if(Utils.fileExists(FILE_DISABLE_SET_ON_BOOT)){
+		Utils.notification(context, NotificationID.DSOB, null, context.getString(R.string.msg_dsob));
 		Utils.CMD(false, "rm -rf " + FILE_DISABLE_SET_ON_BOOT);
 		updateSharedPrefs(mPreferences, SET_ON_BOOT, "0");
 		updateSharedPrefs(mPreferences, RUN_AT_BOOT, "0");

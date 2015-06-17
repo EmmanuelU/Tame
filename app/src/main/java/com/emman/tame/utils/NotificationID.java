@@ -8,4 +8,5 @@ public enum NotificationID {
 	UID,
 	APPUPDATE,
 	WKUPDATE,
+	DSOB,
 }
