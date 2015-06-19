@@ -164,7 +164,7 @@ public class CPUInputBoostV3Preference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.SetSOBValue(CPU_BOOST_INPUT_TOGGLE, preferences.getString(SAVED_CPU_BOOST_INPUT_BOOST, "0"));
+	Utils.SetSOBValue(CPU_BOOST_INPUT2_TOGGLE, preferences.getString(SAVED_CPU_BOOST_INPUT_BOOST, "0"));
 	Utils.SetSOBValue(CPU_BOOST_INPUT2_FREQS, preferences.getString(SAVED_CPU_BOOST_INPUT_FREQS, "0 0 0"));
     }
 
