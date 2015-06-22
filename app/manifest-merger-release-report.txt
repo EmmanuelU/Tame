@@ -75,28 +75,42 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:30:17
 	android:name
 		ADDED from AndroidManifest.xml:30:27
+activity#com.emman.tame.Settings
+ADDED from AndroidManifest.xml:34:9
+	android:label
+		ADDED from AndroidManifest.xml:36:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:37:13
+	android:name
+		ADDED from AndroidManifest.xml:35:13
+meta-data#android.support.PARENT_ACTIVITY
+ADDED from AndroidManifest.xml:38:13
+	android:name
+		ADDED from AndroidManifest.xml:39:14
+	android:value
+		ADDED from AndroidManifest.xml:40:14
 receiver#com.emman.tame.BootCompletedReceiver
-ADDED from AndroidManifest.xml:34:2
+ADDED from AndroidManifest.xml:43:2
 	android:name
-		ADDED from AndroidManifest.xml:34:12
+		ADDED from AndroidManifest.xml:43:12
 intent-filter#android.intent.action.BOOT_COMPLETED
-ADDED from AndroidManifest.xml:35:6
+ADDED from AndroidManifest.xml:44:6
 action#android.intent.action.BOOT_COMPLETED
-ADDED from AndroidManifest.xml:36:3
+ADDED from AndroidManifest.xml:45:3
 	android:name
-		ADDED from AndroidManifest.xml:36:11
+		ADDED from AndroidManifest.xml:45:11
 service#com.emman.tame.services.CheckUpdateAtBoot
-ADDED from AndroidManifest.xml:40:2
+ADDED from AndroidManifest.xml:49:2
 	android:name
-		ADDED from AndroidManifest.xml:40:11
+		ADDED from AndroidManifest.xml:49:11
 service#com.emman.tame.services.SetOnBoot
-ADDED from AndroidManifest.xml:41:2
+ADDED from AndroidManifest.xml:50:2
 	android:name
-		ADDED from AndroidManifest.xml:41:11
+		ADDED from AndroidManifest.xml:50:11
 service#com.emman.tame.services.RunAtBoot
-ADDED from AndroidManifest.xml:42:2
+ADDED from AndroidManifest.xml:51:2
 	android:name
-		ADDED from AndroidManifest.xml:42:11
+		ADDED from AndroidManifest.xml:51:11
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.larswerkman:HoloColorPicker:1.5:5:5
