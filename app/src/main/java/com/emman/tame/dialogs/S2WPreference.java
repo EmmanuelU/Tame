@@ -53,6 +53,7 @@ public class S2WPreference extends DialogPreference
     private Switch mS2W;
     private Switch mS2S;
     private CheckBox mS2WSensitive;
+    private Switch mDT2W;
 
     private SharedPreferences mPreferences;
 
@@ -95,6 +96,7 @@ public class S2WPreference extends DialogPreference
 	mS2W = (Switch) mView.findViewById(R.id.s2w);
 	mS2S = (Switch) mView.findViewById(R.id.s2s);
 	mS2WSensitive = (CheckBox) mView.findViewById(R.id.s2w_sensitive);
+	mDT2W = (Switch) mView.findViewById(R.id.dt2w);
 
 	return true;
     }
@@ -105,6 +107,7 @@ public class S2WPreference extends DialogPreference
 	updateSharedPrefs(mPreferences, S2W, Utils.writeSYSValue(FILE_S2W_TOGGLE, mS2W.isChecked() ? "1" : "0"));
 	updateSharedPrefs(mPreferences, S2S, Utils.writeSYSValue(FILE_S2S_TOGGLE, mS2S.isChecked() ? "1" : "0"));
 	updateSharedPrefs(mPreferences, S2W_SENSITIVE, Utils.writeSYSValue(FILE_S2W_SENSITIVE, mS2WSensitive.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, DT2W, Utils.writeSYSValue(FILE_DT2W_TOGGLE, mDT2W.isChecked() ? "1" : "0"));
 
     }
 
@@ -114,6 +117,7 @@ public class S2WPreference extends DialogPreference
 	mS2W.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_S2W_TOGGLE)));
 	mS2S.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_S2S_TOGGLE)));
 	mS2WSensitive.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_S2W_SENSITIVE)));
+	mDT2W.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_DT2W_TOGGLE)));
 
 	updateDependencies();
 
@@ -121,14 +125,17 @@ public class S2WPreference extends DialogPreference
 
     private void updateDependencies(){
 	if(!initiateData()) return;
+	if(!Utils.fileExists(FILE_S2W_TOGGLE)) mS2W.setEnabled(false);
 	if(!Utils.fileExists(FILE_S2W_SENSITIVE)) mS2WSensitive.setEnabled(false);
 	if(!Utils.fileExists(FILE_S2S_TOGGLE)) mS2S.setEnabled(false);
+	if(!Utils.fileExists(FILE_DT2W_TOGGLE)) mDT2W.setEnabled(false);
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.SetSOBValue(FILE_S2W_TOGGLE, preferences.getString(S2W, "1"));
+	Utils.SetSOBValue(FILE_S2W_TOGGLE, preferences.getString(S2W, "0"));
 	Utils.SetSOBValue(FILE_S2S_TOGGLE, preferences.getString(S2S, "0"));
 	Utils.SetSOBValue(FILE_S2W_SENSITIVE, preferences.getString(S2W_SENSITIVE, "0"));
+	Utils.SetSOBValue(FILE_DT2W_TOGGLE, preferences.getString(DT2W, "0"));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

@@ -24,8 +24,8 @@
 
     <com.emman.tame.dialogs.S2WPreference
 	android:key="s2wdialog"
-	android:title="@string/item_s2w"
-	android:summary="@string/item_sum_s2w"
+	android:title="@string/item_wake"
+	android:summary="@string/item_sum_wake"
 	android:positiveButtonText="@string/item_save"
     />
 

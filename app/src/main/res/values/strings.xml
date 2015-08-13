@@ -75,10 +75,12 @@
     <string name="msg_bln_preset2">BLN: Using default light intervals (300/1500msecs).</string>
     <string name="msg_minutes">minute(s)</string>
 
+    <string name="item_wake">Wake Management</string>
+    <string name="item_sum_wake">Configure different ways to wake your device from sleep.</string>
     <string name="item_s2w">Sweep2Wake</string>
     <string name="item_s2s">Sweep2Sleep</string>
-    <string name="item_sum_s2w">Sweep finger across button pad to wake device.</string>
     <string name="item_s2w_sens">Sensitive Detection</string>
+    <string name="item_dt2w">DoubleTap2Wake</string>
 
     <string name="item_panel_uv">Display Voltage</string>
     <string name="item_sum_panel_uv">Reducing the screen\'s power consumption can improve battery life.</string>

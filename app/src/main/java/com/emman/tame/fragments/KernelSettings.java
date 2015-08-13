@@ -103,7 +103,7 @@ public class KernelSettings extends PreferenceFragment
 		prefSet.removePreference(mEBlnDialog);
 	} else prefSet.removePreference(mBlnDialog);
 	
-	if(!Utils.fileExists(FILE_S2W_TOGGLE)) mS2WDialog.setEnabled(false);
+	if(!Utils.fileExists(FILE_S2W_TOGGLE) && !Utils.fileExists(FILE_DT2W_TOGGLE)) mS2WDialog.setEnabled(false);
 
 	if(!Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setEnabled(false);
 

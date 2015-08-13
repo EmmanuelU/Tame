@@ -64,6 +64,8 @@ public interface Resources {
 	public static final String FILE_S2S_TOGGLE = "/sys/android_touch/sweep2sleep";
 	public static final String S2W_SENSITIVE = "s2w_sensitive";
 	public static final String FILE_S2W_SENSITIVE = "/sys/android_touch/sweep2wake_sensitive";
+	public static final String DT2W = "dt2w";
+	public static final String FILE_DT2W_TOGGLE = "/sys/android_touch/doubletap2wake";
 
 	public static final String SMP_CONTROL = "mpdec";
 	public static final String SMP_SCROFF = "mpdec_scroff";
