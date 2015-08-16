@@ -192,4 +192,6 @@
     <string name="item_sum_tamelog">This log is stored at %1$s for your convenience.\n\n%2$s</string>
     <string name="item_msg_tamelog">Debugging mode slows down the functionality app. Only use it when needed.</string>
 
+    <string name="item_tcp_protocol">TCP Protocol</string>
+
 </resources>

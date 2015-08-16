@@ -154,6 +154,10 @@ public interface Resources {
 
 	public static final String LAST_KMSG = "/proc/last_kmsg";
 
+	public static final String SAVED_TCP_PROTOCOL = "saved_tcp_protocol";
+	public static final String TCP_PROTOCOL = "net.ipv4.tcp_congestion_control";
+	public static final String TCP_AVAILABLE_PROTOCOLS = "net.ipv4.tcp_available_congestion_control";
+
 	/* Deprecated variables */
 	public static final String FILE_SET_ON_BOOT = PATH_TAME + "Tame-SOB.sh";
 	public static final String FILE_RUN_AT_BOOT = PATH_TAME + "Tame-RAB.sh";

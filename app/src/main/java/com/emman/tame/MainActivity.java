@@ -59,6 +59,7 @@ import com.emman.tame.dialogs.IOPreference;
 import com.emman.tame.dialogs.PanelUVPreference;
 import com.emman.tame.dialogs.SMPPreference;
 import com.emman.tame.dialogs.S2WPreference;
+import com.emman.tame.dialogs.TCPPreference;
 
 import com.emman.tame.fragments.AboutTame;
 import com.emman.tame.fragments.CPUSettings;
@@ -301,6 +302,7 @@ public class MainActivity extends Activity
 	S2WPreference.SetOnBootData(preferences);
 	GPUPreference.SetOnBootData(preferences);
 	FastChargePreference.SetOnBootData(preferences);
+	TCPPreference.SetOnBootData(preferences);
 
 	Utils.log(null, preferences, "-SOB-", BootCommands);
 

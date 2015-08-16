@@ -133,6 +133,15 @@ public class Utils
 	return "echo " + value + " > " + fname;
     }
 
+    public static String readSYSCTLValue(String param) {
+	return CMD(true, "sysctl " + param).replace(param + " = ", "");
+    }
+
+    public static String writeSYSCTLValue(String param, String value) {
+	CMD(true, "sysctl -w " + param + "=" + value);
+	return value;
+    }
+
     public static String writeSYSValue(final String fname, final String value) {
 	Context context = getContext();
         if(!fileExists(fname)) return value;
@@ -197,6 +206,12 @@ public class Utils
 	if(isStringEmpty(MainActivity.BootCommands)) MainActivity.BootCommands = "echo \"" + value + "\" > " + fname;
 	else MainActivity.BootCommands = MainActivity.BootCommands + NEW_LINE + ("echo \"" + value + "\" > " + fname);
 	return value;
+    }
+
+    public static String SetSOBCommand(String command) {
+	if(isStringEmpty(MainActivity.BootCommands)) MainActivity.BootCommands = command;
+	else MainActivity.BootCommands = MainActivity.BootCommands + NEW_LINE + command;
+	return command;
     }
 
     /**

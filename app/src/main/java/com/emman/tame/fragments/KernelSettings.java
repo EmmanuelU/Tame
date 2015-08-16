@@ -47,6 +47,7 @@ public class KernelSettings extends PreferenceFragment
     public static Preference mIODialog;
     public static Preference mPanelUVDialog;
     private Preference mS2WDialog;
+    public static Preference mTCPDialog;
 
     private SharedPreferences mPreferences;
 
@@ -86,6 +87,7 @@ public class KernelSettings extends PreferenceFragment
 	mIODialog = findPreference("iosched");
 	mPanelUVDialog = findPreference("panel_uv_dialog");
 	mS2WDialog = findPreference("s2wdialog");
+	mTCPDialog = findPreference("tcp_dialog");
 
 	return true;
     }
@@ -127,7 +129,7 @@ public class KernelSettings extends PreferenceFragment
 	GPUupdate();
 	IOupdate(availableIOSchedulersLine);
 	panelUpdate();
-
+	TCPupdate();
     }
 
     public static void panelUpdate(){
@@ -141,6 +143,10 @@ public class KernelSettings extends PreferenceFragment
 
     public static void GPUupdate(){
 	if(Utils.fileExists(GPU_MAX_FREQ_FILE)) mGPUDialog.setSummary(String.format("%s", Utils.toGPUMHz(Utils.readOneLine(GPU_MAX_FREQ_FILE))));
+    }
+
+    public static void TCPupdate(){
+	mTCPDialog.setSummary(Utils.readSYSCTLValue(TCP_PROTOCOL));
     }
 
     public static void IOupdate(String schedulers){

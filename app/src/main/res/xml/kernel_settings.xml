@@ -55,4 +55,10 @@
 	android:positiveButtonText="@string/item_save"
     />
 
+    <com.emman.tame.dialogs.TCPPreference
+	android:key="tcp_dialog"
+	android:title="@string/item_tcp_protocol"
+	android:positiveButtonText="@string/item_save"
+    />
+
 </PreferenceScreen>
