@@ -1,8 +1,8 @@
 #!/bin/sh
 #DO NOT EDIT FILE - AUTO GENERATED
-latestversion=2.0
-latestversioncode=11
-latestdateliteral='June 21 2015'
+latestversion=2.1
+latestversioncode=12
+latestdateliteral='August 16 2015'
 latestDL=https://raw.githubusercontent.com/EmmanuelU/Tame/master/releases/Tame.apk
 input="$1"
 if [[ -z "$input" ]]
