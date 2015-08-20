@@ -95,6 +95,8 @@ public interface Resources {
 	public static final String TOUCHKEY_BLN_BLINK_RGB = "touchkey_bln_blink_rgb";
 	public static final String FILE_HBLN_BLINK_OVERRIDE = "/sys/class/leds/R/device/led_blink_interval";
 	public static final String FILE_HBLN_BLINK_RGB = "/sys/class/leds/R/device/led_blink_rgb";
+	public static final String HBLN_OVERRIDE_PATTERN = "hbln_override_pattern";
+	public static final String FILE_HBLN_OVERRIDE_PATTERN = "/sys/class/leds/R/device/led_force_pattern";
 	
 	public static final String SAVED_DISPLAY_UV = "saved_panel_uv";
 	public static final String FILE_CELOX_DISPLAY_UV = "/sys/module/board_msm8x60_celox/parameters/panel_uv";

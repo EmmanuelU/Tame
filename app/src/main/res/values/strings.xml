@@ -65,6 +65,7 @@
     <string name="item_sum_bln">Pulse button lights when a notification is received.</string>
     <string name="item_ebln">Enhanced Button Light Notifications</string>
     <string name="item_hbln">Home Button Light Notifications</string>
+    <string name="item_touchkey_bln_override_pattern">Blink Style</string>
     <string name="item_duration">Duration:</string>
     <string name="item_timeout">Timeout:</string>
     <string name="item_bln_override_interval">Override Blink Intervals</string>

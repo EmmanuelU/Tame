@@ -43,5 +43,30 @@
 	<item>+50000</item>
     </string-array>
 
+    <string-array name="hbln_pattern_entries">
+	<item>Default</item>
+	<item>Rainbow</item>
+	<item>Red Glow</item>
+	<item>Green Glow</item>
+	<item>Multi-Color Glow</item>
+	<item>Green Dual Pulse</item>
+	<item>Pink Dual Pulse</item>
+	<item>Blue Dual Pulse</item>
+	<item>Orange Dual Pulse</item>
+	<item>Yellow Dual Pulse</item>
+    </string-array>
+
+    <string-array name="hbln_pattern_values">
+	<item>0</item>
+	<item>1</item>
+	<item>3</item>
+	<item>15</item>
+	<item>5</item>
+	<item>7</item>
+	<item>14</item>
+	<item>18</item>
+	<item>19</item>
+	<item>20</item>
+    </string-array>
 
 </resources>
