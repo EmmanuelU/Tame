@@ -76,13 +76,13 @@ public class DensPreference extends DialogPreference
 	mView = view;
 	updateData();
 	
-	mScreenDensityBackup.setText(getContext().getString(R.string.note_rbackup, FILE_BACKUP_BUILD_PROP));
+	mScreenDensityBackup.setText(getContext().getString(R.string.note_rbackup, "/sdcard/Tame/build.prop.bak"));
 	if(Utils.isLollipop()) mScreenDensityBackup.setText(mScreenDensityBackup.getText().toString() + NEW_LINE + getContext().getString(R.string.note_rbackup_lp));
 	mScreenDensity.setSelection(mScreenDensity.getText().length()); //EOL
 
 	mScreenDensityBackupButton.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View view) {
-			if(Utils.updateSystemProp(FILE_BACKUP_BUILD_PROP)){
+			if(Utils.updateSystemProp("/sdcard/Tame/build.prop.bak")){
 				Utils.toast(getContext(), getContext().getString(R.string.msg_changes_reboot));
 				GeneralSettings.updateDensSummary(getContext().getString(R.string.msg_backedup));
 				getDialog().dismiss();
@@ -116,7 +116,7 @@ public class DensPreference extends DialogPreference
     private void updateData(){
 	if(!initiateData()) return;
 	mScreenDensity.setText(Utils.readSystemProp("ro.sf.lcd_density"));
-	if(!Utils.fileExists(FILE_BACKUP_BUILD_PROP)){
+	if(!Utils.fileExists("/sdcard/Tame/build.prop.bak")){
 		mScreenDensityBackupButton.setText(getContext().getString(R.string.msg_nobackup));
 		mScreenDensityBackupButton.setEnabled(false);	
 	}

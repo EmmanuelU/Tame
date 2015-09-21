@@ -45,10 +45,6 @@ public interface Resources {
 	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP = PATH_TAME + "DisableTame_S-O-B.zip";
 	public static final String FILE_DISABLE_SET_ON_BOOT_ZIP_MD5 = FILE_DISABLE_SET_ON_BOOT_ZIP + ".md5";
 	public static final String FILE_DISABLE_SET_ON_BOOT = PATH_LOCAL + "WildNFree.tame";
-
-	public static final String FILE_TMP_BUILD_PROP = PATH_TAME + "tmp.prop";
-	public static final String FILE_LOCAL_BUILD_PROP = PATH_TAME + "build.prop";
-	public static final String FILE_BACKUP_BUILD_PROP = PATH_TAME + "build.prop.bak";
 	
 	public static final String TAME_UID = "tame_uid";
 	public static final String SET_ON_BOOT = "set_on_boot";

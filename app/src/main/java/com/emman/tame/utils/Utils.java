@@ -265,37 +265,40 @@ public class Utils
 	Exception error = null;
 	log("-FILE-", "Attempting to set '" + propvalue + "' as " + propname + " in build.prop...");
 	try {
-		RootTools.remount("/system/", "RW");
-		CMD(true, "mount -o remount rw /system/", "rm -rf " + FILE_LOCAL_BUILD_PROP, "mv -f /system/build.prop " + FILE_TMP_BUILD_PROP);
-		RootTools.copyFile("/system/build.prop", FILE_TMP_BUILD_PROP, true, false);
-		String previouspropvalue = readSystemProp(propname);
-		//generate modified build.prop
-		File newfile = new File(FILE_LOCAL_BUILD_PROP);
-		FileWriter fw = new FileWriter(newfile);
 
-		Reader fr = new FileReader(new File(FILE_TMP_BUILD_PROP));
+		if(!RootTools.remount("/system/build.prop", "rw")) Utils.CMD(true, "mount -o remount rw /system/");
+		Utils.CMD(true, "cp -f /system/build.prop " + "/sdcard/Tame/tmp.prop");
+
+		Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/tmp.prop", "cp -f /system/build.prop /sdcard/Tame/build.prop.bak", "rm -rf /sdcard/Tame/build.prop");
+
+		//generate modified build.prop
+		FileWriter fw = new FileWriter(new File("/sdcard/Tame/build.prop"));
+
+		Reader fr = new FileReader(new File("/sdcard/Tame/tmp.prop"));
 		BufferedReader br = new BufferedReader(fr);
+		String line = "";
 		while (br.ready()) {
-			fw.write(br.readLine().replaceAll(propname + "=" + previouspropvalue, propname + "=" + propvalue) + "\n");
+			line = br.readLine();
+			if(line.contains(propname)) fw.write(propname + "=" + propvalue + NEW_LINE);
+			else fw.write(line + NEW_LINE);
+			//fw.write(br.readLine().replaceAll(propname, propname + "=" + propvalue) + "\n");
 		}
 		
 		fw.close();
 		br.close();
 		fr.close();
-		CMD(false, "rm -rf " + FILE_TMP_BUILD_PROP);
 
-		//replace /system/build.prop
-		if(!updateSystemProp(FILE_LOCAL_BUILD_PROP)){
-			failed = true;
-		}
 	} catch (Exception e) {
 		error = e;
 		failed = true;
 	} finally {
-		if(failed){
-			errorHandle(error, "Failed to write to build.prop, are you on Lollipop? Attempting to save ROM integrity...");
-			CMD(true, "mount -o remount rw /system/", "chmod 644  /system/build.prop", "rm -rf " + FILE_LOCAL_BUILD_PROP, "rm -rf " + FILE_TMP_BUILD_PROP);
+		//replace /system/build.prop
+		if(!updateSystemProp("/sdcard/Tame/build.prop")){
+			failed = true;
+			errorHandle(error, "Failed to write to build.prop");
 		}
+		//cleanup
+		CMD(true, "mount -o remount rw /system/", "chmod 644 /system/build.prop", "rm -rf /sdcard/Tame/tmp.prop");
 		return !failed;
 	}
     }
@@ -304,10 +307,11 @@ public class Utils
 	RootTools.debugMode = true;
 	if(!fileExists(newpropfile)) return false;
 
-	RootTools.remount("/system/", "RW");
-	RootTools.deleteFileOrDirectory("/system/build.prop", true);
-	CMD(true, "mount -o remount rw /system/", "chmod 644 " + newpropfile);
-	return RootTools.copyFile(newpropfile, "/system/build.prop", true, true);
+	RootTools.remount("/system/build.prop", "rw");
+	CMD(true, "mount -o remount rw /system/");
+	Utils.CMD(true, "cp -f " + newpropfile + " /system/build.prop");
+
+	return fileExists("/system/build.prop");
     }
 
     public static String readSystemProp(String prop) {
