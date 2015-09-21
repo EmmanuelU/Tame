@@ -124,7 +124,8 @@ public class TCPPreference extends DialogPreference
     }
 
     public static void SetOnBootData(SharedPreferences preferences){
-	Utils.SetSOBCommand("sysctl -w " + TCP_PROTOCOL + "=" + preferences.getString(SAVED_TCP_PROTOCOL, ""));
+	Utils.CMD(true, "sysctl -w " + TCP_PROTOCOL + "=" + preferences.getString(SAVED_TCP_PROTOCOL, ""));
+	//Utils.SetSOBCommand("sysctl -w " + TCP_PROTOCOL + "=" + preferences.getString(SAVED_TCP_PROTOCOL, ""));
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
