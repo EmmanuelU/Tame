@@ -61,6 +61,7 @@ public class SOBPreference extends DialogPreference
     private View mView;
 
     private Button mSOBRestore;
+    private Button mSOBView;
     private CheckBox mCPUSOBToggle;
     private Switch mSOBToggle;
 
@@ -104,6 +105,13 @@ public class SOBPreference extends DialogPreference
 			Utils.toast(getContext(), getContext().getString(R.string.msg_restored_settings));
 		}
 	});
+
+	mSOBView.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			Utils.openFile(getContext(), FILE_TAME_PREFS, FILE_TEXT_FORMAT);
+		}
+	});
 	
     }
 
@@ -112,6 +120,7 @@ public class SOBPreference extends DialogPreference
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
 	mSOBRestore = (Button) mView.findViewById(R.id.restore_sob);
+	mSOBView = (Button) mView.findViewById(R.id.view_sob);
 	mCPUSOBToggle = (CheckBox) mView.findViewById(R.id.sob_cpu);
 	mSOBToggle = (Switch) mView.findViewById(R.id.sob);
 

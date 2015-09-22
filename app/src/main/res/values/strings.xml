@@ -54,6 +54,7 @@
     <string name="msg_dsob">All of Tame\'s startup services have been disabled. You will have to re-enable them yourself. Keep in mind all your Tame data is still saved, just not applied.</string>
     <string name="msg_dsob_extractfail">Failed to extract zip to %1$s. Do you have an sdcard?</string>
     <string name="msg_dsob_extract">Extracted emergency zip to %1$s. Flash in recovery when you wish to disable automatic restore.</string>
+    <string name="item_view_settings">View Database</string>
 
     <string name="item_check_updates">Check for Updates</string>
     <string name="item_sum_check_updates">Check for an update to Tame or WildKernel on boot.</string>

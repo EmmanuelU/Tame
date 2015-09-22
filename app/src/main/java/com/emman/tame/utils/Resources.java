@@ -32,6 +32,8 @@ public interface Resources {
 	public static final String LINK_WK_CPU_PATCH = "https://github.com/EmmanuelU/wild_kernel_htc_msm8660/commit/f9d17e63e7f9055fde6febd0b709405b023bdb38";
 	public static final String TAME_SERVICE = "TamerService";
 
+	public static final String FILE_TAME_PREFS = "/data/data/com.emman.tame/shared_prefs/com.emman.tame_preferences.xml";
+
 	public static final String FILE_UPDATE_DATA = PATH_TAME + "updatewild.sh";
 	public static final String FILE_APP_UPDATE_DATA = PATH_TAME + "updatetame.sh";
 	public static final String FILE_SYS_QUEUE = PATH_TAME + "Tame-SYSQueue.sh";
