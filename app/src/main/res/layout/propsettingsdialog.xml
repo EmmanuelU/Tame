@@ -12,13 +12,13 @@
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/item_runatboot"
-        android:id="@+id/scripttoggle"/>
+        android:text="@string/item_retain_prop"
+        android:id="@+id/retaintoggle"/>
 
     <TextView
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
-        android:text="@string/item_note_runatboot"
+        android:text="@string/item_note_retain_prop"
 	android:gravity="center_horizontal"
 	android:textStyle="italic"
 	android:textSize="11sp"/>
@@ -36,15 +36,15 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:textSize="11sp"
-	android:id="@+id/commands"
-	android:hint="@string/item_hint_runatboot"
+	android:id="@+id/properties"
+	android:hint="@string/item_hint_retain_prop"
 	android:inputType="textMultiLine|textNoSuggestions"/>
 
 	<Button
-	    android:id="@+id/restore_cmd"
+	    android:id="@+id/apply_props"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="@string/item_restore_cmd_now"
+            android:text="@string/item_apply_props_now"
             android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

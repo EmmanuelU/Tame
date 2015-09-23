@@ -9,4 +9,5 @@ public enum NotificationID {
 	APPUPDATE,
 	WKUPDATE,
 	DSOB,
+	PROP,
 }

@@ -260,8 +260,15 @@ public class Utils
    return Integer.parseInt(res);
    }
 
+    public static boolean writeSystemProp(String prop) {
+	if(prop.split("=").length == 2){
+		return writeSystemProp(prop.split("=")[0], prop.split("=")[1]);
+	} else return false;
+    }
+
     public static boolean writeSystemProp(String propname, String propvalue) {
 	boolean failed = false;
+	boolean exists = false;
 	Exception error = null;
 	log("-FILE-", "Attempting to set '" + propvalue + "' as " + propname + " in build.prop...");
 	try {
@@ -269,7 +276,8 @@ public class Utils
 		if(!RootTools.remount("/system/build.prop", "rw")) Utils.CMD(true, "mount -o remount rw /system/");
 		Utils.CMD(true, "cp -f /system/build.prop " + "/sdcard/Tame/tmp.prop");
 
-		Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/tmp.prop", "rm -rf /sdcard/Tame/build.prop");
+		if(fileExists("/sdcard/Tame/build.prop")) Utils.CMD(true, "mv -f /sdcard/Tame/build.prop /sdcard/Tame/tmp.prop");
+		else Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/tmp.prop");
 
 		//generate modified build.prop
 		FileWriter fw = new FileWriter(new File("/sdcard/Tame/build.prop"));
@@ -279,38 +287,46 @@ public class Utils
 		String line = "";
 		while (br.ready()) {
 			line = br.readLine();
-			if(line.contains(propname)) fw.write(propname + "=" + propvalue + NEW_LINE);
+			if(line.contains(propname)){
+				exists = true;
+				if(!isStringEmpty(propvalue)) fw.write(propname + "=" + propvalue + NEW_LINE);
+			}
 			else fw.write(line + NEW_LINE);
 			//fw.write(br.readLine().replaceAll(propname, propname + "=" + propvalue) + "\n");
 		}
-		
+
+		//create new prop if needed
+		if(!exists && !isStringEmpty(propvalue)) fw.write(propname + "=" + propvalue + NEW_LINE);
+
 		fw.close();
 		br.close();
 		fr.close();
 		CMD(true, "rm -rf /sdcard/Tame/tmp.prop");
 
 	} catch (Exception e) {
-		error = e;
+		errorHandle(e, "Failed to edit local build.prop");
 		failed = true;
-	} finally {
-		//replace /system/build.prop
-		if(!updateSystemProp("/sdcard/Tame/build.prop")){
-			failed = true;
-			errorHandle(error, "Failed to write to build.prop");
-		}
-		return !failed;
 	}
+	return !failed;
+    }
+
+    public static boolean updateSystemProp() {
+	return updateSystemProp("/sdcard/Tame/build.prop");
     }
 
     public static boolean updateSystemProp(String newpropfile) {
-	RootTools.debugMode = true;
+	//replace /system/build.prop
 	if(!fileExists(newpropfile)) return false;
 
 	RootTools.remount("/system/build.prop", "rw");
 	CMD(true, "mount -o remount rw /system/");
-	Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/build.prop.bak", "cp -f " + newpropfile + " /system/build.prop", "chmod 644 /system/build.prop");
+	Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/build.prop.bak", "cp -f " + newpropfile + " /system/build.prop", "chmod 644 /system/build.prop", "rm -rf /sdcard/Tame/build.prop");
 
-	return fileExists("/system/build.prop");
+	if(!fileExists("/system/build.prop")){
+		log("-FILE-", "Failed to overwrite build.prop");
+		return false;
+	}
+	return true;
     }
 
     public static String readSystemProp(String prop) {

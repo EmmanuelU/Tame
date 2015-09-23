@@ -62,6 +62,7 @@ import com.emman.tame.dialogs.S2WPreference;
 import com.emman.tame.dialogs.TCPPreference;
 
 import com.emman.tame.fragments.AboutTame;
+import com.emman.tame.fragments.BuildPropEditor;
 import com.emman.tame.fragments.CPUSettings;
 import com.emman.tame.fragments.GeneralSettings;
 import com.emman.tame.fragments.KernelSettings;
@@ -286,7 +287,7 @@ public class MainActivity extends Activity
         }
     }
 
-    public static void ExecuteBootData(SharedPreferences preferences){
+    public static void ExecuteBootData(Context context, SharedPreferences preferences){
 
 	CPUPolicyPreference.SetOnBootData(preferences);
 	CPUInputBoostPreference.SetOnBootData(preferences);
@@ -303,9 +304,9 @@ public class MainActivity extends Activity
 	GPUPreference.SetOnBootData(preferences);
 	FastChargePreference.SetOnBootData(preferences);
 	TCPPreference.SetOnBootData(preferences);
+	BuildPropEditor.ExecuteBootProperties(context, preferences);
 
 	Utils.log(null, preferences, "-SOB-", BootCommands);
-
 	Utils.CMD(true, BootCommands);
 
 	updateSharedPrefs(preferences, SET_ON_BOOT_TS, new SimpleDateFormat("MMMM d, yyyy - h:mma").format(new Date()));

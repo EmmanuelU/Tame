@@ -55,6 +55,8 @@ public interface Resources {
 	public static final String CPU_SET_ON_BOOT = "cpu_set_on_boot";
 	public static final String CHECK_UPDATE_AT_BOOT = "check_update_at_boot";
 	public static final String RUN_AT_BOOT_COMMANDS = "run_at_boot_commands";
+	public static final String RETAIN_PROP_ENTRIES = "retain_prop_entries";
+	public static final String SAVED_PROP_ENTRIES = "saved_prop_entries";
 
 	public static final String S2W = "s2w";
 	public static final String FILE_S2W_TOGGLE = "/sys/android_touch/sweep2wake";

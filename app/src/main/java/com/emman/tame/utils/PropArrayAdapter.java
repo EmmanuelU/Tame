@@ -88,7 +88,7 @@ public class PropArrayAdapter extends ArrayAdapter<String>{
 		if(o.split("=").length == 2) {
 			header.setText(o.split("=")[0]);
 			subheader.setText(o.split("=")[1]); 
-		} else if(o.equals(c.getString(R.string.item_buildprop_settings))){
+		} else if(o.equals(c.getString(R.string.item_buildprop_settings)) || o.equals(c.getString(R.string.item_add_prop))){
 			header.setText(o);
 			subheader.setText("");
 		}

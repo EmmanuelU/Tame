@@ -100,7 +100,7 @@ public class SOBPreference extends DialogPreference
 		public void onClick(View v) {
 			mSOBRestore.setText(getContext().getString(R.string.msg_loading));
 			mSOBRestore.setEnabled(false);
-			MainActivity.ExecuteBootData(mPreferences);
+			MainActivity.ExecuteBootData(getContext(), mPreferences);
 			mSOBRestore.setText(getContext().getString(R.string.msg_done));
 			Utils.toast(getContext(), getContext().getString(R.string.msg_restored_settings));
 		}

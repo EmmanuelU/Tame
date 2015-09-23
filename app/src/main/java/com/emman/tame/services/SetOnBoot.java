@@ -29,7 +29,7 @@ public class SetOnBoot extends IntentService implements Resources {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-	MainActivity.ExecuteBootData(PreferenceManager.getDefaultSharedPreferences(this));
+	MainActivity.ExecuteBootData(this, PreferenceManager.getDefaultSharedPreferences(this));
 	BootCompletedReceiver.completeWakefulIntent(intent);
     }
 

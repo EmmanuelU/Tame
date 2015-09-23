@@ -4,6 +4,7 @@
     <string name="item_enable">Enable</string>
     <string name="item_disabled">Disabled</string>
     <string name="item_save">Save</string>
+    <string name="item_delete">Delete</string>
     <string name="item_default">Default</string>
     <string name="item_return">Go Back</string>
     <string name="item_never">Never</string>
@@ -132,7 +133,7 @@
     <string name="item_runatboot">Run At Boot</string>
     <string name="item_add_runatboot">Add to Run At Boot</string>
     <string name="item_sum_runatboot">Schedule shell commands to be executed every startup. While this is independent of Tame\'s Set On Boot, this will disable itself if the SOB disabler zip is flashed.</string>
-    <string name="item_restore_cmd_now">Run Commands Now</string>
+    <string name="item_restore_cmd_now">Run Saved Commands Now</string>
     <string name="msg_restored_cmd">Commands executed.</string>
     <string name="item_note_runatboot">Commands will be executed using root permissions, so no need to request.</string>
     <string name="item_hint_runatboot">Type your shell commands here. </string>
@@ -145,8 +146,16 @@
     <string name="msg_lkmsg">Last KMSG saved to</string>
 
     <string name="item_buildprop">Build.prop Editor</string>
-    <string name="item_buildprop_settings">Options ...</string>
-    <string name="msg_add_prop">Add Property</string>
+    <string name="item_add_prop">New Property</string>
+    <string name="item_buildprop_settings">Options</string>
+    <string name="item_retain_prop">Restore Properties</string>
+    <string name="item_apply_props_now">Apply &amp; Save</string>
+    <string name="item_note_retain_prop">Automatically restore saved properties when they\'re changed (ROM change etc.)</string>
+    <string name="item_hint_retain_prop">yourprop=yourvalue\nyourprop2=yourvalue2</string>
+    <string name="msg_prop_update">Build.prop updated, reboot your device to apply changes.</string>
+    <string name="msg_property">Property</string>
+    <string name="msg_value">Value</string>
+
     <string name="item_sysfs">SysFS Explorer</string>
 
     <string name="item_sync">Synchronize</string>

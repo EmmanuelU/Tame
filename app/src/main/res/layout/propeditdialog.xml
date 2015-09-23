@@ -18,13 +18,25 @@
 	    android:windowSoftInputMode="stateVisible" 
 	android:id="@+id/editvalue"/>
 
-     <Button
-        android:id="@+id/positive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/item_save"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="5dp"
-        />
+	<TableRow
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="8dp"
+	    android:gravity="center_horizontal">
+
+	     <Button
+		android:id="@+id/delete"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/item_delete"
+		android:layout_marginRight="10dp"/>
+
+	     <Button
+		android:id="@+id/positive"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/item_save"
+		android:layout_marginLeft="10dp"/>
+	</TableRow>
 
 </LinearLayout>

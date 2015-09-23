@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.text.InputType;
+import android.text.method.ScrollingMovementMethod;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -38,6 +39,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Scroller;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.lang.StringBuilder;
@@ -70,6 +73,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import com.emman.tame.fragments.GeneralSettings;
 import com.emman.tame.MainActivity;
 import com.emman.tame.R;
+import com.emman.tame.utils.NotificationID;
 import com.emman.tame.utils.PropArrayAdapter;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
@@ -86,10 +90,10 @@ public class BuildPropEditor extends ListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
+	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
 	fill();
 	Utils.toast(getActivity(), getActivity().getString(R.string.msg_edit_caution));
-	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
 	MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
 		@Override
@@ -107,13 +111,78 @@ public class BuildPropEditor extends ListFragment
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		if(adapter.getItem(position).equals(getActivity().getString(R.string.item_buildprop_settings))){
+			//settings
+			final Dialog dialog = new Dialog(getActivity());
+			dialog.setContentView(R.layout.propsettingsdialog);
+			final Switch mRetainToggle = (Switch) dialog.findViewById(R.id.retaintoggle);
+			final EditText mSavedProps = (EditText) dialog.findViewById(R.id.properties);
+			final Button mApplyProps = (Button) dialog.findViewById(R.id.apply_props);
 
+			dialog.setTitle(adapter.getItem(position));
+
+			mSavedProps.setText(mPreferences.getString(SAVED_PROP_ENTRIES, ""));
+			mSavedProps.setScroller(new Scroller(getActivity()));
+			mSavedProps.setMaxLines(5);
+			mSavedProps.setVerticalScrollBarEnabled(true);
+			mSavedProps.setMovementMethod(new ScrollingMovementMethod());
+			mSavedProps.setSelection(mSavedProps.getText().length());
+
+			mRetainToggle.setChecked(Utils.stringToBool(mPreferences.getString(RETAIN_PROP_ENTRIES, "0")));
+			mSavedProps.setEnabled(mRetainToggle.isChecked());
+
+			mRetainToggle.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mSavedProps.setEnabled(mRetainToggle.isChecked());
+				}
+			});
+
+			mApplyProps.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(mRetainToggle.isChecked() && Utils.isStringEmpty(mSavedProps.getText().toString())) mRetainToggle.setChecked(false);
+					updateSharedPrefs(mPreferences, SAVED_PROP_ENTRIES, mSavedProps.getText().toString());
+					updateSharedPrefs(mPreferences, RETAIN_PROP_ENTRIES, Utils.boolToString(mRetainToggle.isChecked()));
+					
+					ExecuteBootProperties(getActivity(), mPreferences);
+
+					dialog.dismiss();
+				}
+			});
+
+			dialog.show();
+
+		} else if(adapter.getItem(position).equals(getActivity().getString(R.string.item_add_prop))){
+			//add property
+
+			final Dialog dialog = new Dialog(getActivity());
+			dialog.setContentView(R.layout.propnewdialog);
+			final Button mSaveButton = (Button) dialog.findViewById(R.id.positive);
+			final EditText mEntry = (EditText) dialog.findViewById(R.id.entry);
+			final EditText mValue = (EditText) dialog.findViewById(R.id.value);
+
+			dialog.setTitle(adapter.getItem(position));
+
+			mSaveButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(!Utils.isStringEmpty(mEntry.getText().toString()) && !Utils.isStringEmpty(mValue.getText().toString())){
+						if(Utils.writeSystemProp(mEntry.getText().toString(), mValue.getText().toString()) && Utils.updateSystemProp()) Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
+						else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
+						dialog.dismiss();
+					}
+				}
+			});
+
+			dialog.show();
 		} else if(adapter.getItem(position).split("=").length == 2){
+			//editor
 			final String entry = adapter.getItem(position).split("=")[0];
 			final String value = adapter.getItem(position).split("=")[1];
 
 			final Dialog dialog = new Dialog(getActivity());
 			dialog.setContentView(R.layout.propeditdialog);
+			final Button mDeleteButton = (Button) dialog.findViewById(R.id.delete);
 			final Button mSaveButton = (Button) dialog.findViewById(R.id.positive);
 			final EditText mEditValue = (EditText) dialog.findViewById(R.id.editvalue);
 
@@ -121,10 +190,19 @@ public class BuildPropEditor extends ListFragment
 			mEditValue.setText(value);
 			mEditValue.setSelection(mEditValue.getText().length());
 
+			mDeleteButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(Utils.writeSystemProp(entry, "") && Utils.updateSystemProp()) Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
+					else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
+					dialog.dismiss();
+				}
+			});
+
 			mSaveButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if(Utils.writeSystemProp(entry, mEditValue.getText().toString())) Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
+					if(Utils.writeSystemProp(entry, mEditValue.getText().toString()) && Utils.updateSystemProp()) Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
 					else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
 					dialog.dismiss();
 				}
@@ -143,13 +221,32 @@ public class BuildPropEditor extends ListFragment
 
 	List<String> props = new ArrayList<String>();
 
+	props.add(getActivity().getString(R.string.item_add_prop));
 	props.add(getActivity().getString(R.string.item_buildprop_settings));
 	for (String entry : mPropEntries) {
 		if(entry.contains("=") && !Utils.isStringEmpty(entry)) props.add(entry);
 	}  
 
-	adapter = new PropArrayAdapter(getActivity(), R.layout.build_prop_editor, props);
+	adapter = new PropArrayAdapter(getActivity(), R.layout.propeditlayout, props);
 	this.setListAdapter(adapter);
+    }
+
+    public static void ExecuteBootProperties(Context context, SharedPreferences preferences){
+	try{
+	if(Utils.stringToBool(preferences.getString(RETAIN_PROP_ENTRIES, "0"))){
+		String[] properties = preferences.getString(SAVED_PROP_ENTRIES, "").split(System.getProperty("line.separator"));
+		Utils.log(null, preferences, "-PROP-", Utils.arrayToString(properties));
+		for (String property : properties) {
+			String entry = property.split("=")[0];
+			String value = property.split("=")[1];
+			if(!Utils.readSystemProp(entry).equals(value)){
+				Utils.writeSystemProp(entry, value);
+				Utils.updateSystemProp();
+				Utils.notification(context, NotificationID.PROP, null, context.getString(R.string.msg_prop_update));
+			}
+		}
+	}
+	} catch(Exception e) { Utils.errorHandle(e); }
     }
 
     private void appendSharedPrefs(SharedPreferences preferences, String var, String value) {
