@@ -147,6 +147,7 @@ public class BuildPropEditor extends ListFragment
 					ExecuteBootProperties(getActivity(), mPreferences);
 
 					dialog.dismiss();
+					fill();
 				}
 			});
 
@@ -170,6 +171,7 @@ public class BuildPropEditor extends ListFragment
 						if(Utils.writeSystemProp(mEntry.getText().toString(), mValue.getText().toString()) && Utils.updateSystemProp()) Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
 						else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
 						dialog.dismiss();
+						fill();
 					}
 				}
 			});
@@ -196,6 +198,7 @@ public class BuildPropEditor extends ListFragment
 					if(Utils.writeSystemProp(entry, "") && Utils.updateSystemProp()) Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
 					else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
 					dialog.dismiss();
+					fill();
 				}
 			});
 
@@ -205,6 +208,7 @@ public class BuildPropEditor extends ListFragment
 					if(Utils.writeSystemProp(entry, mEditValue.getText().toString()) && Utils.updateSystemProp()) Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
 					else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
 					dialog.dismiss();
+					fill();
 				}
 			});
 
