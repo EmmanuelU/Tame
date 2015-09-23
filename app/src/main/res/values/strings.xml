@@ -144,7 +144,9 @@
     <string name="msg_logcat">Logcat saved to</string>
     <string name="msg_lkmsg">Last KMSG saved to</string>
 
-
+    <string name="item_buildprop">Build.prop Editor</string>
+    <string name="item_buildprop_settings">Options ...</string>
+    <string name="msg_add_prop">Add Property</string>
     <string name="item_sysfs">SysFS Explorer</string>
 
     <string name="item_sync">Synchronize</string>

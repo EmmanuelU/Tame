@@ -52,49 +52,46 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.emman.tame.R;
 
-public class FileArrayAdapter extends ArrayAdapter<FileOption>{
+public class PropArrayAdapter extends ArrayAdapter<String>{
 
 	private Context c;
 	private int id;
-	private List<FileOption>items;
+	private List<String>items;
 	
-	public FileArrayAdapter(Context context, int textViewResourceId,
-			List<FileOption> objects) {
+	public PropArrayAdapter(Context context, int textViewResourceId, List<String> objects) {
 		super(context, textViewResourceId, objects);
 		c = context;
 		id = textViewResourceId;
 		items = objects;
 	}
 
-	public FileOption getItem(int i)
+	public String getItem(int i)
 	 {
 		 return items.get(i);
 	 }
 
 	@Override
        public View getView(int position, View convertView, ViewGroup parent) {
-               View v = convertView;
-               if (v == null) {
-                   LayoutInflater vi = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View v = convertView;
+		if (v == null) {
+                   LayoutInflater vi = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                    v = vi.inflate(id, null);
-               }
-               final FileOption o = items.get(position);
-               if (o != null) {
-			TextView header, subheader;
+		}
+		final String o = items.get(position);
 
-			header = (TextView) v.findViewById(R.id.header);
-			subheader = (TextView) v.findViewById(R.id.subheader);
-                       
-			if(header!=null) header.setText(o.getName());
-			if(!o.isFolder() && subheader!=null){
-				if(o.isFile()) subheader.setText("Click to Edit");
-				else if(o.PDir()) subheader.setText("Press to Go Back");
-				else subheader.setText("");
-				
-			}
+		if (o == null) return v;
 
-                       
-               }
+		TextView header, subheader;
+		header = (TextView) v.findViewById(R.id.header);
+		subheader = (TextView) v.findViewById(R.id.subheader);
+
+		if(o.split("=").length == 2) {
+			header.setText(o.split("=")[0]);
+			subheader.setText(o.split("=")[1]); 
+		} else if(o.equals(c.getString(R.string.item_buildprop_settings))){
+			header.setText(o);
+			subheader.setText("");
+		}
                return v;
        }
 

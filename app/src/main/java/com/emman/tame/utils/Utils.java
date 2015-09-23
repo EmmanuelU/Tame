@@ -269,7 +269,7 @@ public class Utils
 		if(!RootTools.remount("/system/build.prop", "rw")) Utils.CMD(true, "mount -o remount rw /system/");
 		Utils.CMD(true, "cp -f /system/build.prop " + "/sdcard/Tame/tmp.prop");
 
-		Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/tmp.prop", "cp -f /system/build.prop /sdcard/Tame/build.prop.bak", "rm -rf /sdcard/Tame/build.prop");
+		Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/tmp.prop", "rm -rf /sdcard/Tame/build.prop");
 
 		//generate modified build.prop
 		FileWriter fw = new FileWriter(new File("/sdcard/Tame/build.prop"));
@@ -287,6 +287,7 @@ public class Utils
 		fw.close();
 		br.close();
 		fr.close();
+		CMD(true, "rm -rf /sdcard/Tame/tmp.prop");
 
 	} catch (Exception e) {
 		error = e;
@@ -297,8 +298,6 @@ public class Utils
 			failed = true;
 			errorHandle(error, "Failed to write to build.prop");
 		}
-		//cleanup
-		CMD(true, "mount -o remount rw /system/", "chmod 644 /system/build.prop", "rm -rf /sdcard/Tame/tmp.prop");
 		return !failed;
 	}
     }
@@ -309,7 +308,7 @@ public class Utils
 
 	RootTools.remount("/system/build.prop", "rw");
 	CMD(true, "mount -o remount rw /system/");
-	Utils.CMD(true, "cp -f " + newpropfile + " /system/build.prop");
+	Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/build.prop.bak", "cp -f " + newpropfile + " /system/build.prop", "chmod 644 /system/build.prop");
 
 	return fileExists("/system/build.prop");
     }
@@ -523,8 +522,8 @@ public class Utils
             pm = context.getPackageManager();        
             packages = pm.getInstalledApplications(0);
             for (ApplicationInfo packageInfo : packages) {
-        if(packageInfo.packageName.equals(targetPackage)) return true;
-        }        
+		if(packageInfo.packageName.equals(targetPackage)) return true;
+	    }        
         return false;
     }
 

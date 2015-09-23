@@ -29,6 +29,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.util.Log;
 
+import com.emman.tame.fragments.BuildPropEditor;
 import com.emman.tame.fragments.SysFSExplorer;
 import com.emman.tame.R;
 import com.emman.tame.utils.Resources;
@@ -37,9 +38,9 @@ import com.emman.tame.utils.Utils;
 public class GeneralSettings extends PreferenceFragment
 		implements Resources {
 
-    private static Preference mDensDialog;
     private static Preference mScriptDialog;
     private Preference mSysFS;
+    private Preference mBuildProp;
 
     private SharedPreferences mPreferences;
 
@@ -62,27 +63,29 @@ public class GeneralSettings extends PreferenceFragment
 		    	return true;
        		}
         });
+
+	mBuildProp.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+		public boolean onPreferenceClick(Preference preference) {
+                 	FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.container, new BuildPropEditor()).commit();
+		    	return true;
+       		}
+        });
     }
 
     private boolean initiateData(){
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-	mDensDialog = findPreference("densdialog");
 	mScriptDialog = findPreference("scriptdialog");
 	mSysFS = findPreference("sysfs");
+	mBuildProp = findPreference("buildprop");
 
 	return true;
-    }
-
-    public static void updateDensSummary(String summary){
-	if(mDensDialog.isEnabled()) mDensDialog.setSummary(summary);
     }
 
     private void updateData(){
 	if(!initiateData()) return;
 	if(Utils.stringToBool(mPreferences.getString(RUN_AT_BOOT, ""))) mScriptDialog.setSummary(getActivity().getString(R.string.item_sum_runatboot_queued));
-		
-	updateDensSummary(Utils.readSystemProp("ro.sf.lcd_density") + "dpi");
     }
 
     private void setData(){
