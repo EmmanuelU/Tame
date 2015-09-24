@@ -70,6 +70,8 @@ public interface Resources {
 	public static final String SMP_CONTROL = "mpdec";
 	public static final String SMP_SCROFF = "mpdec_scroff";
 
+	public static final String FILE_MPDEC_BINARY = "/system/bin/mpdecision";
+	public static final String FILE_MPDEC_BINARY_DISABLED = "/system/bin/mpdecision_disabled";
 	public static final String FILE_MPDEC_TOGGLE = "/sys/kernel/msm_mpdecision/conf/enabled";
 	public static final String FILE_MPDEC_SCROFF = "/sys/kernel/msm_mpdecision/conf/scroff_single_core";
 
