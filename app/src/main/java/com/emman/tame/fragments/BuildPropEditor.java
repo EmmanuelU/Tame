@@ -110,7 +110,7 @@ public class BuildPropEditor extends ListFragment
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		if(adapter.getItem(position).equals(getActivity().getString(R.string.item_buildprop_settings))){
+		if(adapter.getItem(position).equals(getActivity().getString(R.string.item_retain_prop))){
 			//settings
 			final Dialog dialog = new Dialog(getActivity());
 			dialog.setContentView(R.layout.propsettingsdialog);
@@ -159,6 +159,7 @@ public class BuildPropEditor extends ListFragment
 			final Dialog dialog = new Dialog(getActivity());
 			dialog.setContentView(R.layout.propnewdialog);
 			final Button mSaveButton = (Button) dialog.findViewById(R.id.positive);
+			final CheckBox mForce = (CheckBox) dialog.findViewById(R.id.force);
 			final EditText mEntry = (EditText) dialog.findViewById(R.id.entry);
 			final EditText mValue = (EditText) dialog.findViewById(R.id.value);
 
@@ -168,8 +169,13 @@ public class BuildPropEditor extends ListFragment
 				@Override
 				public void onClick(View v) {
 					if(!Utils.isStringEmpty(mEntry.getText().toString()) && !Utils.isStringEmpty(mValue.getText().toString())){
-						if(Utils.writeSystemProp(mEntry.getText().toString(), mValue.getText().toString()) && Utils.updateSystemProp()) Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
-						else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
+						if(Utils.writeSystemProp(mEntry.getText().toString(), mValue.getText().toString()) && Utils.updateSystemProp()){
+							Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
+							if(mForce.isChecked()){
+								appendSharedPrefs(mPreferences, SAVED_PROP_ENTRIES, mEntry.getText().toString() + "=" + mValue.getText().toString());
+								Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved_prop));
+							} else Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved));
+						} else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
 						dialog.dismiss();
 						fill();
 					}
@@ -186,6 +192,7 @@ public class BuildPropEditor extends ListFragment
 			dialog.setContentView(R.layout.propeditdialog);
 			final Button mDeleteButton = (Button) dialog.findViewById(R.id.delete);
 			final Button mSaveButton = (Button) dialog.findViewById(R.id.positive);
+			final CheckBox mForce = (CheckBox) dialog.findViewById(R.id.force);
 			final EditText mEditValue = (EditText) dialog.findViewById(R.id.editvalue);
 
 			dialog.setTitle(entry);
@@ -205,8 +212,13 @@ public class BuildPropEditor extends ListFragment
 			mSaveButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if(Utils.writeSystemProp(entry, mEditValue.getText().toString()) && Utils.updateSystemProp()) Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
-					else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
+					if(Utils.writeSystemProp(entry, mEditValue.getText().toString()) && Utils.updateSystemProp()){
+						Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
+						if(mForce.isChecked()){
+							appendSharedPrefs(mPreferences, SAVED_PROP_ENTRIES, entry + "=" + mEditValue.getText().toString());
+							Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved_prop));
+						} else Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved));
+					} else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
 					dialog.dismiss();
 					fill();
 				}
@@ -226,7 +238,7 @@ public class BuildPropEditor extends ListFragment
 	List<String> props = new ArrayList<String>();
 
 	props.add(getActivity().getString(R.string.item_add_prop));
-	props.add(getActivity().getString(R.string.item_buildprop_settings));
+	props.add(getActivity().getString(R.string.item_retain_prop));
 	for (String entry : mPropEntries) {
 		if(entry.contains("=") && !Utils.isStringEmpty(entry)) props.add(entry);
 	}  
@@ -236,21 +248,37 @@ public class BuildPropEditor extends ListFragment
     }
 
     public static void ExecuteBootProperties(Context context, SharedPreferences preferences){
+	boolean needUpdate = false;
 	try{
-	if(Utils.stringToBool(preferences.getString(RETAIN_PROP_ENTRIES, "0"))){
-		String[] properties = preferences.getString(SAVED_PROP_ENTRIES, "").split(System.getProperty("line.separator"));
-		Utils.log(null, preferences, "-PROP-", Utils.arrayToString(properties));
-		for (String property : properties) {
-			String entry = property.split("=")[0];
-			String value = property.split("=")[1];
-			if(!Utils.readSystemProp(entry).equals(value)){
-				Utils.writeSystemProp(entry, value);
-				Utils.updateSystemProp();
-				Utils.notification(context, NotificationID.PROP, null, context.getString(R.string.msg_prop_update));
+		if(Utils.stringToBool(preferences.getString(RETAIN_PROP_ENTRIES, "0"))){
+			String[] properties = preferences.getString(SAVED_PROP_ENTRIES, "").split(System.getProperty("line.separator"));
+			Utils.log(null, preferences, "-PROP-", Utils.arrayToString(properties));
+			for (String property : properties) {
+				if(property.contains("=")){
+					String entry = property.split("=")[0];
+					String value = property.split("=")[1];
+					if(!Utils.readSystemProp(entry).equals(value)){
+						if(!Utils.fileExists("/sdcard/Tame/build.prop")){
+							if(!RootTools.remount("/system/build.prop", "rw")) Utils.CMD(true, "mount -o remount rw /system/");
+							Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/build.prop");
+						}
+						if(!Utils.readFile("/system/build.prop").contains(property)){
+							Utils.CMD(true, "mv -f /sdcard/Tame/build.prop /sdcard/Tame/tmp.prop");
+							Utils.writeSystemProp(entry, value);
+							needUpdate = true;
+						}
+					}
+				}
 			}
 		}
+	} catch(Exception e) {
+		Utils.errorHandle(e);
+	} finally {
+		if(needUpdate){
+			Utils.updateSystemProp();
+			Utils.notification(context, NotificationID.PROP, null, context.getString(R.string.msg_prop_update));
+		}
 	}
-	} catch(Exception e) { Utils.errorHandle(e); }
     }
 
     private void appendSharedPrefs(SharedPreferences preferences, String var, String value) {

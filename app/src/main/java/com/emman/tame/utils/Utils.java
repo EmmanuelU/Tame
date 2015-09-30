@@ -274,7 +274,6 @@ public class Utils
 	try {
 
 		if(!RootTools.remount("/system/build.prop", "rw")) Utils.CMD(true, "mount -o remount rw /system/");
-		Utils.CMD(true, "cp -f /system/build.prop " + "/sdcard/Tame/tmp.prop");
 
 		if(fileExists("/sdcard/Tame/build.prop")) Utils.CMD(true, "mv -f /sdcard/Tame/build.prop /sdcard/Tame/tmp.prop");
 		else Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/tmp.prop");

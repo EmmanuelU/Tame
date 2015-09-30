@@ -32,6 +32,7 @@
     <string name="msg_edit_caution">Edit Values with Caution</string>
     <string name="msg_value_saved">Value saved.</string>
     <string name="msg_value_saved_rab">Value saved, and queued to Run At Boot.</string>
+    <string name="msg_value_saved_prop">Value saved, and added to forced properties.</string>
 
     <string name="msg_no_smp">You most likely have a non-kernel based plug manager.</string>
     <string name="msg_primary">Primary</string>
@@ -147,8 +148,8 @@
 
     <string name="item_buildprop">Build.prop Editor</string>
     <string name="item_add_prop">New Property</string>
-    <string name="item_buildprop_settings">Options</string>
-    <string name="item_retain_prop">Restore Properties</string>
+    <string name="item_force_prop">Force Property</string>
+    <string name="item_retain_prop">Force Properties</string>
     <string name="item_apply_props_now">Apply &amp; Save</string>
     <string name="item_note_retain_prop">Automatically restore saved properties when they\'re changed (ROM change etc.)</string>
     <string name="item_hint_retain_prop">yourprop=yourvalue\nyourprop2=yourvalue2</string>

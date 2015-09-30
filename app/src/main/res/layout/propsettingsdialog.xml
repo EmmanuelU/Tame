@@ -12,7 +12,6 @@
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/item_retain_prop"
         android:id="@+id/retaintoggle"/>
 
     <TextView
