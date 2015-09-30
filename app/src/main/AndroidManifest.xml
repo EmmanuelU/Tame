@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.emman.tame"
-    tameVersionCode="13"
-    tameVersionName="2.2"
-    android:versionCode="13"
-    android:versionName="2.2">
+    tameVersionCode="14"
+    tameVersionName="2.3"
+    android:versionCode="14"
+    android:versionName="2.3">
 
 <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
 <uses-permission android:name="android.permission.INTERNET"/>
