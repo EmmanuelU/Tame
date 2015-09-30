@@ -100,6 +100,12 @@ public class SMPPreference extends DialogPreference
 	mView = view;
 	initiateData();
 
+	//remove deprecated file
+	if(Utils.fileExists(FILE_MPDEC_BINARY_DISABLED)){
+		if(!RootTools.remount(FILE_MPDEC_BINARY_DISABLED, "rw")) Utils.CMD(true, "mount -o remount rw /system/");
+		Utils.CMD(true, "mv -f " + FILE_MPDEC_BINARY_DISABLED + LINE_SPACE + FILE_MPDEC_BINARY);
+	}
+
 	for(int i = 1; i < Utils.getNumOfCpus();){
 		mCore[i] = new CpuToggle();
 		mCore[i].view = inflater.inflate(R.layout.smp_cputoggle, null);
@@ -191,15 +197,12 @@ public class SMPPreference extends DialogPreference
 	if(!initiateData()) return;
 
 	if(mMPDecBinary){
-		if(!RootTools.remount(FILE_MPDEC_BINARY, "rw")) Utils.CMD(true, "mount -o remount rw /system/");
-		if(mMPDec.isChecked()) Utils.CMD(true, "mv -f " + FILE_MPDEC_BINARY_DISABLED + LINE_SPACE + FILE_MPDEC_BINARY);
-		else Utils.CMD(true, "mv -f " + FILE_MPDEC_BINARY + LINE_SPACE + FILE_MPDEC_BINARY_DISABLED);
-		Utils.toast(getContext(), getContext().getString(R.string.msg_reboot));
+		Utils.shellProcess(PROCESS_MPDEC, mMPDec.isChecked());
 	}
 
-	updateSharedPrefs(mPreferences, SMP_CONTROL, Utils.writeSYSValue(FILE_MPDEC_TOGGLE, mMPDec.isChecked() ? "1" : "0"));
-	updateSharedPrefs(mPreferences, SMP_SCROFF, Utils.writeSYSValue(FILE_MPDEC_SCROFF, mMPDecScroff.isChecked() ? "1" : "0"));
-	updateSharedPrefs(mPreferences, SMP_CONTROL, Utils.writeSYSValue(FILE_INTELLIP_TOGGLE, mIntelliP.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, MPDEC_CONTROL, Utils.writeSYSValue(FILE_MPDEC_TOGGLE, mMPDec.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, MPDEC_SCROFF, Utils.writeSYSValue(FILE_MPDEC_SCROFF, mMPDecScroff.isChecked() ? "1" : "0"));
+	updateSharedPrefs(mPreferences, INTELLIP_CONTROL, Utils.writeSYSValue(FILE_INTELLIP_TOGGLE, mIntelliP.isChecked() ? "1" : "0"));
 	updateSharedPrefs(mPreferences, INTELLIP_BOOST, Utils.writeSYSValue(FILE_INTELLIP_BOOST, mIntelliPBoost.isChecked() ? "1" : "0"));
 	updateSharedPrefs(mPreferences, INTELLIP_LIMIT_SCROFF, Utils.boolToString(mIntelliPScroff.isChecked()));
 	updateSharedPrefs(mPreferences, INTELLIP_LIMIT_SCROFF_FREQ, (mIntelliPScroff.isChecked() ? Utils.writeSYSValue(FILE_INTELLIP_SCROFF_FREQ, mCpuFreqList[(int) mIntelliPScroffFreq.getSelectedItemId()]) : Utils.writeSYSValue(FILE_INTELLIP_SCROFF_FREQ, "0")));
@@ -218,7 +221,8 @@ public class SMPPreference extends DialogPreference
     private void updateData(){
 	if(!initiateData()) return;
 
-	if(mMPDecBinary) mMPDec.setChecked(Utils.fileExists(FILE_MPDEC_BINARY));
+	if(mMPDecBinary) mMPDec.setChecked(Utils.isShellProcessRunning(PROCESS_MPDEC));
+
 	else mMPDec.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_MPDEC_TOGGLE)));
 	mMPDecScroff.setChecked(Utils.stringToBool(Utils.readOneLine(FILE_MPDEC_SCROFF)));
 
@@ -267,22 +271,20 @@ public class SMPPreference extends DialogPreference
     public static void SetOnBootData(SharedPreferences preferences){
 	String[] enabled = preferences.getString(SAVED_CPU_TOGGLE, "1 1").split("\\s+");
 
+	if(mMPDecBinary && !Utils.isStringEmpty(preferences.getString(MPDEC_CONTROL, ""))){
+		Utils.shellProcess(PROCESS_MPDEC, Utils.stringToBool(preferences.getString(MPDEC_CONTROL, "")));
+	}
+
 	for(int i = 0; i < Arrays.asList(enabled).size();){
 		if(!Utils.isStringEmpty(enabled[i]))
 			Utils.SetSOBValue(Utils.toCPU(CPU_TOGGLE, i), enabled[i]);
 		i++;
 	}
 
-	if(mMPDecBinary && !Utils.isStringEmpty(preferences.getString(SMP_CONTROL, "1")) && (Utils.fileExists(FILE_MPDEC_BINARY) != Utils.stringToBool(preferences.getString(SMP_CONTROL, "")))){
-		if(!RootTools.remount(FILE_MPDEC_BINARY, "rw")) Utils.CMD(true, "mount -o remount rw /system/");
-		if(Utils.stringToBool(preferences.getString(SMP_CONTROL, ""))) Utils.CMD(true, "mv -f " + FILE_MPDEC_BINARY_DISABLED + LINE_SPACE + FILE_MPDEC_BINARY);
-		else Utils.CMD(true, "mv -f " + FILE_MPDEC_BINARY + LINE_SPACE + FILE_MPDEC_BINARY_DISABLED);
-	}
+	Utils.SetSOBValue(FILE_MPDEC_TOGGLE, preferences.getString(MPDEC_CONTROL, ""));
+	Utils.SetSOBValue(FILE_MPDEC_SCROFF, preferences.getString(MPDEC_SCROFF, "1"));
 
-	Utils.SetSOBValue(FILE_MPDEC_TOGGLE, preferences.getString(SMP_CONTROL, ""));
-	Utils.SetSOBValue(FILE_MPDEC_SCROFF, preferences.getString(SMP_SCROFF, "1"));
-
-	Utils.SetSOBValue(FILE_INTELLIP_TOGGLE, preferences.getString(SMP_CONTROL, ""));
+	Utils.SetSOBValue(FILE_INTELLIP_TOGGLE, preferences.getString(INTELLIP_CONTROL, ""));
 	Utils.SetSOBValue(FILE_INTELLIP_BOOST, preferences.getString(INTELLIP_BOOST, "1"));
 	Utils.SetSOBValue(FILE_INTELLIP_SCROFF_FREQ, Utils.stringToBool(preferences.getString(INTELLIP_LIMIT_SCROFF, "0")) ? preferences.getString(INTELLIP_LIMIT_SCROFF_FREQ, "0") : "0");
     }

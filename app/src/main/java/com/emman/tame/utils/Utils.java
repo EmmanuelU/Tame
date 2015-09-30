@@ -260,6 +260,15 @@ public class Utils
    return Integer.parseInt(res);
    }
 
+    public static boolean isShellProcessRunning(String proc) {
+	return !isStringEmpty(Utils.CMD(false, "pgrep " + proc));
+    }
+
+    public static void shellProcess(String proc, boolean run) {
+	if(isShellProcessRunning(proc) != run)
+		Utils.CMD(true, (run ? "start" : "stop") + LINE_SPACE + proc);
+    }
+
     public static boolean writeSystemProp(String prop) {
 	if(prop.split("=").length == 2){
 		return writeSystemProp(prop.split("=")[0], prop.split("=")[1]);

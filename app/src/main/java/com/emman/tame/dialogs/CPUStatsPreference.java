@@ -73,6 +73,7 @@ public class CPUStatsPreference extends DialogPreference
     private TextView mCpuFreqs;
     private TextView mGpuFreq;
     private TextView mKernInfo;
+    private TextView mSMP;
 
     private String mKernelVersion;
 
@@ -123,6 +124,7 @@ public class CPUStatsPreference extends DialogPreference
 	mCpuFreqs = (TextView) mView.findViewById(R.id.cpufreqs);
 	mGpuFreq = (TextView) mView.findViewById(R.id.gpufreq);
 	mKernInfo = (TextView) mView.findViewById(R.id.kerninfo);
+	mSMP = (TextView) mView.findViewById(R.id.smp);
 	mCpuStatsGroup = (LinearLayout) mView.findViewById(R.id.cpu_stats_group);
 
 	mKernInfo.setText("\n" + Utils.readOneLine(KERNEL_BUILD_VERSION) + "\n\n" + Utils.readFile(KERNEL_INFO));
@@ -257,6 +259,9 @@ public class CPUStatsPreference extends DialogPreference
 	mTotalTimeText.setText(String.format("%d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(mTotalTime), TimeUnit.MILLISECONDS.toMinutes(mTotalTime) -  TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mTotalTime)), TimeUnit.MILLISECONDS.toSeconds(mTotalTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mTotalTime))));
 
 	mRarelyUsed.setText(getContext().getString(R.string.item_transy_freq) + NEW_LINE + rarelyUsedFreqs + NEW_LINE + NEW_LINE + getContext().getString(R.string.item_unused) + NEW_LINE + neverUsedFreqs + NEW_LINE);
+	
+	boolean smpManager = Utils.isShellProcessRunning(PROCESS_MPDEC) || Utils.stringToBool(Utils.readOneLine(FILE_MPDEC_TOGGLE)) || Utils.stringToBool(Utils.readOneLine(FILE_INTELLIP_TOGGLE));
+	mSMP.setVisibility(smpManager ? View.VISIBLE : View.GONE);
     }
 
     @Override
