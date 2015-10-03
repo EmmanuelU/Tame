@@ -49,6 +49,7 @@
 	<service android:name="com.emman.tame.services.CheckUpdateAtBoot"/>
 	<service android:name="com.emman.tame.services.SetOnBoot"/>
 	<service android:name="com.emman.tame.services.RunAtBoot"/>
+	<service android:name="com.emman.tame.services.PropAtBoot"/>
 
     </application>
 

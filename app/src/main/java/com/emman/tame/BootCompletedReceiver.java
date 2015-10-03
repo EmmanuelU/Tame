@@ -14,6 +14,7 @@ import com.emman.tame.MainActivity;
 import com.emman.tame.services.CheckUpdateAtBoot;
 import com.emman.tame.services.SetOnBoot;
 import com.emman.tame.services.RunAtBoot;
+import com.emman.tame.services.PropAtBoot;
 
 import com.emman.tame.utils.NotificationID;
 import com.emman.tame.utils.Resources;
@@ -30,22 +31,24 @@ public class BootCompletedReceiver extends WakefulBroadcastReceiver implements R
 		updateSharedPrefs(mPreferences, TAME_UID, Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
 	}
 
-	if(Utils.stringToBool(mPreferences.getString(CHECK_UPDATE_AT_BOOT, "1"))) context.startService(new Intent(context, CheckUpdateAtBoot.class));
-	
 	if(Utils.fileExists(FILE_DISABLE_SET_ON_BOOT)){
 		Utils.notification(context, NotificationID.DSOB, null, context.getString(R.string.msg_dsob));
 		Utils.CMD(false, "rm -rf " + FILE_DISABLE_SET_ON_BOOT);
 		updateSharedPrefs(mPreferences, SET_ON_BOOT, "0");
 		updateSharedPrefs(mPreferences, RUN_AT_BOOT, "0");
+		updateSharedPrefs(mPreferences, RETAIN_PROP_ENTRIES, "0");
 	} else {
-		if((Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0")) || Utils.stringToBool(mPreferences.getString(RUN_AT_BOOT, "0"))) && !Utils.canSU()){
+		if((Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0")) || Utils.stringToBool(mPreferences.getString(RUN_AT_BOOT, "0"))|| Utils.stringToBool(mPreferences.getString(RETAIN_PROP_ENTRIES, "0"))) && !Utils.canSU()){
 			Intent notifIntent = new Intent();
 			Utils.notification(context, NotificationID.ROOTFAIL, notifIntent, context.getString(R.string.msg_lp_no_su));
 			Utils.toast(context, context.getString(R.string.msg_fatal_error));
 		}
-		if(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0"))) startWakefulService(context, new Intent(context, SetOnBoot.class));
 		if(Utils.stringToBool(mPreferences.getString(RUN_AT_BOOT, "0"))) startWakefulService(context, new Intent(context, RunAtBoot.class));
+		if(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0"))) startWakefulService(context, new Intent(context, SetOnBoot.class));
+		if(Utils.stringToBool(mPreferences.getString(RETAIN_PROP_ENTRIES, "0"))) startWakefulService(context, new Intent(context, PropAtBoot.class));
 	}
+
+	if(Utils.stringToBool(mPreferences.getString(CHECK_UPDATE_AT_BOOT, "1"))) context.startService(new Intent(context, CheckUpdateAtBoot.class));
     }
     
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

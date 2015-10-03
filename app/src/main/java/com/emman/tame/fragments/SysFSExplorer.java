@@ -121,6 +121,7 @@ public class SysFSExplorer extends ListFragment
 					Utils.writeSYSValue(mEditFilePath, mEditFile.getText().toString());
 					if(mRAB.isChecked()){
 						appendSharedPrefs(mPreferences, RUN_AT_BOOT_COMMANDS, "echo '" + mEditFile.getText().toString() + "' > "+ mEditFilePath);
+						updateSharedPrefs(mPreferences, RUN_AT_BOOT, "1");
 						Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved_rab));
 					} else Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved));
 					dialog.dismiss();

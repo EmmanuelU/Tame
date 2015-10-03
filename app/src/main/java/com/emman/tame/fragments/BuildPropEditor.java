@@ -173,6 +173,7 @@ public class BuildPropEditor extends ListFragment
 							Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
 							if(mForce.isChecked()){
 								appendSharedPrefs(mPreferences, SAVED_PROP_ENTRIES, mEntry.getText().toString() + "=" + mValue.getText().toString());
+								updateSharedPrefs(mPreferences, RETAIN_PROP_ENTRIES, "1");
 								Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved_prop));
 							} else Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved));
 						} else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
@@ -216,6 +217,7 @@ public class BuildPropEditor extends ListFragment
 						Utils.toast(getActivity(), getActivity().getString(R.string.msg_changes_reboot));
 						if(mForce.isChecked()){
 							appendSharedPrefs(mPreferences, SAVED_PROP_ENTRIES, entry + "=" + mEditValue.getText().toString());
+							updateSharedPrefs(mPreferences, RETAIN_PROP_ENTRIES, "1");
 							Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved_prop));
 						} else Utils.toast(getActivity(), getActivity().getString(R.string.msg_value_saved));
 					} else Utils.toast(getActivity(), getActivity().getString(R.string.item_error));
@@ -262,8 +264,7 @@ public class BuildPropEditor extends ListFragment
 							if(!RootTools.remount("/system/build.prop", "rw")) Utils.CMD(true, "mount -o remount rw /system/");
 							Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/build.prop");
 						}
-						if(!Utils.readFile("/system/build.prop").contains(property)){
-							Utils.CMD(true, "mv -f /sdcard/Tame/build.prop /sdcard/Tame/tmp.prop");
+						if(!Utils.readFile("/sdcard/Tame/build.prop").contains(property)){
 							Utils.writeSystemProp(entry, value);
 							needUpdate = true;
 						}

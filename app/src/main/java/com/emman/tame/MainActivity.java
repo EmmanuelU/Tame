@@ -288,7 +288,6 @@ public class MainActivity extends Activity
     }
 
     public static void ExecuteBootData(Context context, SharedPreferences preferences){
-
 	CPUPolicyPreference.SetOnBootData(preferences);
 	CPUInputBoostPreference.SetOnBootData(preferences);
 	CPUInputBoostV2Preference.SetOnBootData(preferences);
@@ -304,7 +303,6 @@ public class MainActivity extends Activity
 	GPUPreference.SetOnBootData(preferences);
 	FastChargePreference.SetOnBootData(preferences);
 	TCPPreference.SetOnBootData(preferences);
-	BuildPropEditor.ExecuteBootProperties(context, preferences);
 
 	Utils.log(null, preferences, "-SOB-", BootCommands);
 	Utils.CMD(true, BootCommands);
