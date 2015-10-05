@@ -122,44 +122,45 @@ public class CheckUpdateAtBoot extends Service implements Resources {
         @SuppressWarnings("deprecation")
         @Override
         protected Void doInBackground(Void... args) {
-	
-		//WildKernel Update
-		if(AboutTame.isWild()){
+		try{
+			//WildKernel Update
+			if(AboutTame.isWild()){
+				if(Utils.isNetworkOnline(context)){
+					final UpdateTask wildDownloadTask = new UpdateTask(context, FILE_UPDATE_DATA);
+					wildDownloadTask.setOnFinishListener(new onUpdateTaskFinished() {
+						@Override
+						public void onFinish() {
+							if(WildInit()){
+								if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(AboutTame.propversion)){
+									Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WildData.latestversiondl));
+									Utils.notification(context, NotificationID.WKUPDATE, browserIntent, "WildKernel Build " + LINE_SPACE + context.getString(R.string.msg_app_update, WildData.latestversion, WildData.latestversionreldate));
+								}
+							}
+						}
+
+					});
+					wildDownloadTask.execute(AboutTame.propotalink);
+				}
+			}
+
+			//Tame Update
 			if(Utils.isNetworkOnline(context)){
-				final UpdateTask wildDownloadTask = new UpdateTask(context, FILE_UPDATE_DATA);
-				wildDownloadTask.setOnFinishListener(new onUpdateTaskFinished() {
+				final UpdateTask tameDownloadTask = new UpdateTask(context, FILE_APP_UPDATE_DATA);
+				tameDownloadTask.setOnFinishListener(new onUpdateTaskFinished() {
 					@Override
 					public void onFinish() {
-						if(WildInit()){
-							if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(AboutTame.propversion)){
-								Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WildData.latestversiondl));
-								Utils.notification(context, NotificationID.WKUPDATE, browserIntent, "WildKernel Build " + LINE_SPACE + context.getString(R.string.msg_app_update, WildData.latestversion, WildData.latestversionreldate));
+						if(TameInit()){
+							if(TameData.latestversionstamp > TameData.versionstamp){
+								Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TameData.latestversiondl));
+								Utils.notification(context, NotificationID.APPUPDATE, browserIntent, "Tame v" + LINE_SPACE + context.getString(R.string.msg_app_update, TameData.latestversion, TameData.latestversionreldate));
 							}
 						}
 					}
 
 				});
-				wildDownloadTask.execute(AboutTame.propotalink);
+				tameDownloadTask.execute(LINK_APP_UPDATE);
 			}
-		}
-
-		//Tame Update
-		if(Utils.isNetworkOnline(context)){
-			final UpdateTask tameDownloadTask = new UpdateTask(context, FILE_APP_UPDATE_DATA);
-			tameDownloadTask.setOnFinishListener(new onUpdateTaskFinished() {
-				@Override
-				public void onFinish() {
-					if(TameInit()){
-						if(TameData.latestversionstamp > TameData.versionstamp){
-							Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TameData.latestversiondl));
-							Utils.notification(context, NotificationID.APPUPDATE, browserIntent, "Tame v" + LINE_SPACE + context.getString(R.string.msg_app_update, TameData.latestversion, TameData.latestversionreldate));
-						}
-					}
-				}
-
-			});
-			tameDownloadTask.execute(LINK_APP_UPDATE);
-		}
+		} catch (Exception unhandled) {}
 
             return null;
         }
