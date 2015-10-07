@@ -29,6 +29,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.util.Log;
 
+import com.emman.tame.MainActivity;
+import com.emman.tame.fragments.AboutTame;
 import com.emman.tame.fragments.BuildPropEditor;
 import com.emman.tame.fragments.SysFSExplorer;
 import com.emman.tame.R;
@@ -55,6 +57,15 @@ public class GeneralSettings extends PreferenceFragment
         prefSet = getPreferenceScreen();
 
 	updateData();
+
+	MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
+		@Override
+		public void onBackPressed() {
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.container, new AboutTame()).commit();
+			MainActivity.setOnBackPressedListener(null); //normal operations
+		}
+	});
 
 	mSysFS.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 		public boolean onPreferenceClick(Preference preference) {

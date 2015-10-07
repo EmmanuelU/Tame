@@ -674,9 +674,9 @@ public class Utils
 			RootTools.getShell(useSu, 10000, context).add(cmd); //timeout of 10000 doesn't function for whatever reason, so I implemented my own below (timeoutms)
 	} catch (Exception unlikely){}
 
-	if(waitFor){  
+	if(waitFor){
 		int timeoutms = 0;
-		while (!cmd.isFinished() && timeoutms < 10000){
+		while (!cmd.isFinished() && timeoutms <= 10000){
 			try{
 				Thread.sleep(50);
 				timeoutms += 50;
@@ -692,7 +692,6 @@ public class Utils
 
 		return cmdOutput;
 	}
-
 	return "";
     }
 
@@ -743,6 +742,46 @@ public class Utils
 
     public static int getNotificationID(NotificationID id) {
 	return id.ordinal();
+    }
+
+    public static void notification(Context context, NotificationID id, Intent intent, boolean service, String message) {
+	Notification.Builder Notif;
+	NotificationManager mNotifyMgr;
+	PendingIntent pIntent;
+	Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+	
+	
+	final Bundle extras = new Bundle();
+	extras.putBoolean(EXTRA_FORCE_SHOW_LIGHTS, true);
+
+	Notif = new Notification.Builder(context)
+		.setSmallIcon(R.drawable.ic_launcher)
+		.setContentTitle(TAG)
+		.setLights(0xFF0000, 300, 1500)
+		.setSmallIcon(R.drawable.ic_notification)
+		.setLargeIcon(icon)
+		.setStyle(new Notification.BigTextStyle()
+		.bigText(message))
+		.setContentText(message);
+		
+		
+	Notif.setExtras(extras);
+
+	//All these flags, and you still dont auto cancel.
+	Notif.setAutoCancel(true);
+	Notif.build().flags |= Notification.FLAG_SHOW_LIGHTS;
+
+	if(intent != null){
+		pIntent = PendingIntent.getService(context, 0, intent, 0);
+	}
+	else{
+		//but this'll do it #logicispower
+		pIntent = PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+	Notif.setContentIntent(pIntent);
+	mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+	mNotifyMgr.notify(Utils.getNotificationID(id), Notif.build());
+	log("-NOTIFICATION-", message);
     }
 
     public static void notification(Context context, NotificationID id, Intent intent, String message) {

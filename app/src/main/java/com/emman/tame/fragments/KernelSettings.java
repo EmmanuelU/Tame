@@ -3,6 +3,7 @@ package com.emman.tame.fragments;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import android.util.Log;
 
 import com.emman.tame.MainActivity;
+import com.emman.tame.fragments.AboutTame;
 import com.emman.tame.dialogs.BLNPreference;
 import com.emman.tame.dialogs.PanelUVPreference;
 import com.emman.tame.R;
@@ -68,6 +70,15 @@ public class KernelSettings extends PreferenceFragment
         prefSet = getPreferenceScreen();
 
 	updateData();
+
+	MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
+		@Override
+		public void onBackPressed() {
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.container, new AboutTame()).commit();
+			MainActivity.setOnBackPressedListener(null); //normal operations
+		}
+	});
     }
 
     @Override

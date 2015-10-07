@@ -10,4 +10,5 @@ public enum NotificationID {
 	WKUPDATE,
 	DSOB,
 	PROP,
+	SOBFAIL,
 }

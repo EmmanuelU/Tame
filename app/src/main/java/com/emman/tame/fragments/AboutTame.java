@@ -60,6 +60,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.emman.tame.MainActivity;
 import com.emman.tame.R;
 import com.emman.tame.utils.DownloadTask;
 import com.emman.tame.utils.Resources;
@@ -100,10 +101,13 @@ public class AboutTame extends Fragment
 	TameData = new OTA();
 	
 	mContext = getActivity();
+
+	((MainActivity) getActivity()).getActionBar().setTitle(getString(R.string.page_main));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
 	mView = inflater.inflate(R.layout.about_tame, container, false);
 	mAppUpdate = (Button) mView.findViewById(R.id.app_update_button);
 	mUpdate = (Button) mView.findViewById(R.id.update_button);

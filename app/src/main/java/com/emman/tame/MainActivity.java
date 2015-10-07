@@ -102,6 +102,8 @@ public class MainActivity extends Activity
 
     public static String BootCommands;
 
+    public static boolean BootCommandsCompleted = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -288,6 +290,9 @@ public class MainActivity extends Activity
     }
 
     public static void ExecuteBootData(Context context, SharedPreferences preferences){
+	BootCommands = "";
+	BootCommandsCompleted = false;
+
 	CPUPolicyPreference.SetOnBootData(preferences);
 	CPUInputBoostPreference.SetOnBootData(preferences);
 	CPUInputBoostV2Preference.SetOnBootData(preferences);
@@ -308,6 +313,7 @@ public class MainActivity extends Activity
 	Utils.CMD(true, BootCommands);
 
 	updateSharedPrefs(preferences, SET_ON_BOOT_TS, new SimpleDateFormat("MMMM d, yyyy - h:mma").format(new Date()));
+	BootCommandsCompleted = true;
     }
 
     private static void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

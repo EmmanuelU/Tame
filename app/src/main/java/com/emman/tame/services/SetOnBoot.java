@@ -19,7 +19,10 @@ import java.util.List;
 
 import com.emman.tame.BootCompletedReceiver;
 import com.emman.tame.MainActivity;
+import com.emman.tame.R;
+import com.emman.tame.utils.NotificationID;
 import com.emman.tame.utils.Resources;
+import com.emman.tame.utils.Utils;
 
 public class SetOnBoot extends IntentService implements Resources {
 
@@ -30,6 +33,7 @@ public class SetOnBoot extends IntentService implements Resources {
     @Override
     protected void onHandleIntent(Intent intent) {
 	MainActivity.ExecuteBootData(this, PreferenceManager.getDefaultSharedPreferences(this));
+	if(!MainActivity.BootCommandsCompleted) Utils.notification(this, NotificationID.SOBFAIL, new Intent(this, SetOnBoot.class), true, getString(R.string.msg_sobfail));
 	BootCompletedReceiver.completeWakefulIntent(intent);
     }
 

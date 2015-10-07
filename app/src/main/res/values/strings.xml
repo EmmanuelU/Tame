@@ -33,6 +33,7 @@
     <string name="msg_value_saved">Value saved.</string>
     <string name="msg_value_saved_rab">Value saved, and queued to Run At Boot.</string>
     <string name="msg_value_saved_prop">Value saved, and added to forced properties.</string>
+    <string name="msg_sobfail">An error occured when restoring your settings, click me to retry.</string>
 
     <string name="msg_no_smp">You most likely have a non-kernel based plug manager.</string>
     <string name="msg_primary">Primary</string>

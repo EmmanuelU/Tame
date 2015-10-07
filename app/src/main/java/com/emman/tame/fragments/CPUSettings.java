@@ -41,6 +41,7 @@ import java.util.ArrayList;
 
 import com.emman.tame.MainActivity;
 import com.emman.tame.R;
+import com.emman.tame.fragments.AboutTame;
 import com.emman.tame.utils.NotificationID;
 import com.emman.tame.utils.Resources;
 import com.emman.tame.utils.Utils;
@@ -116,6 +117,15 @@ public class CPUSettings extends PreferenceFragment
 
 	mSchedMC.setOnPreferenceChangeListener(this);
 	mVDD.setOnPreferenceChangeListener(this);
+
+	MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
+		@Override
+		public void onBackPressed() {
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.container, new AboutTame()).commit();
+			MainActivity.setOnBackPressedListener(null); //normal operations
+		}
+	});
     }
 
     @Override
