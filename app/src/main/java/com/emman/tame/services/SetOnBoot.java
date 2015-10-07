@@ -33,7 +33,10 @@ public class SetOnBoot extends IntentService implements Resources {
     @Override
     protected void onHandleIntent(Intent intent) {
 	MainActivity.ExecuteBootData(this, PreferenceManager.getDefaultSharedPreferences(this));
-	if(!MainActivity.BootCommandsCompleted) Utils.notification(this, NotificationID.SOBFAIL, new Intent(this, SetOnBoot.class), true, getString(R.string.msg_sobfail));
+	if(!MainActivity.BootCommandsCompleted){
+		Utils.notification(this, NotificationID.SOBFAIL, new Intent(this, SetOnBoot.class), true, getString(R.string.msg_sobfail));
+		Utils.log(null, PreferenceManager.getDefaultSharedPreferences(this), "-SOB-", "FAILED");
+	}
 	BootCompletedReceiver.completeWakefulIntent(intent);
     }
 

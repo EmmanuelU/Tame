@@ -297,9 +297,19 @@ public class MainActivity extends Activity
 	CPUInputBoostPreference.SetOnBootData(preferences);
 	CPUInputBoostV2Preference.SetOnBootData(preferences);
 	CPUInputBoostV3Preference.SetOnBootData(preferences);
+
+	Utils.log(null, preferences, "-SOB-", BootCommands);
+	Utils.CMD(true, BootCommands);
+	BootCommands = "";
+
 	SMPPreference.SetOnBootData(preferences);
 	PanelUVPreference.SetOnBootData(preferences);
 	CPUSettings.SetOnBootData(preferences);
+
+	Utils.log(null, preferences, "-SOB-", BootCommands);
+	Utils.CMD(true, BootCommands);
+	BootCommands = "";
+
 	IOPreference.SetOnBootData(preferences);
 	BLNPreference.SetOnBootData(preferences);
 	EBLNPreference.SetOnBootData(preferences);
