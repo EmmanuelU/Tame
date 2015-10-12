@@ -59,9 +59,11 @@ import java.net.ProtocolException;
 import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.client.methods.HttpGet;
@@ -259,12 +261,11 @@ public class BuildPropEditor extends ListFragment
 				if(property.contains("=")){
 					String entry = property.split("=")[0];
 					String value = property.split("=")[1];
-					if(!Utils.readSystemProp(entry).equals(value)){
-						if(!Utils.fileExists("/sdcard/Tame/build.prop")){
-							if(!RootTools.remount("/system/build.prop", "rw")) Utils.CMD(true, "mount -o remount rw /system/");
-							Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/build.prop");
-						}
-						if(!Utils.readFile("/sdcard/Tame/build.prop").contains(property)){
+					String valueCMD = Utils.readSystemProp(entry);
+					if(!valueCMD.equals(value)){
+						String valueCMDInvasive = Utils.readSystemProp(entry, true);
+						if(!valueCMDInvasive.equals(value) && valueCMD.equals(valueCMDInvasive)){
+							Utils.log(null, preferences, "-PROP-", entry, Utils.readSystemProp(entry, true), value);
 							Utils.writeSystemProp(entry, value);
 							needUpdate = true;
 						}
@@ -277,16 +278,17 @@ public class BuildPropEditor extends ListFragment
 	} finally {
 		if(needUpdate){
 			Utils.updateSystemProp();
+			updateSharedPrefs(preferences, PROP_AT_BOOT_TS, new SimpleDateFormat("MMMM d, yyyy - h:mma").format(new Date()));
 			Utils.notification(context, NotificationID.PROP, null, context.getString(R.string.msg_prop_update));
 		}
 	}
     }
 
-    private void appendSharedPrefs(SharedPreferences preferences, String var, String value) {
-	updateSharedPrefs(mPreferences, var, preferences.getString(var, "") + "\n" + value);
+    private static void appendSharedPrefs(SharedPreferences preferences, String var, String value) {
+	updateSharedPrefs(preferences, var, preferences.getString(var, "") + "\n" + value);
     }
 
-    private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
+    private static void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
 	final SharedPreferences.Editor editor = preferences.edit();
 	editor.putString(var, value);
 	editor.commit();

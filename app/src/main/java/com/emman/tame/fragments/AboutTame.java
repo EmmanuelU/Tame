@@ -137,7 +137,7 @@ public class AboutTame extends Fragment
 	mSOBNote.setText(getString(R.string.msg_sobnote) + FILE_DISABLE_SET_ON_BOOT_ZIP);
 	mSOBNote.setEnabled(Utils.stringToBool(mPreferences.getString(SET_ON_BOOT, "0")));
 
-	mSOBStatus.setText(getString(R.string.msg_sobstatus) + LINE_SPACE + mPreferences.getString(SET_ON_BOOT_TS, getActivity().getString(R.string.item_never)));
+	mSOBStatus.setText(getString(R.string.msg_sobstatus) + LINE_SPACE + mPreferences.getString(SET_ON_BOOT_TS, getActivity().getString(R.string.item_never)) + NEW_LINE + getString(R.string.msg_rabstatus) + LINE_SPACE + mPreferences.getString(RUN_AT_BOOT_TS, getActivity().getString(R.string.item_never)) + NEW_LINE + getString(R.string.msg_propstatus) + LINE_SPACE + mPreferences.getString(PROP_AT_BOOT_TS, getActivity().getString(R.string.item_never)));
 
         if(!Utils.isSubstringInString("SUPERSU", Utils.getSUVersion()) && Utils.isLollipop()){
 		mLPSU.setVisibility(View.VISIBLE);

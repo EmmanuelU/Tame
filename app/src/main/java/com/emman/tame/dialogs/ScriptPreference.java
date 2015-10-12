@@ -48,7 +48,9 @@ import android.widget.TableRow;
 import android.widget.Toast;
 import android.text.method.ScrollingMovementMethod;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -156,9 +158,10 @@ public class ScriptPreference extends DialogPreference
 	String[] commands = preferences.getString(RUN_AT_BOOT_COMMANDS, "").split(System.getProperty("line.separator"));
 	Utils.log(null, preferences, "-RAB-", Utils.arrayToString(commands));
 	Utils.CMD(true, commands);
+	updateSharedPrefs(preferences, RUN_AT_BOOT_TS, new SimpleDateFormat("MMMM d, yyyy - h:mma").format(new Date()));
     }
 
-    private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
+    private static void updateSharedPrefs(SharedPreferences preferences, String var, String value) {
 	final SharedPreferences.Editor editor = preferences.edit();
 	editor.putString(var, value);
 	editor.commit();

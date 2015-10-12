@@ -300,7 +300,6 @@ public class Utils
 				if(!isStringEmpty(propvalue)) fw.write(propname + "=" + propvalue + NEW_LINE);
 			}
 			else fw.write(line + NEW_LINE);
-			//fw.write(br.readLine().replaceAll(propname, propname + "=" + propvalue) + "\n");
 		}
 
 		//create new prop if needed
@@ -338,7 +337,32 @@ public class Utils
     }
 
     public static String readSystemProp(String prop) {
-	return CMD(false, "getprop " + prop);
+	return readSystemProp(prop, false);
+    }
+
+    public static String readSystemProp(String prop, boolean invasive) {
+	String value = CMD(false, "getprop " + prop);
+	if(!invasive) return value;
+
+	if(!Utils.fileExists("/sdcard/Tame/build.prop")){
+		if(!RootTools.remount("/system/build.prop", "rw")) Utils.CMD(true, "mount -o remount rw /system/");
+		Utils.CMD(true, "cp -f /system/build.prop /sdcard/Tame/build.prop");
+	}
+
+	File file = new File("/sdcard/Tame/build.prop");
+	try {
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String line;
+		while((line = br.readLine()) != null) {
+			if(line.contains(prop)){
+				value = prop.split("=")[1];
+			}
+		}
+		br.close();
+	} catch (Exception unhandled){}
+	finally {
+		return value;
+	}
     }
 
     public static void writeLocalFile(Context context, String filename){
@@ -471,11 +495,13 @@ public class Utils
 			text.append(line);
 			text.append('\n');
 		}
-		return text.toString();
+                br.close();
 	}
 	catch (Exception e) {
            	return readFileViaShell(fname, true);
-	}
+	} finally {
+		return text.toString();
+        }
     }
 
     public static boolean isNetworkOnline(Context context) {

@@ -51,6 +51,8 @@ public interface Resources {
 	public static final String TAME_UID = "tame_uid";
 	public static final String SET_ON_BOOT = "set_on_boot";
 	public static final String SET_ON_BOOT_TS = "set_on_boot_ts";
+	public static final String RUN_AT_BOOT_TS = "run_at_boot_ts";
+	public static final String PROP_AT_BOOT_TS = "prop_at_boot_ts";
 	public static final String RUN_AT_BOOT = "run_at_boot";
 	public static final String CPU_SET_ON_BOOT = "cpu_set_on_boot";
 	public static final String CHECK_UPDATE_AT_BOOT = "check_update_at_boot";
