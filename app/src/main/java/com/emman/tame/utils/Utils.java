@@ -642,7 +642,7 @@ public class Utils
     }
 
     public static String CMDSpecial(String... commands) {
-	return CMD(true, true, Shell.ShellContext.SHELL, commands);
+	return CMD(true, true, Shell.ShellContext.SYSTEM_SERVER, commands);
     }
 
     public static String CMDQuiet(boolean useSu, String... commands) {

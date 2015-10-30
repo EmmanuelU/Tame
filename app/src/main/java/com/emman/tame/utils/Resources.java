@@ -26,7 +26,7 @@ public interface Resources {
 	public static final String LINE_SPACE = " ";
 
 	public static final String TAG = "Tame";
-	public static final String PATH_LOCAL = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+	public static final String PATH_LOCAL = "/sdcard/";
 	public static final String PATH_TAME = PATH_LOCAL + TAG + "/";
 	public static final String LINK_APP_UPDATE = "https://raw.githubusercontent.com/EmmanuelU/Tame/master/releases/updatetame.sh";
 	public static final String LINK_WK_CPU_PATCH = "https://github.com/EmmanuelU/wild_kernel_htc_msm8660/commit/f9d17e63e7f9055fde6febd0b709405b023bdb38";

@@ -336,6 +336,10 @@ public class MainActivity extends Activity
 	return mContext;
     }
 
+    public static void setContext(Context context){
+	mContext = context;
+    }
+
     public static boolean isDebugging() {
 	return Utils.stringToBool(mPreferences.getString(TAME_DEBUG, "0"));
     }
