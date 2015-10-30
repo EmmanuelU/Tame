@@ -87,8 +87,6 @@ public class AboutTame extends Fragment
 
     Animation fadein = new AlphaAnimation(0.0f, 1.0f);
     Animation fadeout = new AlphaAnimation(1.0f, 0.0f);
-    ProgressDialog mCheckUpdateDialog;
-    ProgressDialog mAppCheckUpdateDialog;
 
     Context mContext;
     private OTA WildData;
@@ -187,120 +185,80 @@ public class AboutTame extends Fragment
 	}
     }
 
-    private boolean CheckUpdate(){
+    private void CheckUpdate(){
 	if(!Utils.isNetworkOnline(getActivity())){
 		Utils.toast(getActivity(), getString(R.string.msg_no_net));
 	} else if(WildData.fetchedlatestversion && !WildData.islatestversion){
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WildData.latestversiondl));
 		startActivity(browserIntent);
 	}
-	else if(WildData.fetchedlatestversion) return false;
-	else {
-		mCheckUpdateDialog = new ProgressDialog(getActivity());
-		mCheckUpdateDialog.setMessage(getString(R.string.msg_checking_update));
-		mCheckUpdateDialog.setIndeterminate(true);
-		mCheckUpdateDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		mCheckUpdateDialog.setCancelable(true);
-		final DownloadTask downloadTask = new DownloadTask(getActivity(), FILE_UPDATE_DATA, mCheckUpdateDialog, true);
-		downloadTask.execute(propotalink);
-		mCheckUpdateDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-		    @Override
-		    public void onCancel(DialogInterface dialog) {
-			downloadTask.cancel(true);
-		    }
-		});
-
-		mCheckUpdateDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-		    @Override
-		    public void onDismiss(DialogInterface dialog) {
-			if(WildInit()){
-				if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(propversion)) WildData.islatestversion = false;
-				else WildData.islatestversion = true;
-				if(WildData.islatestversion){
-					mUpdate.setText(getString(R.string.msg_latest_update));
-					mUpdate.setEnabled(false);
-				} else {
-					mUpdate.setText(getString(R.string.msg_update_available));
-					mLatVersion.setText(WildData.latestversion + " - " + WildData.latestversionreldate);
-					mLatVersion.setVisibility(View.VISIBLE);
-				}
-				WildData.fetchedlatestversion = true;
+	else if(!WildData.fetchedlatestversion){
+		Utils.toast(getActivity(), getActivity().getString(R.string.msg_wait));
+		if(WildInit(Utils.fetchTextFile(propotalink))){
+			if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(propversion)) WildData.islatestversion = false;
+			else WildData.islatestversion = true;
+			if(WildData.islatestversion){
+				mUpdate.setText(getString(R.string.msg_latest_update));
+				mUpdate.setEnabled(false);
+			} else {
+				mUpdate.setText(getString(R.string.msg_update_available));
+				mLatVersion.setText(WildData.latestversion + " - " + WildData.latestversionreldate);
+				mLatVersion.setVisibility(View.VISIBLE);
 			}
-		    }
-		});
+			WildData.fetchedlatestversion = true;
+		}
 	}
-	return true;
     }
 
-    private boolean CheckAppUpdate(){
+    private void CheckAppUpdate(){
 	if(!Utils.isNetworkOnline(getActivity())){
 		Utils.toast(getActivity(), getString(R.string.msg_no_net));
 	} else if(TameData.fetchedlatestversion && !TameData.islatestversion){
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TameData.latestversiondl));
 		startActivity(browserIntent);
 	}
-	else if(TameData.fetchedlatestversion) return false;
-	else {
-		mAppCheckUpdateDialog = new ProgressDialog(getActivity());
-		mAppCheckUpdateDialog.setMessage(getString(R.string.msg_checking_update));
-		mAppCheckUpdateDialog.setIndeterminate(true);
-		mAppCheckUpdateDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		mAppCheckUpdateDialog.setCancelable(true);
-		final DownloadTask downloadTask = new DownloadTask(getActivity(), FILE_APP_UPDATE_DATA, mAppCheckUpdateDialog, true);
-		downloadTask.execute(LINK_APP_UPDATE);
-		mAppCheckUpdateDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-		    @Override
-		    public void onCancel(DialogInterface dialog) {
-			downloadTask.cancel(true);
-		    }
-		});
-
-		mAppCheckUpdateDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-		    @Override
-		    public void onDismiss(DialogInterface dialog) {
-			if(TameInit()){
-				if(TameData.latestversionstamp > TameData.versionstamp) TameData.islatestversion = false;
-				else TameData.islatestversion = true;
-				if(TameData.islatestversion){
-					mAppUpdate.setText(getString(R.string.msg_latest_update));
-					mAppUpdate.setEnabled(false);
-				} else {
-					mAppUpdate.setText(getString(R.string.msg_update_available));
-					mAppLatVersion.setText(TameData.latestversion + " - " + TameData.latestversionreldate);
-					mAppLatVersion.setVisibility(View.VISIBLE);
-				}
-				TameData.fetchedlatestversion = true;
+	else if(!TameData.fetchedlatestversion) {
+		Utils.toast(getActivity(), getActivity().getString(R.string.msg_wait));
+		if(TameInit(Utils.fetchTextFile(LINK_APP_UPDATE))){
+			if(TameData.latestversionstamp > TameData.versionstamp) TameData.islatestversion = false;
+			else TameData.islatestversion = true;
+			if(TameData.islatestversion){
+				mAppUpdate.setText(getString(R.string.msg_latest_update));
+				mAppUpdate.setEnabled(false);
+			} else {
+				mAppUpdate.setText(getString(R.string.msg_update_available));
+				mAppLatVersion.setText(TameData.latestversion + " - " + TameData.latestversionreldate);
+				mAppLatVersion.setVisibility(View.VISIBLE);
 			}
-		    }
-		});
+			TameData.fetchedlatestversion = true;
+		}
 	}
+    }
+
+    private boolean WildInit(String script){
+	if(Utils.isStringEmpty(script)) return false;
+
+	Utils.writeFile(FILE_UPDATE_DATA, script);
+	Utils.CMD(false, "chmod +x " + FILE_UPDATE_DATA);
+	WildData.device = propdevice;
+	WildData.latestversion = Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestversion");
+	WildData.latestversionstamp = Integer.parseInt(Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestdate"));
+	WildData.latestversiondl = Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestDL");
+	WildData.latestversionreldate = Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestdateliteral");
+	Utils.CMD(false, "rm -rf " + FILE_UPDATE_DATA);
 	return true;
     }
+    private boolean TameInit(String script){
+	if(Utils.isStringEmpty(script)) return false;
 
-    private boolean WildInit(){
-	if(Utils.fileExists(FILE_UPDATE_DATA)){
-		Utils.CMD(false, "chmod +x " + FILE_UPDATE_DATA);
-		WildData.device = propdevice;
-		WildData.latestversion = Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestversion");
-		WildData.latestversionstamp = Integer.parseInt(Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestdate"));
-		WildData.latestversiondl = Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestDL");
-		WildData.latestversionreldate = Utils.CMD(false, "sh " + FILE_UPDATE_DATA + " latestdateliteral");
-		Utils.CMD(false, "rm -rf " + FILE_UPDATE_DATA);
-		return true;
-	}
-	return false;
-    }
-    private boolean TameInit(){
-	if(Utils.fileExists(FILE_APP_UPDATE_DATA)){
-		Utils.CMD(false, "chmod +x " + FILE_APP_UPDATE_DATA);
-		TameData.latestversion = Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestversion");
-		TameData.latestversionstamp = Integer.parseInt(Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestversioncode"));
-		TameData.latestversiondl = Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestDL");
-		TameData.latestversionreldate = Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestdateliteral");
-		Utils.CMD(false, "rm -rf " + FILE_APP_UPDATE_DATA);
-		return true;
-	}
-	return false;
+	Utils.writeFile(FILE_APP_UPDATE_DATA, script);
+	Utils.CMD(false, "chmod +x " + FILE_APP_UPDATE_DATA);
+	TameData.latestversion = Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestversion");
+	TameData.latestversionstamp = Integer.parseInt(Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestversioncode"));
+	TameData.latestversiondl = Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestDL");
+	TameData.latestversionreldate = Utils.CMD(false, "sh " + FILE_APP_UPDATE_DATA + " latestdateliteral");
+	Utils.CMD(false, "rm -rf " + FILE_APP_UPDATE_DATA);
+	return true;
     }
 
     private void TameLogoAnim(){

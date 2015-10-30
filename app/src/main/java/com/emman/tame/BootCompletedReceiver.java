@@ -48,7 +48,7 @@ public class BootCompletedReceiver extends WakefulBroadcastReceiver implements R
 		if(Utils.stringToBool(mPreferences.getString(RETAIN_PROP_ENTRIES, "0"))) startWakefulService(context, new Intent(context, PropAtBoot.class));
 	}
 
-	if(Utils.stringToBool(mPreferences.getString(CHECK_UPDATE_AT_BOOT, "1"))) context.startService(new Intent(context, CheckUpdateAtBoot.class));
+	if(Utils.stringToBool(mPreferences.getString(CHECK_UPDATE_AT_BOOT, "1"))) startWakefulService(context, new Intent(context, CheckUpdateAtBoot.class));
     }
     
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

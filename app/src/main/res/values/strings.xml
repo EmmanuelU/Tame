@@ -168,6 +168,7 @@
     <string name="item_max_frequency">Maximum Frequency</string>
 
     <string name="msg_loading">Loading ...</string>
+    <string name="msg_wait">Please Wait ...</string>
     <string name="msg_done">Done</string>
 
     <string name="msg_rbackup">Restore Backup</string>

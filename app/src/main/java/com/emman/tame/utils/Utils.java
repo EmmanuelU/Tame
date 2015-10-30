@@ -551,17 +551,15 @@ public class Utils
 	mFetchTask.execute();
 	
 	int timeoutms = 0;
-        while (!fetchComplete && timeoutms < 10000){
-		try{
+	try{
+		while(!fetchComplete && timeoutms <= 10000){
 			Thread.sleep(50);
 			timeoutms += 50;
-              	} catch (Exception e){
-			errorHandle(e);
-		}
-		finally{
-			if(timeoutms >= 10000) log("-NET-", "URL Fetch of '" + fileUrl + "' timed out.");
-		}
-        }
+        	}
+	} catch (Exception unhandled) {}
+	finally{
+		if(timeoutms >= 10000) log("-NET-", "URL Fetch of '" + fileUrl + "' timed out.");
+	}
 
 	return contents.toString();
     }
@@ -659,8 +657,7 @@ public class Utils
 	return CMD(useSu, true, null, commands);
     }
 
-    private static String cmdOutput = "";
-
+    private static String cmdOutput;
     public static String CMD(final boolean useSu, final boolean waitFor, Shell.ShellContext context, String... commands){
 	cmdOutput = "";
 
@@ -702,14 +699,14 @@ public class Utils
 
 	if(waitFor){
 		int timeoutms = 0;
-		while (!cmd.isFinished() && timeoutms <= 10000){
-			try{
+		try{
+			while (!cmd.isFinished() && timeoutms <= 10000){
 				Thread.sleep(50);
 				timeoutms += 50;
-		      	} catch (Exception unlikely){}
-			finally{
-				if(timeoutms >= 10000) log("-COMMAND-", "Process timed out after 10 seconds.", "Output: " + cmdOutput);
 			}
+		} catch (Exception unhandled){}
+		finally{
+			if(timeoutms >= 10000) log("-COMMAND-", "Process timed out after 10 seconds.", "Output: " + cmdOutput);
 		}
 
 		try{
