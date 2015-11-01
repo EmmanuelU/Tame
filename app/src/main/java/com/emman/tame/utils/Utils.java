@@ -694,10 +694,11 @@ public class Utils
 		if(context == null)
 			RootTools.getShell(useSu).add(cmd);
 		else
-			RootTools.getShell(useSu, 10000, context).add(cmd); //timeout of 10000 doesn't function for whatever reason, so I implemented my own below (timeoutms)
+			RootTools.getShell(useSu, 10000, context).add(cmd);
 	} catch (Exception unlikely){}
 
 	if(waitFor){
+		//RootTool's built in timeout of 10000 doesn't function for me, so I implemented my own below (timeoutms)
 		int timeoutms = 0;
 		try{
 			while (!cmd.isFinished() && timeoutms <= 10000){
@@ -706,13 +707,13 @@ public class Utils
 			}
 		} catch (Exception unhandled){}
 		finally{
-			if(timeoutms >= 10000) log("-COMMAND-", "Process timed out after 10 seconds.", "Output: " + cmdOutput);
+			if(timeoutms >= 10000){
+				log("-COMMAND-", "Process timed out after 10 seconds.", "Output: " + cmdOutput);
+			}
+			try{
+				RootTools.getShell(useSu).close();
+			} catch (Exception unlikely){}
 		}
-
-		try{
-			RootTools.getShell(useSu).close();
-		} catch (Exception unlikely){}
-
 		return cmdOutput;
 	}
 	return "";
