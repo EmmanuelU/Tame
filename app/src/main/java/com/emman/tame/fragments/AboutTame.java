@@ -248,6 +248,7 @@ public class AboutTame extends Fragment
 	Utils.CMD(false, "rm -rf " + FILE_UPDATE_DATA);
 	return true;
     }
+
     private boolean TameInit(String script){
 	if(Utils.isStringEmpty(script)) return false;
 

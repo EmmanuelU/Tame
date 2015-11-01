@@ -69,33 +69,40 @@ public class CheckUpdateAtBoot extends IntentService implements Resources {
 	return true;
     }
 
+    private void CheckUpdate(){
+	//WildKernel Update
+	try{
+		if(AboutTame.isWild()){
+			if(WildInit(Utils.fetchTextFile(AboutTame.propotalink))){
+				WildData.versionstamp = Integer.parseInt(AboutTame.propversiondate);
+				if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(AboutTame.propversion)){
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WildData.latestversiondl));
+					Utils.notification(this, NotificationID.WKUPDATE, browserIntent, "WildKernel Build " + LINE_SPACE + getString(R.string.msg_app_update, WildData.latestversion, WildData.latestversionreldate));
+				}
+			}
+		}
+	} catch (Exception unhandled) {}	
+    }
+
+    private void CheckAppUpdate(){
+	//Tame Update
+	try{
+		if(TameInit(Utils.fetchTextFile(LINK_APP_UPDATE))){
+			TameData.versionstamp = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+			if(TameData.latestversionstamp > TameData.versionstamp){
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TameData.latestversiondl));
+				Utils.notification(this, NotificationID.APPUPDATE, browserIntent, "Tame v" + LINE_SPACE + getString(R.string.msg_app_update, TameData.latestversion, TameData.latestversionreldate));
+			}
+		}
+	} catch (Exception unhandled) {}
+    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
 	if(Utils.isNetworkOnline(this)){
-		//WildKernel Update
-		try{
-			if(AboutTame.isWild()){
-				if(WildInit(Utils.fetchTextFile(AboutTame.propotalink))){
-					if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(AboutTame.propversion)){
-						Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WildData.latestversiondl));
-						Utils.notification(this, NotificationID.WKUPDATE, browserIntent, "WildKernel Build " + LINE_SPACE + getString(R.string.msg_app_update, WildData.latestversion, WildData.latestversionreldate));
-					}
-				}
-			}
-		} catch (Exception unhandled) {}
-
-		//Tame Update
-		try{
-			if(TameInit(Utils.fetchTextFile(LINK_APP_UPDATE))){
-				if(TameData.latestversionstamp > TameData.versionstamp){
-					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TameData.latestversiondl));
-					Utils.notification(this, NotificationID.APPUPDATE, browserIntent, "Tame v" + LINE_SPACE + getString(R.string.msg_app_update, TameData.latestversion, TameData.latestversionreldate));
-				}
-			}
-		} catch (Exception unhandled) {}
+		CheckUpdate();
+		CheckAppUpdate();
 	}
-
 	BootCompletedReceiver.completeWakefulIntent(intent);
     }
 }

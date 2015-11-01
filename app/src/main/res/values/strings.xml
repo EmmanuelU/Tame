@@ -22,7 +22,7 @@
 
     <string name="msg_no_net">No Internet Access Detected</string>
     <string name="msg_reboot">Reboot is recommended.</string>
-    <string name="msg_kernelbug1">Your kernel has a bug, please forward this URL link to your ROM/Kernel developer. As result, you may experience lag using this app.</string>
+    <string name="msg_kernelbug1">Your kernel may have a bug, please forward this URL link to your ROM/Kernel developer. You may experience lag using the CPU section of this app.</string>
     <string name="msg_fatal_error">Fatal Error, please see notification drawer.</string>
     <string name="msg_no_su">Please restart me with root permissions.</string>
     <string name="msg_lp_no_su">While Tame no longer requires SuperSU on Lollipop, I still suggest using it to avoid any potential issues.</string>
