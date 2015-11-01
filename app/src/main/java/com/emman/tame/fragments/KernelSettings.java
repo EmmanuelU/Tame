@@ -63,6 +63,16 @@ public class KernelSettings extends PreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+	MainActivity.setActionBarTitle(getActivity().getString(R.string.page_kernelsettings), 2);
+	MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
+		@Override
+		public void onBackPressed() {
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.container, new AboutTame()).commit();
+			
+		}
+	});
 	
 	availableIOSchedulersLine = Utils.readOneLine(IOSCHED_LIST_FILE);
         addPreferencesFromResource(R.xml.kernel_settings);
@@ -70,21 +80,6 @@ public class KernelSettings extends PreferenceFragment
         prefSet = getPreferenceScreen();
 
 	updateData();
-
-	MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
-		@Override
-		public void onBackPressed() {
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction().replace(R.id.container, new AboutTame()).commit();
-			MainActivity.setOnBackPressedListener(null); //normal operations
-		}
-	});
-    }
-
-    @Override
-    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-
-        return true;
     }
 
     private boolean initiateData(){
@@ -128,11 +123,6 @@ public class KernelSettings extends PreferenceFragment
 	}
     }
 
-    private void setData(){
-	if(!initiateData()) return;
-
-    }
-
     private void updateData(){
 	if(!initiateData()) return;
 	updateDependencies();
@@ -144,7 +134,6 @@ public class KernelSettings extends PreferenceFragment
     }
 
     public static void panelUpdate(){
-	
 	if(Utils.fileExists(PanelUVPreference.mPanelUVFile)){
 		if(Integer.parseInt(Utils.readOneLine(PanelUVPreference.mPanelUVFile)) > 0)
 			mPanelUVDialog.setSummary(MainActivity.getContext().getString(R.string.msg_undervolt) + " -" + Utils.readOneLine(PanelUVPreference.mPanelUVFile) + "mV");
@@ -167,10 +156,6 @@ public class KernelSettings extends PreferenceFragment
 	if (bropen >= 0 && brclose >= 0) currentIOScheduler = availableIOSchedulersLine.substring(bropen + 1, brclose);
 
 	mIODialog.setSummary(currentIOScheduler);
-    }
-
-    public static void SetOnBootData(SharedPreferences preferences){
-	
     }
 
     private void updateSharedPrefs(SharedPreferences preferences, String var, String value) {

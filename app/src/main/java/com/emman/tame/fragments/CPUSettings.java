@@ -102,6 +102,15 @@ public class CPUSettings extends PreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 
+	MainActivity.setActionBarTitle(getActivity().getString(R.string.page_cpusettings), 3);
+	MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
+		@Override
+		public void onBackPressed() {
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.container, new AboutTame()).commit();
+		}
+	});
+
 	if(!Utils.fileIsReadable(FREQ_MIN_FILE) || !Utils.fileIsReadable(FREQ_MAX_FILE)){
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LINK_WK_CPU_PATCH));
 		Utils.notification(getActivity(), NotificationID.CPUPERM, intent, getString(R.string.msg_kernelbug1));
@@ -117,15 +126,6 @@ public class CPUSettings extends PreferenceFragment
 
 	mSchedMC.setOnPreferenceChangeListener(this);
 	mVDD.setOnPreferenceChangeListener(this);
-
-	MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
-		@Override
-		public void onBackPressed() {
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction().replace(R.id.container, new AboutTame()).commit();
-			MainActivity.setOnBackPressedListener(null); //normal operations
-		}
-	});
     }
 
     @Override

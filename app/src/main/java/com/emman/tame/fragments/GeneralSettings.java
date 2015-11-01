@@ -52,20 +52,20 @@ public class GeneralSettings extends PreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.xml.general_settings);
-
-        prefSet = getPreferenceScreen();
-
-	updateData();
-
+	MainActivity.setActionBarTitle(getActivity().getString(R.string.page_generalsettings), 4);
 	MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
 		@Override
 		public void onBackPressed() {
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction().replace(R.id.container, new AboutTame()).commit();
-			MainActivity.setOnBackPressedListener(null); //normal operations
 		}
 	});
+
+        addPreferencesFromResource(R.xml.general_settings);
+
+        prefSet = getPreferenceScreen();
+
+	updateData();
 
 	mSysFS.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 		public boolean onPreferenceClick(Preference preference) {

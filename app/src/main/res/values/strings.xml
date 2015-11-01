@@ -44,6 +44,7 @@
     <string name="page_generalsettings">Other</string>
     <string name="page_kernelsettings">Kernel</string>
     <string name="page_settings">Settings</string>
+    <string name="page_fauxsound">FauxSound</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -214,5 +215,7 @@
     <string name="item_msg_tamelog">Debugging mode slows down the functionality app. Only use it when needed.</string>
 
     <string name="item_tcp_protocol">TCP Protocol</string>
+
+    <string name="item_fauxsound">FauxSound</string>
 
 </resources>

@@ -92,20 +92,21 @@ public class BuildPropEditor extends ListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-	fill();
-	Utils.toast(getActivity(), getActivity().getString(R.string.msg_edit_caution));
-
+	MainActivity.setActionBarTitle(getActivity().getString(R.string.item_buildprop));
 	MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
 		@Override
 		public void onBackPressed() {
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction().replace(R.id.container, new GeneralSettings()).commit();
 			Utils.CMD(false, "rm -rf /sdcard/Tame/tmp.prop");
-			MainActivity.setOnBackPressedListener(null); //normal operations
 		}
 	});
+
+	mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+	fill();
+	Utils.toast(getActivity(), getActivity().getString(R.string.msg_edit_caution));
 
     }
 

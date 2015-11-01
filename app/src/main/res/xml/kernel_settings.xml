@@ -61,4 +61,9 @@
 	android:positiveButtonText="@string/item_save"
     />
 
+    <Preference
+	android:key="fauxsound_dialog"
+	android:title="@string/item_fauxsound"
+    />
+
 </PreferenceScreen>

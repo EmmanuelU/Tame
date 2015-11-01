@@ -154,7 +154,8 @@ public class SysFSExplorer extends ListFragment
          Collections.sort(fls);
          dir.addAll(fls);
          if(!f.getName().equalsIgnoreCase("sys")){
-             dir.add(0,new FileOption(currentPath,"Parent Directory",f.getParent()));
+		dir.add(0,new FileOption(currentPath,"Parent Directory",f.getParent()));
+		MainActivity.setActionBarTitle(f.getName());
 		MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
 			@Override
 			public void onBackPressed() {
@@ -164,12 +165,12 @@ public class SysFSExplorer extends ListFragment
 			}
 		});
 	} else {
+		MainActivity.setActionBarTitle(getActivity().getString(R.string.item_sysfs));
 		MainActivity.setOnBackPressedListener(new MainActivity.overrideBackListener() {
 			@Override
 			public void onBackPressed() {
 				FragmentManager fragmentManager = getFragmentManager();
 				fragmentManager.beginTransaction().replace(R.id.container, new GeneralSettings()).commit();
-				MainActivity.setOnBackPressedListener(null); //normal operations
 			}
 		});
 	}

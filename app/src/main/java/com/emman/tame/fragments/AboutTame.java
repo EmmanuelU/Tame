@@ -95,12 +95,14 @@ public class AboutTame extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
+	MainActivity.setActionBarTitle(getActivity().getString(R.string.page_main), 1);
+	MainActivity.setOnBackPressedListener(null); //normal operations
+
 	WildData = new OTA();
 	TameData = new OTA();
+
 	
 	mContext = getActivity();
-
-	((MainActivity) getActivity()).getActionBar().setTitle(getString(R.string.page_main));
     }
 
     @Override

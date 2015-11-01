@@ -83,18 +83,20 @@ public class MainActivity extends Activity
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private static NavigationDrawerFragment mNavigationDrawerFragment;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
-    private CharSequence mTitle;
+    private static CharSequence mTitle;
 
     private Menu mMenu;
 
     private TextView mSetOnBootNote;
 
     private static SharedPreferences mPreferences;
+
+    private static ActionBar mActionBar;
 
     private static Context mContext;
 
@@ -108,6 +110,7 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 	mContext = this;
+	mActionBar =  getActionBar();
 	mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 	//NO CODE BEFORE THIS LINE
 	Utils.logSafeContext = true;
@@ -352,14 +355,28 @@ public class MainActivity extends Activity
     public void onBackPressed(){
 	if(overrideBackObserver == null)
 		super.onBackPressed();
-	else
+	else{
 		try{
-		overrideBackObserver.onBackPressed();
+			overrideBackObserver.onBackPressed();
 		} catch (Exception e) {}
+	}
     }
 
     public static void setOnBackPressedListener(overrideBackListener observer) {
 	overrideBackObserver = observer;
+    }
+
+    public static void setActionBarTitle(String title) {
+	setActionBarTitle(title, 0);
+    }
+
+    public static void setActionBarTitle(String title, int selection) {
+	if(mActionBar != null){
+		mTitle = title;
+		mActionBar.setTitle(title);
+		if(mNavigationDrawerFragment != null && selection > 0)
+			mNavigationDrawerFragment.mDrawerListView.setItemChecked(selection - 1, true);
+	}
     }
 
 }
