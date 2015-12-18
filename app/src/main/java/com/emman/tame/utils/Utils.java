@@ -183,6 +183,12 @@ public class Utils
 	return value;
     }
 
+    public static String queueSYSCommand(String command) {
+	if(isStringEmpty(cmdQueue)) cmdQueue = command;
+	else MainActivity.BootCommands = cmdQueue + NEW_LINE + command;
+	return command;
+    }
+
     public static void launchSYSQueue() {
 	Context context = getContext();
 	final BackgroundTask mCMDTask = new BackgroundTask(context);

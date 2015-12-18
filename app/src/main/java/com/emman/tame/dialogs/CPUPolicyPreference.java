@@ -169,6 +169,9 @@ public class CPUPolicyPreference extends DialogPreference
 
 		for(int i = 0; i < Utils.getNumOfCpus();){
 			Utils.writeSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
+			try{
+				Thread.sleep(10);
+			} catch (Exception unhandled) {}
 			mCore[i] = new CpuPolicy();
 			mCore[i].governor = Utils.readOneLine(Utils.toCPU(GOV_FILE, i));
 			mCore[i].min = Utils.readOneLine(Utils.toCPU(FREQ_MIN_FILE, i));
@@ -245,6 +248,7 @@ public class CPUPolicyPreference extends DialogPreference
 		for(int i = 0; i < Utils.getNumOfCpus();){
 			if(i != mCpu){ //wait to apply new value last
 				Utils.queueSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
+				Utils.queueSYSCommand("sleep 0.05");
 				if(mPolicySync.isChecked()){
 					Utils.queueSYSValue(Utils.toCPU(GOV_FILE, i), mCore[mCpu].governor);
 					Utils.queueSYSValue(Utils.toCPU(FREQ_MIN_FILE, i), mCore[mCpu].min);
@@ -259,6 +263,7 @@ public class CPUPolicyPreference extends DialogPreference
 		}
 	}
 	Utils.queueSYSValue(Utils.toCPU(CPU_ONLINE, mCpu), "1");
+	Utils.queueSYSCommand("sleep 0.05");
 	Utils.queueSYSValue(Utils.toCPU(GOV_FILE, mCpu), mCore[mCpu].governor);
 	Utils.queueSYSValue(Utils.toCPU(FREQ_MIN_FILE, mCpu), mCore[mCpu].min);
 	Utils.queueSYSValue(Utils.toCPU(FREQ_MAX_FILE, mCpu), mCore[mCpu].max);
@@ -324,6 +329,7 @@ public class CPUPolicyPreference extends DialogPreference
 			if(!(Utils.isStringEmpty(governors[i]) || Utils.isStringEmpty(minfreqs[i]) || Utils.isStringEmpty(maxfreqs[i]))){
 				if(!(governors[i].equals("0") || minfreqs[i].equals("0") || maxfreqs[i].equals("0"))){
 					Utils.SetSOBValue(Utils.toCPU(CPU_ONLINE, i), "1");
+					Utils.SetSOBCommand("sleep 0.05");
 					Utils.SetSOBValue(Utils.toCPU(GOV_FILE, i), governors[i]);
 					Utils.SetSOBValue(Utils.toCPU(FREQ_MIN_FILE, i), minfreqs[i]);
 					Utils.SetSOBValue(Utils.toCPU(FREQ_MAX_FILE, i), maxfreqs[i]);
