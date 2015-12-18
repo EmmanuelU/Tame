@@ -124,12 +124,14 @@ public class AboutTame extends Fragment
 
         mAppUpdate.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View view) {
+			mAppUpdate.setText(getActivity().getString(R.string.msg_wait));
 			CheckAppUpdate();
 		}
 	});
 
         mUpdate.setOnClickListener(new View.OnClickListener() {
 		public void onClick(View view) {
+			mUpdate.setText(getActivity().getString(R.string.msg_wait));
 			CheckUpdate();
 		}
 	});
@@ -195,7 +197,6 @@ public class AboutTame extends Fragment
 		startActivity(browserIntent);
 	}
 	else if(!WildData.fetchedlatestversion){
-		mUpdate.setText(getActivity().getString(R.string.msg_wait));
 		if(WildInit(Utils.fetchTextFile(propotalink))){
 			if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(propversion)) WildData.islatestversion = false;
 			else WildData.islatestversion = true;

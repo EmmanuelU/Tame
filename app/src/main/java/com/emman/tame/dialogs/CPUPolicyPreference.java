@@ -267,9 +267,9 @@ public class CPUPolicyPreference extends DialogPreference
 	minfreqs = mCore[0].min;
 	maxfreqs = mCore[0].max;
 	for(int i = 1; i < Utils.getNumOfCpus();){
-		governors = governors + " " + mCore[i].governor;
-		minfreqs = minfreqs + " " + mCore[i].min;
-		maxfreqs = maxfreqs + " " + mCore[i].max;
+		governors = governors + " " + (mCpuGovSync.isChecked() ? mCore[0].governor : mCore[i].governor);
+		minfreqs = minfreqs + " " + (mCpuGovSync.isChecked() ? mCore[0].min : mCore[i].min);
+		maxfreqs = maxfreqs + " " + (mCpuGovSync.isChecked() ? mCore[0].max : mCore[i].max);
 		i++;
 	}
 	updateSharedPrefs(mPreferences, SAVED_GOV, governors);

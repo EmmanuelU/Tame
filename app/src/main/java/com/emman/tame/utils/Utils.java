@@ -939,9 +939,7 @@ public class Utils
                 .toString();
     }
 
-    private static String[] freqMhz = null;
     public static String[] getFileFreqToMhz(String file, int how) {
-	if(freqMhz != null) return freqMhz;
         if(fileExists(file)) {
             ArrayList<String> names = new ArrayList<String>();
             //setPermissions(file);
@@ -973,8 +971,7 @@ public class Utils
                 names.add((Integer.parseInt(s) / how) + "MHz");
             }
             String[] toMhz = new String[names.size()];
-	    freqMhz = names.toArray(toMhz);
-            return freqMhz;
+            return names.toArray(toMhz);
         }
         return "".split("\\s+");
     }
