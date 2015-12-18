@@ -65,39 +65,6 @@ public class CPUSettings extends PreferenceFragment
 
     private SharedPreferences mPreferences;
 
-    private class CurCPUThread extends Thread {
-        private boolean mInterrupt = false;
-
-        public void interrupt() {
-            mInterrupt = true;
-        }
-
-        @Override
-        public void run() {
-            try {
-		while (!mInterrupt) {
-			sleep(500);
-			String cpu0;
-			cpu0 = Utils.readOneLine(FREQ_CUR_FILE);
-			cpu0 = String.format("%s", Utils.toMHz(cpu0));
-			if (cpu0 != null) mCurCPUHandler.sendMessage(mCurCPUHandler.obtainMessage(0, cpu0));
-		}
-            } catch (InterruptedException e) {
-            }
-        }
-    };
-
-    private CurCPUThread mCurCPUThread = new CurCPUThread();
-
-    private Handler mCurCPUHandler = new Handler() {
-        public void handleMessage(Message msg) {
-		try {
-			String freq = ((String) msg.obj);
-			mCurFreq.setSummary(getString(R.string.msg_primary) + LINE_SPACE + getString(R.string.msg_core) + ": " + freq);
-            } catch (Exception e) {}
-        }
-    };
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -126,6 +93,7 @@ public class CPUSettings extends PreferenceFragment
 
 	mSchedMC.setOnPreferenceChangeListener(this);
 	mVDD.setOnPreferenceChangeListener(this);
+
     }
 
     @Override
@@ -159,22 +127,6 @@ public class CPUSettings extends PreferenceFragment
 	return false;
     }
 
-    @Override
-    public void onResume() {
-	super.onResume();
-	CPUupdate();
-    }
-
-    @Override
-    public void onDestroy() {
-	super.onDestroy();
-	mCurCPUThread.interrupt();
-	try {
-		mCurCPUThread.join();
-	} catch (InterruptedException e) {
-	}
-    }
-
     private void updateDependencies(){
 	if(!initiateData()) return;
 
@@ -204,12 +156,9 @@ public class CPUSettings extends PreferenceFragment
 	mCpuBoost = (DialogPreference) prefSet.findPreference("cpu_boost");
 	mCpuBoostV2 = (DialogPreference) prefSet.findPreference("cpu_boostv2");
 	mCpuBoostV3 = (DialogPreference) prefSet.findPreference("cpu_boostv3");
-	mCurFreq = (Preference) prefSet.findPreference("cur_freq");
 	mSchedMC = (ListPreference) prefSet.findPreference("sched_mc");
 	mVDD = (ListPreference) prefSet.findPreference("vdd");
 	mSMPDialog = findPreference("smpdialog");
-
-	mCurCPUThread.start();
 
 	mSchedMC.setValue(Utils.readOneLine(SCHED_MC_FILE));
 
