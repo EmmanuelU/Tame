@@ -244,6 +244,7 @@ public class CPUPolicyPreference extends DialogPreference
 	if(!mCpuGovSync.isChecked()){ //this feature will do  this step for us
 		for(int i = 0; i < Utils.getNumOfCpus();){
 			if(i != mCpu){ //wait to apply new value last
+				Utils.queueSYSValue(Utils.toCPU(CPU_ONLINE, i), "1");
 				if(mPolicySync.isChecked()){
 					Utils.queueSYSValue(Utils.toCPU(GOV_FILE, i), mCore[mCpu].governor);
 					Utils.queueSYSValue(Utils.toCPU(FREQ_MIN_FILE, i), mCore[mCpu].min);
@@ -257,6 +258,7 @@ public class CPUPolicyPreference extends DialogPreference
 			i++;
 		}
 	}
+	Utils.queueSYSValue(Utils.toCPU(CPU_ONLINE, mCpu), "1");
 	Utils.queueSYSValue(Utils.toCPU(GOV_FILE, mCpu), mCore[mCpu].governor);
 	Utils.queueSYSValue(Utils.toCPU(FREQ_MIN_FILE, mCpu), mCore[mCpu].min);
 	Utils.queueSYSValue(Utils.toCPU(FREQ_MAX_FILE, mCpu), mCore[mCpu].max);

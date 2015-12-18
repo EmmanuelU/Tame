@@ -69,6 +69,7 @@ public class CPUStatsPreference extends DialogPreference
 
     private View mView;
 
+    private int statRound;
 
     private TextView mCpuFreqs;
     private TextView mGpuFreq;
@@ -166,6 +167,10 @@ public class CPUStatsPreference extends DialogPreference
 
 	mCpuStatsGroup.addView(mOtherStatsView);
 
+	statRound = 0;
+	boolean smpManager = Utils.isShellProcessRunning(PROCESS_MPDEC) || Utils.stringToBool(Utils.readOneLine(FILE_MPDEC_TOGGLE)) || Utils.stringToBool(Utils.readOneLine(FILE_INTELLIP_TOGGLE));
+	mSMP.setVisibility(smpManager ? View.VISIBLE : View.GONE);
+
 	updateTimesInState();
 
 	if(mCurCPUThread.isAlive()){
@@ -260,8 +265,12 @@ public class CPUStatsPreference extends DialogPreference
 
 	mRarelyUsed.setText(getContext().getString(R.string.item_transy_freq) + NEW_LINE + rarelyUsedFreqs + NEW_LINE + NEW_LINE + getContext().getString(R.string.item_unused) + NEW_LINE + neverUsedFreqs + NEW_LINE);
 	
-	boolean smpManager = Utils.isShellProcessRunning(PROCESS_MPDEC) || Utils.stringToBool(Utils.readOneLine(FILE_MPDEC_TOGGLE)) || Utils.stringToBool(Utils.readOneLine(FILE_INTELLIP_TOGGLE));
-	mSMP.setVisibility(smpManager ? View.VISIBLE : View.GONE);
+	statRound += 1;
+	if(statRound > 4){
+		boolean smpManager = Utils.isShellProcessRunning(PROCESS_MPDEC) || Utils.stringToBool(Utils.readOneLine(FILE_MPDEC_TOGGLE)) || Utils.stringToBool(Utils.readOneLine(FILE_INTELLIP_TOGGLE));
+		mSMP.setVisibility(smpManager ? View.VISIBLE : View.GONE);
+		statRound = 0;
+	}
     }
 
     @Override
@@ -269,10 +278,6 @@ public class CPUStatsPreference extends DialogPreference
 	super.onDialogClosed(positiveResult);
 
 	mCurCPUThread.interrupt();
-	try {
-		mCurCPUThread.join();
-	} catch (InterruptedException e) {
-	}
     }
 
     @Override
@@ -287,7 +292,7 @@ public class CPUStatsPreference extends DialogPreference
         public void run() {
             try {
 		while (!this.isInterrupted()) {
-			sleep(500);
+			sleep(700);
 			String stats = "";
 			for(int i = 0; i < Utils.getNumOfCpus();){
 				String minfreq, maxfreq, curfreq, governor;

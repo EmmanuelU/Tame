@@ -195,7 +195,7 @@ public class AboutTame extends Fragment
 		startActivity(browserIntent);
 	}
 	else if(!WildData.fetchedlatestversion){
-		Utils.toast(getActivity(), getActivity().getString(R.string.msg_wait));
+		mUpdate.setText(getActivity().getString(R.string.msg_wait));
 		if(WildInit(Utils.fetchTextFile(propotalink))){
 			if(WildData.latestversionstamp > WildData.versionstamp && !WildData.latestversion.equals(propversion)) WildData.islatestversion = false;
 			else WildData.islatestversion = true;
@@ -220,7 +220,7 @@ public class AboutTame extends Fragment
 		startActivity(browserIntent);
 	}
 	else if(!TameData.fetchedlatestversion) {
-		Utils.toast(getActivity(), getActivity().getString(R.string.msg_wait));
+		mAppUpdate.setText(getActivity().getString(R.string.msg_wait));
 		if(TameInit(Utils.fetchTextFile(LINK_APP_UPDATE))){
 			if(TameData.latestversionstamp > TameData.versionstamp) TameData.islatestversion = false;
 			else TameData.islatestversion = true;
